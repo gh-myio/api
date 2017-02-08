@@ -1,11 +1,13 @@
 'use strict';
 
-const restify = require('restify'),
-      plugins = require('restify-plugins'),
-      db      = require('./lib/models');
-      //swagger = require('swagger-restify');
+const restify       = require('restify'),
+      plugins       = require('restify-plugins'),
+      db            = require('./lib/models'),
+      WebSocket     = require('ws'),
+      config        = require('./lib/config');
 
-
+const channelsState = require('./lib/ChannelsState');
+ 
 let server = restify.createServer({
   name: 'Hubot',
   version: '0.0.1'
@@ -34,9 +36,20 @@ server.use((err, req, res, next) => {
 });
 
 server.listen(8080, function () {
-  console.log('%s listening at %s', server.name, server.url);
+    console.log('%s listening at %s', server.name, server.url);
 });
 
+let ws = new WebSocket(config.ws, {
+    perMessageDeflate: false
+});
+
+ws.on('message', (message, flags) => {
+    let data = (JSON.parse(message));
+
+    if (data.message_type && data.message_type === 'channel_update') {
+        channelsState.addState(data); 
+    }
+});
 
 /*
 swagger.init(server, {
