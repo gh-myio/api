@@ -43,14 +43,14 @@ let ws = new WebSocket(config.ws, {
     perMessageDeflate: false
 });
 
-ws.on('message', (message, flags) => {
+/*ws.on('message', (message, flags) => {
     let data = (JSON.parse(message));
 
     if (data.message_type && data.message_type === 'channel_update') {
         channelsState.addState(data); 
     }
 });
-
+*/
 /*
 swagger.init(server, {
     apiVersion: '1.0',
