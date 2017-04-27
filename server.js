@@ -21,6 +21,7 @@ server = require('./lib/routes')(server);
 
 // Error handling middleware
 server.use((err, req, res, next) => {
+    console.log('Error handling..', err);
     let status  = err.status || 500,
         message = err.message || 'There was an error processing the request';
 
