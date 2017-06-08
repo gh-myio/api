@@ -1,22 +1,18 @@
 'use strict';
 
-const restify       = require('restify'),
+const express = require('express'),
       plugins       = require('restify-plugins'),
       db            = require('./lib/models'),
       WebSocket     = require('ws'),
-      config        = require('./lib/config');
+      config        = require('./lib/config'),
+      bodyParser    = require('body-parser');
 
 const channelsState = require('./lib/ChannelsState');
 const infraredState = require('./lib/InfraredState');
  
-let server = restify.createServer({
-  name: 'Hubot',
-  version: '0.0.1'
-});
+let server = express();
 
-server.use(plugins.acceptParser(server.acceptable));
-server.use(plugins.queryParser());
-server.use(plugins.bodyParser());
+server.use(bodyParser.json());
 server = require('./lib/routes')(server);
 
 // Error handling middleware
@@ -38,7 +34,7 @@ server.use((err, req, res, next) => {
 });
 
 server.listen(8080, function () {
-    console.log('%s listening at %s', server.name, server.url);
+    console.log('%s listening at 8080', server.name, server.url);
 });
 
 let ws = undefined;
@@ -48,12 +44,12 @@ function connectWS() {
             perMessageDeflate: false
         });
 
-	ws.on('error', function() {
-		setTimeout(() => {
-		    console.log('Retrying WS connection..');
-		    connectWS();
-		}, 5000);
-	});
+        ws.on('error', function() {
+            setTimeout(() => {
+                console.log('Retrying WS connection..');
+                connectWS();
+            }, 5000);
+        });
 
         ws.on('message', (message, flags) => {
             let data = JSON.parse(message);
