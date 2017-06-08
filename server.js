@@ -44,10 +44,16 @@ server.listen(8080, function () {
 let ws = undefined;
 
 function connectWS() {
-    try {
         let ws = new WebSocket(config.ws, {
             perMessageDeflate: false
         });
+
+	ws.on('error', function() {
+		setTimeout(() => {
+		    console.log('Retrying WS connection..');
+		    connectWS();
+		}, 5000);
+	});
 
         ws.on('message', (message, flags) => {
             let data = JSON.parse(message);
@@ -60,11 +66,7 @@ function connectWS() {
                 infraredState.addState(data);
             }
         });
-    } catch(e) {
-        setTimeout(() => {
-            console.log('Retrying WS connection..');
-            connectWS();
-        }, 5000);
-    }
-});
+}
+
+connectWS();
 
