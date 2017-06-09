@@ -19,7 +19,7 @@ server = require('./lib/routes')(server);
 server.use((err, req, res, next) => {
     console.log('Error handling..', err);
     let status  = err.status || 500,
-        message = err.message || 'There was an error processing the request';
+        message = err.err || 'There was an error processing the request';
 
     if (err && err.log) {
         console.log('Logging error');
