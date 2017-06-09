@@ -12,6 +12,7 @@
     "async": "^2.1.4",
     "bluebird": "^3.4.7",
     "lodash": "^4.17.4",
+    "moment": "^2.18.1",
     "pg": "^6.1.2",
     "restify": "^4.3.0",
     "restify-plugins": "^1.5.1",
