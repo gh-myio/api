@@ -1,6 +1,6 @@
 'use strict';
 
-const express = require('express'),
+const express       = require('express'),
       plugins       = require('restify-plugins'),
       db            = require('./lib/models'),
       WebSocket     = require('ws'),
@@ -34,34 +34,34 @@ server.use((err, req, res, next) => {
 });
 
 server.listen(8080, function () {
-    console.log('%s listening at 8080', server.name, server.url);
+    console.log('%s listening at 8080', server.name);
 });
 
 let ws = undefined;
 
 function connectWS() {
-        let ws = new WebSocket(config.ws, {
-            perMessageDeflate: false
-        });
+    let ws = new WebSocket(config.ws, {
+        perMessageDeflate: false
+    });
 
-        ws.on('error', function() {
-            setTimeout(() => {
-                console.log('Retrying WS connection..');
-                connectWS();
-            }, 5000);
-        });
+    ws.on('error', () => {
+        setTimeout(() => {
+            console.log('Retrying WS connection..');
+            connectWS();
+        }, 5000);
+    });
 
-        ws.on('message', (message, flags) => {
-            let data = JSON.parse(message);
+    ws.on('message', (message, flags) => {
+        let data = JSON.parse(message);
 
-            if (data.message_type && data.message_type === 'channel_update') {
-                channelsState.addState(data);
-            }
+        if (data.message_type && data.message_type === 'channel_update') {
+            channelsState.addState(data);
+        }
 
-            if (data.message_type && data.message_type === 'infrared_update') {
-                infraredState.addState(data);
-            }
-        });
+        if (data.message_type && data.message_type === 'infrared_update') {
+            infraredState.addState(data);
+        }
+    });
 }
 
 connectWS();
