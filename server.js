@@ -3,12 +3,12 @@
 const express       = require('express'),
       plugins       = require('restify-plugins'),
       db            = require('./lib/models'),
-      WebSocket     = require('ws'),
       config        = require('./lib/config'),
       bodyParser    = require('body-parser');
 
 const channelsState = require('./lib/ChannelsState');
 const infraredState = require('./lib/InfraredState');
+const ws            = require('./lib/WebSocketHandler');
  
 let server = express();
 
@@ -36,33 +36,4 @@ server.use((err, req, res, next) => {
 server.listen(8080, function () {
     console.log('%s listening at 8080', server.name);
 });
-
-let ws = undefined;
-
-function connectWS() {
-    let ws = new WebSocket(config.ws, {
-        perMessageDeflate: false
-    });
-
-    ws.on('error', () => {
-        setTimeout(() => {
-            console.log('Retrying WS connection..');
-            connectWS();
-        }, 5000);
-    });
-
-    ws.on('message', (message, flags) => {
-        let data = JSON.parse(message);
-
-        if (data.message_type && data.message_type === 'channel_update') {
-            channelsState.addState(data);
-        }
-
-        if (data.message_type && data.message_type === 'infrared_update') {
-            infraredState.addState(data);
-        }
-    });
-}
-
-connectWS();
 
