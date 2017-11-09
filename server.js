@@ -1,16 +1,32 @@
 'use strict';
 
-const express       = require('express'),
+let express       = require('express'),
       plugins       = require('restify-plugins'),
       db            = require('./lib/models'),
       config        = require('./lib/config'),
       bodyParser    = require('body-parser');
 
-const channelsState = require('./lib/ChannelsState');
-const infraredState = require('./lib/InfraredState');
-const ws            = require('./lib/WebSocketHandler');
+let channelsState = require('./lib/ChannelsState');
+let infraredState = require('./lib/InfraredState');
+let ws            = require('./lib/WebSocketHandler');
  
 let server = express();
+
+let fs              = require('fs')
+
+if (fs.existsSync(process.env.CONFIG_PATH)) {
+    try {
+        let config = JSON.parse(fs.readFileSync(process.env.CONFIG_PATH, 'utf-8'))
+
+        global.privKey     = config.privKey
+    } catch(e) {
+        console.error(e)
+        process.exit(1)
+    }
+} else {
+    console.error('Fatal: Config file not in directory.')
+    process.exit(1)
+}
 
 server.use(bodyParser.json());
 server = require('./lib/routes')(server);
