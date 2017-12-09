@@ -1,7 +1,6 @@
 'use strict';
 
 let express       = require('express'),
-      plugins       = require('restify-plugins'),
       db            = require('./lib/models'),
       config        = require('./lib/config'),
       bodyParser    = require('body-parser');

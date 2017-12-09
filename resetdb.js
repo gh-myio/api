@@ -1,10 +1,11 @@
-'use strict';
+'use strict'
 
-const models = require('./lib/models');
+const models = require('./lib/models')
 
 models.sequelize.sync({
     force: true,
     logging: console.log
 }).then(() => {
-    console.log('done');
-});
+    console.log('done')
+    process.exit(1)
+})

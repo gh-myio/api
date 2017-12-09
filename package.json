@@ -9,17 +9,14 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "async": "^2.1.4",
-    "bluebird": "^3.5.0",
-    "body-parser": "^1.17.2",
-    "bower": "^1.8.2",
-    "express": "^4.15.3",
+    "bluebird": "^3.5.1",
+    "body-parser": "^1.18.2",
+    "express": "^4.16.2",
     "jsonwebtoken": "^8.1.0",
     "lodash": "^4.17.4",
-    "moment": "^2.18.1",
-    "pg": "^6.1.2",
-    "restify-plugins": "^1.6.0",
-    "sequelize": "^3.30.1",
-    "ws": "^2.0.3"
+    "moment": "^2.19.3",
+    "pg": "^6.4.1",
+    "sequelize": "^4.27.0",
+    "ws": "^3.3.2"
   }
 }
