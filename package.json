@@ -20,7 +20,6 @@
     "pg": "^6.1.2",
     "restify-plugins": "^1.6.0",
     "sequelize": "^3.30.1",
-    "swagger-restify": "github:vellotis/swagger-restify",
     "ws": "^2.0.3"
   }
 }
