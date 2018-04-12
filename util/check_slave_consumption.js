@@ -13,7 +13,7 @@ models.Slave.findAll()
       return sequelize.query(`
         SELECT * FROM consumption_realtime
         WHERE slave_id IN (${ids.join(', ')})
-        ORDER BY datetime DESC
+        ORDER BY timestamp DESC
         LIMIT 1
       `, { type: sequelize.QueryTypes.SELECT})
         .then((consumption) => {
