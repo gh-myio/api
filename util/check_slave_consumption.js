@@ -12,23 +12,11 @@ models.Slave.findAll()
     return Promise.all(slaves.map((slave) => { 
       return sequelize.query(`
         SELECT * FROM consumption_realtime
-        WHERE slave_id IN (${ids.join(', ')})
+        WHERE slave_id = ${slave.id}
         ORDER BY timestamp DESC
         LIMIT 1
       `, { type: sequelize.QueryTypes.SELECT})
-        .then((consumption) => {
-        })
-        /*return models.RawEnergy.findAll({
-        where: {
-          'slave_id': {
-            $in: ids
-          }
-        },
-        order: [
-          ['datetime', 'DESC']
-        ],
-        limit: 1
-      })*/.then((consumption) => {
+      .then((consumption) => {
           return [slave, _.first(consumption)]
       })
     })).then((result) => {
