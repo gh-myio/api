@@ -30,18 +30,16 @@ models.Slave.findAll()
             data[1].value > (data[0].regular_consumption * 1.05)) {
 
             let acima = data[0].regular_consumption - data[1].value
-            console.log('ALERT !!!!')
             pusher.note('ujyaht1Vqw0sjz4DyooA5A', data[0].name, `[${data[0].name}] Consumo abaixo da média! (${data[1].value}/${data[0].regular_consumption})`, function(error, response) {
-              console.log(error);
-              console.log(response)
             });
-          } else {
-            console.log('REGULAR !!!')
-            console.log(data[1].value, data[0].regular_consumption)
           }
         } else {
           console.log('No consumption historic data.')
         }
       })
+
+      setTimeout(() => {
+        process.exit(1)
+      }, 10000)
     })
   })
