@@ -1,4 +1,4 @@
-let models = require('./lib/models')
+let models = require('./lib/models').Models
 let Promise = require('bluebird')
 let _ = require('lodash')
 
@@ -14,8 +14,7 @@ models.Slave.findAll()
           }
         },
         order: [
-          'datetime',
-          'DESC'
+          ['datetime', 'DESC']
         ],
         limit: 1
       }).then((consumption) => {
