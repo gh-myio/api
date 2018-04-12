@@ -23,14 +23,14 @@ models.Slave.findAll()
           return [slave, _.first(consumption)]
       })
     })).then((result) => {
-      return _.each(result, (data) => {
+      _.each(result, (data) => {
         if (data[1]) {
           let regularConsumption = data[0].regular_consumption
           if (data[1].value > 0 && data[1].value < (data[0].regular_consumption * 0.95) ||
             data[1].value > (data[0].regular_consumption * 1.05)) {
 
             let acima = data[0].regular_consumption - data[1].value
-            pusher.note('ujyaht1Vqw0sjz4DyooA5A', data[0].name, `[${data[0].name}] Consumo abaixo da média! (${data[1].value}/${data[0].regular_consumption})`, function(error, response) {
+            pusher.note('ujyaht1Vqw0sjz4DyooA5A', `[${data[0].name}] Consumo abaixo da média! (${data[1].value}/${data[0].regular_consumption})`, data[0].name, function(error, response) {
             });
           }
         } else {
