@@ -1,4 +1,5 @@
 let models = require('../lib/models').Models
+let sequelize = require('../lib/models').sequelize
 let Promise = require('bluebird')
 let _ = require('lodash')
 var PushBullet = require('pushbullet');
@@ -9,7 +10,15 @@ models.Slave.findAll()
     let ids = _.map(slaves, 'id')
 
     return Promise.all(slaves.map((slave) => { 
-      return models.RawEnergy.findAll({
+      return sequelize.query(`
+        SELECT * FROM consumption_realtime
+        WHERE slave_id IN (${ids.join(', ')})
+        ORDER BY datetime DESC
+        LIMIT 1
+      `, { type: sequelize.QueryTypes.SELECT})
+        .then((consumption) => {
+        })
+        /*return models.RawEnergy.findAll({
         where: {
           'slave_id': {
             $in: ids
@@ -19,7 +28,7 @@ models.Slave.findAll()
           ['datetime', 'DESC']
         ],
         limit: 1
-      }).then((consumption) => {
+      })*/.then((consumption) => {
           return [slave, _.first(consumption)]
       })
     })).then((result) => {
