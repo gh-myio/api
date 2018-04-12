@@ -18,6 +18,7 @@
     "lodash": "^4.17.4",
     "moment": "^2.19.3",
     "pg": "^6.4.1",
+    "pushbullet": "git+https://github.com/alexwhitman/node-pushbullet-api.git",
     "sequelize": "^4.27.0",
     "ws": "^3.3.2"
   }
