@@ -1,4 +1,4 @@
-let models = require('./lib/models').Models
+let models = require('../lib/models').Models
 let Promise = require('bluebird')
 let _ = require('lodash')
 
@@ -21,7 +21,7 @@ models.Slave.findAll()
           return [slave, _.first(consumption)]
       })
     })).then((result) => {
-      return _.map(result, (data) => {
+      return _.each(result, (data) => {
         if (data[1]) {
           let regularConsumption = data[0].regular_consumption
           if (data[1].value > 0 && data[1].value < data[0].regular_consumption) {
@@ -30,6 +30,8 @@ models.Slave.findAll()
             console.log('REGULAR !!!')
             console.log(data[1].value, data[0].regular_consumption)
           }
+        } else {
+          console.log('No consumption historic data.')
         }
       })
     })
