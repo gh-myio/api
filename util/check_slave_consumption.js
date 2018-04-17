@@ -4,6 +4,13 @@ let Promise = require('bluebird')
 let _ = require('lodash')
 var PushBullet = require('pushbullet');
 var pusher = new PushBullet('o.CzrvkpYEMStWfRjHhde9wXSuyrxo0kwm');
+var OneSignal = require('onesignal-node');
+
+let client = new OneSignal.Client({
+	userAuthKey: 'OTU2NzNlODctOTEzMi00YWFiLTkxOTMtY2RkYzYwNmVjYmI4',
+	// note that "app" must have "appAuthKey" and "appId" keys
+	app: { appAuthKey: 'YjJhMzZhOTAtMzIwYy00YmJhLWIxMDctODg3OTlkNzViMGI3', appId: '008b6d6b-a74e-460c-80b6-ad481099fcc2' }
+});
 
 models.Slave.findAll()
   .then((slaves) => {
@@ -21,13 +28,45 @@ models.Slave.findAll()
       })
     })).then((result) => {
       _.each(result, (data) => {
+        console.log(data[1])
         if (data[1]) {
           let regularConsumption = data[0].regular_consumption
-          if (data[1].value > 0 && data[1].value < (data[0].regular_consumption * 0.95) ||
-            data[1].value > (data[0].regular_consumption * 1.05)) {
+          if (data[1].value > 0 && data[1].value < (data[0].regular_consumption * 0.95)) {
 
             let acima = data[0].regular_consumption - data[1].value
-            pusher.note('ujyaht1Vqw0sjz4DyooA5A', `[${data[0].name}] Consumo abaixo da média! (${data[1].value}/${data[0].regular_consumption})`, data[0].name, function(error, response) {
+            //pusher.note('ujyaht1Vqw0sjz4DyooA5A', `[${data[0].name}] Consumo abaixo da média! (${data[1].value}/${data[0].regular_consumption})`, data[0].name, () => {});
+
+            let firstNotification = new OneSignal.Notification({
+                contents: {
+                    en: `[${data[0].name}] Consumo abaixo da média! (${data[1].value}/${data[0].regular_consumption})`
+                }
+            });
+
+            firstNotification.setIncludedSegments(['All']);
+
+            client.sendNotification(firstNotification, function (err, httpResponse,data) {
+               if (err) {
+                   console.log('Something went wrong...');
+               } else {
+                   console.log(data, httpResponse.statusCode);
+               }
+            });
+          } else if (data[1].value > 0 && data[1].value > (data[0].regular_consumption * 1.05)) {
+            // Acima
+            let firstNotification = new OneSignal.Notification({
+                contents: {
+                    en: `[${data[0].name}] Consumo acima da média! (${data[1].value}/${data[0].regular_consumption})`
+                }
+            });
+
+            firstNotification.setIncludedSegments(['All']);
+
+            client.sendNotification(firstNotification, function (err, httpResponse,data) {
+               if (err) {
+                   console.log('Something went wrong...');
+               } else {
+                   console.log(data, httpResponse.statusCode);
+               }
             });
           }
         } else {
