@@ -34,7 +34,6 @@ models.Slave.findAll()
           if (data[1].value > 0 && data[1].value < (data[0].regular_consumption * 0.95)) {
 
             let acima = data[0].regular_consumption - data[1].value
-            //pusher.note('ujyaht1Vqw0sjz4DyooA5A', `[${data[0].name}] Consumo abaixo da média! (${data[1].value}/${data[0].regular_consumption})`, data[0].name, () => {});
 
             let firstNotification = new OneSignal.Notification({
                 contents: {
