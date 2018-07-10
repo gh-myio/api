@@ -10,6 +10,12 @@ module.exports = {
         let _ = require('lodash')
         let models = require('./lib/models').Models
 
+        if (schedules.length > 0) {
+            schedules.forEach((schedule) => {
+                schedule.cancel()
+            })
+        }
+
         models.Schedule.findAll()
             .then((_schedules) => {
                 console.log(`Scheduling ${_schedules.length} schedules.`)
