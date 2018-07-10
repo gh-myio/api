@@ -8,6 +8,10 @@ let express       = require('express'),
 let channelsState = require('./lib/ChannelsState');
 let infraredState = require('./lib/InfraredState');
 let ws            = require('./lib/WebSocketHandler');
+let Scheduler     = require('./scheduler');
+
+Scheduler.setSocket(ws)
+Scheduler.prepare()
  
 let server = express();
 
