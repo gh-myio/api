@@ -12,6 +12,8 @@ module.exports = {
 
         if (schedules.length > 0) {
             schedules.forEach((schedule) => {
+                if (!schedule) return
+
                 schedule.cancel()
             })
         }
