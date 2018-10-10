@@ -3,8 +3,8 @@
 let express         = require('express'),
       db            = require('./lib/models'),
       config        = require('./lib/config'),
-      bodyParser    = require('body-parser'),
-      compression   = require('compression')
+      bodyParser    = require('body-parser');
+  //     compression   = require('compression')
 
 let channelsState = require('./lib/ChannelsState');
 let infraredState = require('./lib/InfraredState');
@@ -33,7 +33,7 @@ if (fs.existsSync(process.env.CONFIG_PATH)) {
 }
 
 server.use(bodyParser.json());
-server.use(compression())
+//server.use(compression())
 server = require('./lib/routes')(server);
 
 // Error handling middleware
