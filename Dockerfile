@@ -1,4 +1,4 @@
-FROM arm32v7/node:stretch
+FROM arm32v7/node:slim
 
 WORKDIR /api
 
