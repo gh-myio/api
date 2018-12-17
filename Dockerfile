@@ -2,7 +2,7 @@ FROM arm32v7/node:slim
 
 WORKDIR /api
 
-ENV TZ=America/Sao_Paulo
+ENV TZ=Etc/UTC
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 COPY package.json .
