@@ -13,7 +13,7 @@ let Scheduler     = require('./scheduler');
 
 Scheduler.setSocket(ws)
 Scheduler.prepare()
- 
+
 let server = express();
 
 let fs              = require('fs')
