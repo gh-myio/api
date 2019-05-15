@@ -1,15 +1,14 @@
-FROM arm32v7/node:slim
+FROM arm32v7/node:12-alpine
 
 WORKDIR /api
 
-ENV TZ=Etc/UTC
-RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
-
-COPY package.json .
 COPY package.json package-lock.json ./
 
-RUN npm install --production
+ENV TZ=Etc/UTC
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && \
+    echo $TZ > /etc/timezone && \
+    npm install --production
 
 COPY . .
 
-CMD [ "npm", "start" ]
+ENTRYPOINT [ "npm", "start" ]
