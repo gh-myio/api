@@ -19,7 +19,7 @@ let server = express();
 
 let fs              = require('fs')
 
-if (fs.existsSync(process.env.PRIVATE_KEY)) {
+if (process.env.PRIVATE_KEY) {
     try {
         //let config = JSON.parse(fs.readFileSync(process.env.CONFIG_PATH, 'utf-8'))
 
