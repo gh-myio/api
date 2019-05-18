@@ -19,17 +19,17 @@ let server = express();
 
 let fs              = require('fs')
 
-if (fs.existsSync(process.env.CONFIG_PATH)) {
+if (fs.existsSync(process.env.PRIVATE_KEY)) {
     try {
-        let config = JSON.parse(fs.readFileSync(process.env.CONFIG_PATH, 'utf-8'))
+        //let config = JSON.parse(fs.readFileSync(process.env.CONFIG_PATH, 'utf-8'))
 
-        global.privKey     = config.privKey
+        global.privKey     = process.env.PRIVATE_KEY;
     } catch(e) {
         console.error(e)
         process.exit(1)
     }
 } else {
-    console.error('Fatal: Config file not in directory.')
+    console.error('Fatal: Private key not defined in env.')
     process.exit(1)
 }
 
