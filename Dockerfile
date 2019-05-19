@@ -1,4 +1,4 @@
-FROM arm32v7/node:12
+FROM arm32v6/node:12-alpine
 
 WORKDIR /api
 
