@@ -17,11 +17,9 @@ RUN apk --no-cache add --update \
     py-pip \
     build-base \
     postgresql-dev \
-  && pip install virtualenv \
   && rm -rf /var/cache/apk/*
 
-RUN virtualenv /env && \
-    /env/bin/pip install -r requirements.txt && \
+RUN pip install -r requirements.txt && \
     rm requirements.txt
 
 COPY . .
