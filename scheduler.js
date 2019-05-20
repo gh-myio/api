@@ -41,15 +41,15 @@ module.exports = {
         scheduler.scheduleJob(consumptionCron, () => {
             let cons = spawn('python', [`${__dirname}/../consumption/consumption_aggregator.py`]);
 
-            ls.stdout.on('data', (data) => {
+            cons.stdout.on('data', (data) => {
               console.log(`Agreggator running: ${data}`);
             });
 
-            ls.stderr.on('data', (data) => {
+            cons.stderr.on('data', (data) => {
               console.log(`stderr: ${data}`);
             });
 
-            ls.on('close', (code) => {
+            cons.on('close', (code) => {
               console.log(`Aggregator process exited with code ${code}`);
             });
         })
