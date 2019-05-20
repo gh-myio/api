@@ -39,7 +39,7 @@ module.exports = {
 
         // /opt/monorepo/consumption/consumption_aggregator.py >> /var/log/consumption.log 2>&1
         scheduler.scheduleJob(consumptionCron, () => {
-            let cons = spawn('python', [`${__dirname}/../consumption/consumption_aggregator.py`]);
+            let cons = spawn('python', [`${__dirname}/consumption/consumption_aggregator.py`]);
 
             cons.stdout.on('data', (data) => {
               console.log(`Agreggator running: ${data}`);
