@@ -14,7 +14,7 @@ def get_db_connection():
     conn = psycopg2.connect("dbname='{}' user='{}' host='{}' password='{}'".format(DB_DATABASE,
                                                                                    DB_USERNAME,
                                                                                    DB_HOST,
-                                                                                   DB_PASSWORD)
+                                                                                   DB_PASSWORD))
     cur = conn.cursor()
     return (conn, cur)
 
