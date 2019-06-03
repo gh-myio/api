@@ -1,13 +1,14 @@
 {
-  "name": "backend",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "name": "API",
+  "version": "2.0.0",
+  "description": "Hubot API Server",
+  "main": "server.js",
   "scripts": {
+    "start": "npx sequelize-cli db:migrate && node server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "André Abadesso",
+  "license": "Absolutely Proprietary",
   "dependencies": {
     "async": "^2.6.0",
     "bluebird": "^3.5.1",
@@ -20,10 +21,11 @@
     "lodash": "^4.17.11",
     "moment": "^2.19.3",
     "node-schedule": "^1.3.0",
-    "npm": "^6.4.1",
+    "npm": "^6.9.0",
     "onesignal-node": "^1.0.2",
-    "pg": "^6.4.1",
-    "sequelize": "^4.27.0",
+    "pg": "^7.11.0",
+    "sequelize": "^5.8.7",
+    "sequelize-cli": "^5.4.0",
     "ws": "^3.3.2"
   }
 }
