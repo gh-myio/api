@@ -948,8 +948,25 @@ ALTER TABLE ONLY public.rfir_devices
 --
 
 ALTER TABLE ONLY public.rfir_remotes
-    ADD CONSTRAINT rfir_remotes_rfir_device_id_fkey FOREIGN KEY (rfir_device_id) REFERENCES public.rfir_devices(id) ON UPDATE CASCADE ON DELETE SET NULL;
+ADD CONSTRAINT rfir_remotes_rfir_device_id_fkey FOREIGN KEY (rfir_device_id) REFERENCES public.rfir_devices(id) ON UPDATE CASCADE ON DELETE SET NULL;
 
+
+CREATE SEQUENCE public.consumption_realtime_id_seq
+INCREMENT 1
+START 1372112
+MINVALUE 0
+MAXVALUE 99999999999
+CACHE 1;
+
+CREATE TABLE public.consumption_realtime
+(
+    id integer NOT NULL DEFAULT nextval('consumption_realtime_id_seq'::regclass) ( INCREMENT 1 START 0 MINVALUE 0 MAXVALUE 99999999999 CACHE 1 ),
+    "timestamp" timestamp(0) with time zone NOT NULL DEFAULT now(),
+    slave_id integer NOT NULL,
+    ambient_id integer[],
+    value real NOT NULL,
+    CONSTRAINT consumption_realtime_pkey PRIMARY KEY (id)
+);
 
 `
 
