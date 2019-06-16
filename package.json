@@ -4,6 +4,7 @@
   "description": "Hubot API Server",
   "main": "server.js",
   "scripts": {
+    "dev": "node server.js",
     "start": "npx sequelize-cli db:migrate && node server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
