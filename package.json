@@ -17,6 +17,7 @@
     "compression": "^1.7.3",
     "express": "^4.16.2",
     "getmac": "^1.2.1",
+    "hubot-networking": "^1.0.12",
     "install": "^0.12.1",
     "jsonwebtoken": "^8.1.0",
     "lodash": "^4.17.11",
