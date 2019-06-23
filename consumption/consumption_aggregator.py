@@ -20,13 +20,26 @@ def main():
 
     if value:
         timestamp = value[0].tzinfo
-        now = datetime.datetime(now.year, now.month, now.day, now.hour, now.minute, 0, 0, tzinfo = timestamp)
+        now = datetime.datetime(now.year,
+                                now.month,
+                                now.day,
+                                now.hour,
+                                now.minute,
+                                0,
+                                0,
+                                tzinfo = timestamp)
     else:
         print 'Nothing on the database, exiting...'
         return 0
 
+    cur.execute("SELECT id FROM slaves WHERE type IN ('light_switch', 'outlet')")
 
-    cur.execute("SELECT ambient_id, slave_id FROM ambients_rfir_slaves_rel")
+    data = cur.fetchall()
+
+    valid_slaves = ",".join(map(lambda x: str(x[0]), data))
+
+    cur.execute("SELECT ambient_id, slave_id FROM ambients_rfir_slaves_rel WHERE slave_id IN (%s)", [valid_slaves])
+
     values = cur.fetchall()
 
     consumption_util.close_db_connection(conn, cur)
