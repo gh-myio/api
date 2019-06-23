@@ -36,9 +36,10 @@ def main():
 
     data = cur.fetchall()
 
-    valid_slaves = ",".join(map(lambda x: str(x[0]), data))
+    sql = "SELECT ambient_id, slave_id FROM ambients_rfir_slaves_rel WHERE slave_id IN ({0})"
+    sql = sql.format(','.join(map(lambda x: str(x[0]), data)))
 
-    cur.execute("SELECT ambient_id, slave_id FROM ambients_rfir_slaves_rel WHERE slave_id IN (%s)", [valid_slaves])
+    cur.execute(sql)
 
     values = cur.fetchall()
 
