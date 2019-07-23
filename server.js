@@ -1,10 +1,12 @@
 'use strict';
 
 let express         = require('express'),
-      db            = require('./lib/models'),
-      config        = require('./lib/config'),
-      bodyParser    = require('body-parser');
-  //     compression   = require('compression')
+    db              = require('./lib/models'),
+    config          = require('./lib/config'),
+    bodyParser      = require('body-parser'),
+    cors            = require('cors');
+
+//     compression   = require('compression')
 
 let channelsState = require('./lib/ChannelsState');
 let infraredState = require('./lib/InfraredState');
@@ -33,6 +35,8 @@ if (process.env.PRIVATE_KEY) {
     console.error('Fatal: Private key not defined in env.')
     process.exit(1)
 }
+server.use(cors())
+server.options('*', cors())
 
 server.use(bodyParser.json());
 //server.use(compression())
