@@ -5,7 +5,7 @@ module.exports = {
         return queryInterface.addColumn(
             'slaves',
             'clamp_type',
-            type: Sequelize.INTEGER
+            Sequelize.INTEGER
         );
     },
 
