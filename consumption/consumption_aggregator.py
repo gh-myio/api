@@ -32,7 +32,7 @@ def main():
         print 'Nothing on the database, exiting...'
         return 0
 
-    cur.execute("SELECT id FROM slaves WHERE type IN ('light_switch', 'outlet')")
+    cur.execute("SELECT id FROM slaves WHERE type IN ('light_switch', 'outlet', 'three_phase_sensor')")
 
     data = cur.fetchall()
 
