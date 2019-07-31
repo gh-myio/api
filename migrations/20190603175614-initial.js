@@ -25,9 +25,6 @@ CREATE TYPE public.enum_consumption_type AS ENUM (
 );
 
 
-ALTER TYPE public.enum_consumption_type OWNER TO hubot;
-
-
 
 --
 -- Name: alarms; Type: TABLE; Schema: public; Owner: hubot
@@ -42,9 +39,6 @@ CREATE TABLE public.alarms (
     slave_id integer
 );
 
-
-ALTER TABLE public.alarms OWNER TO hubot;
-
 --
 -- Name: alarms_id_seq; Type: SEQUENCE; Schema: public; Owner: hubot
 --
@@ -57,8 +51,6 @@ CREATE SEQUENCE public.alarms_id_seq
     NO MAXVALUE
     CACHE 1;
 
-
-ALTER TABLE public.alarms_id_seq OWNER TO hubot;
 
 --
 -- Name: alarms_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: hubot
@@ -78,8 +70,6 @@ CREATE TABLE public.ambients (
 );
 
 
-ALTER TABLE public.ambients OWNER TO hubot;
-
 --
 -- Name: ambients_id_seq; Type: SEQUENCE; Schema: public; Owner: hubot
 --
@@ -92,8 +82,6 @@ CREATE SEQUENCE public.ambients_id_seq
     NO MAXVALUE
     CACHE 1;
 
-
-ALTER TABLE public.ambients_id_seq OWNER TO hubot;
 
 --
 -- Name: ambients_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: hubot
@@ -114,8 +102,6 @@ CREATE TABLE public.ambients_rfir_devices_rel (
 );
 
 
-ALTER TABLE public.ambients_rfir_devices_rel OWNER TO hubot;
-
 --
 -- Name: ambients_rfir_slaves_rel; Type: TABLE; Schema: public; Owner: hubot
 --
@@ -127,8 +113,6 @@ CREATE TABLE public.ambients_rfir_slaves_rel (
     ambient_id integer NOT NULL
 );
 
-
-ALTER TABLE public.ambients_rfir_slaves_rel OWNER TO hubot;
 
 --
 -- Name: channels; Type: TABLE; Schema: public; Owner: hubot
@@ -146,8 +130,6 @@ CREATE TABLE public.channels (
 );
 
 
-ALTER TABLE public.channels OWNER TO hubot;
-
 --
 -- Name: channels_id_seq; Type: SEQUENCE; Schema: public; Owner: hubot
 --
@@ -160,8 +142,6 @@ CREATE SEQUENCE public.channels_id_seq
     NO MAXVALUE
     CACHE 1;
 
-
-ALTER TABLE public.channels_id_seq OWNER TO hubot;
 
 --
 -- Name: channels_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: hubot
@@ -184,8 +164,6 @@ CREATE TABLE public.consumption (
 );
 
 
-ALTER TABLE public.consumption OWNER TO hubot;
-
 --
 -- Name: consumption_alerts; Type: TABLE; Schema: public; Owner: hubot
 --
@@ -197,8 +175,6 @@ CREATE TABLE public.consumption_alerts (
     extra text
 );
 
-
-ALTER TABLE public.consumption_alerts OWNER TO hubot;
 
 --
 -- Name: consumption_alerts_id_seq; Type: SEQUENCE; Schema: public; Owner: hubot
@@ -212,8 +188,6 @@ CREATE SEQUENCE public.consumption_alerts_id_seq
     NO MAXVALUE
     CACHE 1;
 
-
-ALTER TABLE public.consumption_alerts_id_seq OWNER TO hubot;
 
 --
 -- Name: consumption_alerts_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: hubot
@@ -234,8 +208,6 @@ CREATE SEQUENCE public.consumption_id_seq
     NO MAXVALUE
     CACHE 1;
 
-
-ALTER TABLE public.consumption_id_seq OWNER TO hubot;
 
 --
 -- Name: consumption_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: hubot
@@ -258,8 +230,6 @@ CREATE TABLE public.metadata (
 );
 
 
-ALTER TABLE public.metadata OWNER TO hubot;
-
 --
 -- Name: metadata_id_seq; Type: SEQUENCE; Schema: public; Owner: hubot
 --
@@ -272,8 +242,6 @@ CREATE SEQUENCE public.metadata_id_seq
     NO MAXVALUE
     CACHE 1;
 
-
-ALTER TABLE public.metadata_id_seq OWNER TO hubot;
 
 --
 -- Name: metadata_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: hubot
@@ -295,8 +263,6 @@ CREATE TABLE public.raw_energy (
 );
 
 
-ALTER TABLE public.raw_energy OWNER TO hubot;
-
 --
 -- Name: raw_energy_id_seq; Type: SEQUENCE; Schema: public; Owner: hubot
 --
@@ -309,8 +275,6 @@ CREATE SEQUENCE public.raw_energy_id_seq
     NO MAXVALUE
     CACHE 1;
 
-
-ALTER TABLE public.raw_energy_id_seq OWNER TO hubot;
 
 --
 -- Name: raw_energy_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: hubot
@@ -334,8 +298,6 @@ CREATE TABLE public.rfir_buttons (
 );
 
 
-ALTER TABLE public.rfir_buttons OWNER TO hubot;
-
 --
 -- Name: rfir_buttons_id_seq; Type: SEQUENCE; Schema: public; Owner: hubot
 --
@@ -348,8 +310,6 @@ CREATE SEQUENCE public.rfir_buttons_id_seq
     NO MAXVALUE
     CACHE 1;
 
-
-ALTER TABLE public.rfir_buttons_id_seq OWNER TO hubot;
 
 --
 -- Name: rfir_buttons_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: hubot
@@ -371,8 +331,6 @@ CREATE TABLE public.rfir_commands (
 );
 
 
-ALTER TABLE public.rfir_commands OWNER TO hubot;
-
 --
 -- Name: rfir_commands_id_seq; Type: SEQUENCE; Schema: public; Owner: hubot
 --
@@ -385,8 +343,6 @@ CREATE SEQUENCE public.rfir_commands_id_seq
     NO MAXVALUE
     CACHE 1;
 
-
-ALTER TABLE public.rfir_commands_id_seq OWNER TO hubot;
 
 --
 -- Name: rfir_commands_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: hubot
@@ -412,8 +368,6 @@ CREATE TABLE public.rfir_devices (
 );
 
 
-ALTER TABLE public.rfir_devices OWNER TO hubot;
-
 --
 -- Name: rfir_devices_id_seq; Type: SEQUENCE; Schema: public; Owner: hubot
 --
@@ -426,8 +380,6 @@ CREATE SEQUENCE public.rfir_devices_id_seq
     NO MAXVALUE
     CACHE 1;
 
-
-ALTER TABLE public.rfir_devices_id_seq OWNER TO hubot;
 
 --
 -- Name: rfir_devices_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: hubot
@@ -447,8 +399,6 @@ CREATE TABLE public.rfir_remotes (
 );
 
 
-ALTER TABLE public.rfir_remotes OWNER TO hubot;
-
 --
 -- Name: rfir_remotes_id_seq; Type: SEQUENCE; Schema: public; Owner: hubot
 --
@@ -462,7 +412,6 @@ CREATE SEQUENCE public.rfir_remotes_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.rfir_remotes_id_seq OWNER TO hubot;
 
 --
 -- Name: rfir_remotes_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: hubot
@@ -484,7 +433,6 @@ CREATE TABLE public.scenes (
 );
 
 
-ALTER TABLE public.scenes OWNER TO hubot;
 
 --
 -- Name: scenes_id_seq; Type: SEQUENCE; Schema: public; Owner: hubot
@@ -499,7 +447,6 @@ CREATE SEQUENCE public.scenes_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.scenes_id_seq OWNER TO hubot;
 
 --
 -- Name: scenes_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: hubot
@@ -521,7 +468,6 @@ CREATE TABLE public.schedules (
 );
 
 
-ALTER TABLE public.schedules OWNER TO hubot;
 
 --
 -- Name: schedules_id_seq; Type: SEQUENCE; Schema: public; Owner: hubot
@@ -536,7 +482,6 @@ CREATE SEQUENCE public.schedules_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.schedules_id_seq OWNER TO hubot;
 
 --
 -- Name: schedules_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: hubot
@@ -565,7 +510,6 @@ CREATE TABLE public.slaves (
 );
 
 
-ALTER TABLE public.slaves OWNER TO hubot;
 
 --
 -- Name: slaves_id_seq; Type: SEQUENCE; Schema: public; Owner: hubot
@@ -579,8 +523,6 @@ CREATE SEQUENCE public.slaves_id_seq
     NO MAXVALUE
     CACHE 1;
 
-
-ALTER TABLE public.slaves_id_seq OWNER TO hubot;
 
 --
 -- Name: slaves_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: hubot
