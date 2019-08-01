@@ -2,12 +2,6 @@
 
 module.exports = {
     up: (queryInterface, Sequelize) => {
-        queryInterface.sequelize.connectionManager.config.database = process.env.DB_DATABASE
-        queryInterface.sequelize.connectionManager.config.username = 'root'
-        queryInterface.sequelize.connectionManager.config.password = process.env.DB_PASSWORD
-        queryInterface.sequelize.connectionManager.config.host = process.env.HOST
-        queryInterface.sequelize.connectionManager.pool.clear()
-
         let migrate = `
         BEGIN;
             ALTER TABLE consumption_realtime RENAME TO consumption_realtime_old;
