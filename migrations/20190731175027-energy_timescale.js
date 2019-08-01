@@ -4,6 +4,8 @@ module.exports = {
     up: (queryInterface, Sequelize) => {
         let migrate = `
         BEGIN;
+			CREATE EXTENSION IF NOT EXISTS timescaledb CASCADE;
+
             ALTER TABLE consumption_realtime RENAME TO consumption_realtime_old;
 
             CREATE TABLE public.consumption_realtime (
@@ -16,6 +18,8 @@ module.exports = {
             SELECT create_hypertable('consumption_realtime', 'timestamp');
 
             INSERT INTO consumption_realtime SELECT timestamp, slave_id, ambient_id, value FROM consumption_realtime_old;
+
+			DROP TABLE consumption_realtime_old;
 
         COMMIT;
         `
