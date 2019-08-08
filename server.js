@@ -16,7 +16,7 @@ let Scheduler     = require('./scheduler');
 
 Scheduler.setSocket(ws)
 Scheduler.prepare()
-Scheduler.setupEnergy()
+// Scheduler.setupEnergy()
 
 let server = express();
 

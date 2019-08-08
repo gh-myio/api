@@ -8,9 +8,9 @@ module.exports = {
         ws = socket
     },
     setupEnergy: () => {
-        console.log('DIRNAME', __dirname)
+        /*console.log('DIRNAME', __dirname)
         // Schedule energy consumption aggregation
-        let consumptionCron = '*/5 * * * *'
+        // let consumptionCron = '5 * * * *'
 
         // /opt/monorepo/consumption/consumption_aggregator.py >> /var/log/consumption.log 2>&1
         scheduler.scheduleJob(consumptionCron, () => {
@@ -27,7 +27,7 @@ module.exports = {
             cons.on('close', (code) => {
               console.log(`Aggregator process exited with code ${code}`);
             });
-        })
+        })*/
     },
     prepare: () => {
         let _ = require('lodash')
