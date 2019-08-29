@@ -15,19 +15,6 @@ WORKDIR /api
 
 COPY --from=builder /api /api
 
-# COPY consumption/requirements.txt .
-
-# RUN apk --no-cache add --update \
-        #    python \
-        #    python-dev \
-        #    py-pip \
-        #    build-base \
-    #     postgresql-dev \
-    #  && rm -rf /var/cache/apk/*
-
-#RUN pip install -r requirements.txt && \
-    #    rm requirements.txt
-
 COPY . .
 
 CMD [ "npm", "start" ]
