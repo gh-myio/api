@@ -1,7 +1,4 @@
-'use strict';
-
-let pg = require('pg')
-let initialMigration = `
+const initialMigration = `
 
 --
 -- PostgreSQL database dump
@@ -913,11 +910,11 @@ CREATE TABLE public.consumption_realtime
 `
 
 module.exports = {
-    up: (queryInterface, Sequelize) => {
-        return queryInterface.sequelize.query(initialMigration)
-    },
+  up: (queryInterface, Sequelize) => {
+    return queryInterface.sequelize.query(initialMigration)
+  },
 
-    down: (queryInterface, Sequelize) => {
-        return queryInterface.dropTable('hubot')
-    }
-};
+  down: (queryInterface, Sequelize) => {
+    return queryInterface.dropTable('hubot')
+  }
+}

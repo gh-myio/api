@@ -1,14 +1,13 @@
-let { spawn } = require('child_process');
-let scheduler = require('node-schedule');
+const scheduler = require('node-schedule')
 let schedules = []
 let ws
 
 module.exports = {
-    setSocket: (socket) => {
-        ws = socket
-    },
-    setupEnergy: () => {
-        /*console.log('DIRNAME', __dirname)
+  setSocket: (socket) => {
+    ws = socket
+  },
+  setupEnergy: () => {
+    /* console.log('DIRNAME', __dirname)
         // Schedule energy consumption aggregation
         // let consumptionCron = '5 * * * *'
 
@@ -27,31 +26,31 @@ module.exports = {
             cons.on('close', (code) => {
               console.log(`Aggregator process exited with code ${code}`);
             });
-        })*/
-    },
-    prepare: () => {
-        let _ = require('lodash')
-        let models = require('./lib/models').Models
+        }) */
+  },
+  prepare: () => {
+    const _ = require('lodash')
+    const models = require('./lib/models').Models
 
-        if (schedules.length > 0) {
-            schedules.forEach((schedule) => {
-                if (!schedule) return
+    if (schedules.length > 0) {
+      schedules.forEach((schedule) => {
+        if (!schedule) return
 
-                schedule.cancel()
-            })
-        }
-
-        models.Schedule.findAll()
-            .then((_schedules) => {
-                console.log(`Scheduling ${_schedules.length} schedules.`)
-
-                schedules = _.map(_schedules, (schedule) => {
-                    console.log(schedule.cron)
-                    return scheduler.scheduleJob(schedule.cron, () => {
-                        console.log('Dispatching action', schedule.action)
-                        ws.send(JSON.stringify(schedule.action))
-                    })
-                })
-            })
+        schedule.cancel()
+      })
     }
+
+    models.Schedule.findAll()
+      .then((_schedules) => {
+        console.log(`Scheduling ${_schedules.length} schedules.`)
+
+        schedules = _.map(_schedules, (schedule) => {
+          console.log(schedule.cron)
+          return scheduler.scheduleJob(schedule.cron, () => {
+            console.log('Dispatching action', schedule.action)
+            ws.send(JSON.stringify(schedule.action))
+          })
+        })
+      })
+  }
 }
