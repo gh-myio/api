@@ -12,6 +12,9 @@
   },
   "author": "André Abadesso",
   "license": "Absolutely Proprietary",
+  "devDependencies": {
+    "standard": "^14.0.0"
+  },
   "dependencies": {
     "async": "^2.6.0",
     "bluebird": "^3.5.1",
