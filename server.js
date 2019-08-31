@@ -6,28 +6,25 @@ const Scheduler = require('./scheduler')
 
 Scheduler.setSocket(ws)
 Scheduler.prepare()
-// Scheduler.setupEnergy()
 
 let server = express()
 
-if (process.env.PRIVATE_KEY) {
+if (process.env.PRIVATE_KEY && process.env.CENTRAL_UUID) {
   try {
-    // let config = JSON.parse(fs.readFileSync(process.env.CONFIG_PATH, 'utf-8'))
-
     global.privKey = process.env.PRIVATE_KEY
+    global.centralUUID = process.env.CENTRAL_UUID
   } catch (e) {
     console.error(e)
     process.exit(1)
   }
 } else {
-  console.error('Fatal: Private key not defined in env.')
+  console.error('Fatal: Private key or UUID not defined in env.')
   process.exit(1)
 }
 server.use(cors())
 server.options('*', cors())
 
 server.use(bodyParser.json())
-// server.use(compression())
 server = require('./lib/routes')(server)
 
 // Error handling middleware
