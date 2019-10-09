@@ -1,4 +1,5 @@
 const models = require('../../lib/models').Models
+const WebSocketHandler = require('../../lib/WebSocketHandler')
 
 module.exports = function (RED) {
   function ActivateScene (config) {
@@ -7,15 +8,11 @@ module.exports = function (RED) {
     const node = this
 
     node.on('input', function (msg) {
-      delete msg._session
-
-      msg.payload = {
+      WebSocketHandler.send(JSON.stringify({
         type: 'scene',
         command: 'activate',
         id: config.selectedScene
-      }
-
-      node.send(msg)
+      }))
     })
   }
 

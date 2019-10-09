@@ -1,0 +1,34 @@
+<script type="text/javascript">
+
+    RED.nodes.registerType('myio-emitter', {
+        category: 'myio',
+        color: '#9371ce',
+        defaults: {},
+        icon: "font-awesome/fa-globe",
+        inputs: 0,
+        outputs: 3,
+        outputLabels: function(index) {
+            switch(index) {
+                case 0: return 'Atualização de Channel';
+                case 1: return 'Atualização de Temperatura';
+                case 2: return 'Atualização de Consumo';
+            }
+        },
+        label: function() {
+            return 'Emitter'
+        },
+        oneditprepare: function () {
+        },
+        oneditsave: function() {
+        }
+    });
+</script>
+
+<script type="text/x-red" data-template-name="myio-emitter">
+    <div class="form-row node-input-slaves-container-row">
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="myio-emitter">
+    <p>No help for you here. Sorry</p>
+</script>
