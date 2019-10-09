@@ -1,0 +1,132 @@
+<script type="text/javascript">
+
+    function generateSelect(options, size) {
+        let select = document.createElement('select');
+        select.style.width = `${size}%`;
+
+        options.forEach(option => {
+            let optionElement = document.createElement('option');
+
+            optionElement.text = option.text
+            optionElement.value = option.value
+            optionElement.selected = option.selected
+            optionElement.style.width = '100%'
+
+            select.add(optionElement)
+        })
+
+        return select
+    }
+
+    RED.nodes.registerType('filter-channel', {
+        category: 'myio',
+        color: '#9371ce',
+        defaults: {
+            channels: { value: [], required: true },
+            deveMudar: { value: false, required: true },
+            outputs: { value: 0 }
+        },
+        icon: "switch.png",
+        inputs: 1,
+        outputs: 0,
+        label: function() {
+            return 'Channel'
+        },
+        oneditprepare: function () {
+            var def = this.slave
+
+            try {
+                const checkBox = document.querySelector('.deve-mudar')
+                checkBox.checked = this.deveMudar
+
+                $("#node-input-channel-container").css('min-height','250px').css('min-width','450px').editableList({
+                    addItem: function(container, i, channel) {
+                        if (!channel) channel = {}
+
+                        const selectChannel = generateSelect([0, 1, 2].map((val) => {
+                            return {
+                                text: `Channel ${val}`,
+                                value: val,
+                                selected: channel.channel === val
+                            }
+                        }), 60)
+
+                        const zeroto100 = Array.apply(null, {length: 101}).map(Function.call, Number);
+
+                        const selectCompare = generateSelect([{
+                            text: '>',
+                            value: '>',
+                            selected: channel.compare === '>'
+                        }, {
+                            text: '<',
+                            value: '<',
+                            selected: channel.compare === '<'
+                        }, {
+                            text: '==',
+                            value: '==',
+                            selected: channel.compare === '=='
+                        }], 15)
+
+                        const selectValue = generateSelect(zeroto100.map(value => {
+                            return {
+                                text: value,
+                                value: value,
+                                selected: channel.value === value
+                            }
+                        }), 25)
+
+                        $(container).append(selectChannel)
+                        $(container).append(selectCompare)
+                        $(container).append(selectValue)
+                    },
+                    removeItem: function(opt) {
+                    },
+                    sortable: true,
+                    removable: true
+                });
+
+                this.channels.forEach(channel => {
+                    $("#node-input-channel-container").editableList('addItem', channel)
+                })
+
+                this.outputs = this.channels.length
+
+            } catch(e) {
+                console.log(e);
+            }
+        },
+        oneditsave: function() {
+            let channels = []
+            let children = $('#node-input-channel-container').children()
+
+            for (let i = 0; i < children.length; i++) {
+                let wrapper = $(children[i]).find('.red-ui-editableList-item-content')[0];
+                let selects = $(wrapper).find('select');
+
+                let channel = parseInt(selects[0].value)
+                let compare = selects[1].value
+                let value = parseInt(selects[2].value)
+
+                channels.push({ channel, compare, value })
+            }
+
+            const checkBox = document.querySelector('.deve-mudar')
+
+            this.channels = channels
+            this.outputs = channels.length
+            this.deveMudar = checkBox.checked
+        }
+    });
+</script>
+
+<script type="text/x-red" data-template-name="filter-channel">
+    <div class="form-row node-input-slaves-container-row">
+        <label for="deve-mudar">Apenas mudança de estado?</label>
+        <input type="checkbox" name="deve-mudar" class="deve-mudar"/>
+        <ol id="node-input-channel-container"></ol>
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="filter-channel">
+    <p>No help for you here. Sorry</p>
+</script>

@@ -1,0 +1,123 @@
+<script type="text/javascript">
+
+  function generateSelect(options, size) {
+    let select = document.createElement('select');
+    select.style.width = `${size}%`;
+
+    options.forEach(option => {
+      let optionElement = document.createElement('option');
+
+      optionElement.text = option.text
+      optionElement.value = option.value
+      optionElement.selected = option.selected
+      optionElement.style.width = '100%'
+
+      select.add(optionElement)
+    })
+
+    return select
+  }
+
+  function generateInput(value) {
+      let input = document.createElement('input');
+      input.setAttribute('type', 'text');
+      input.style.width = '60%'
+
+      if (value) {
+          input.value = value
+      } else {
+          input.value = 0
+      }
+
+      return input
+  }
+
+  RED.nodes.registerType('filter-temperature', {
+    category: 'myio',
+    color: '#9371ce',
+    defaults: {
+      temperatures: {value: [], required: true},
+      outputs: { value: 0 }
+    },
+    icon: "switch.png",
+    inputs: 1,
+    outputs: 0,
+    label: function() {
+      return 'Temperature'
+    },
+    oneditprepare: function () {
+      var def = this.slave
+
+      try {
+        $("#node-input-temperature-container").css('min-height','250px').css('min-width','450px').editableList({
+          addItem: function(container, i, temperature) {
+            if (!temperature) temperature = {}
+
+            const { compare, value } = temperature;
+
+
+            const selectCompare = generateSelect([{
+              text: '>',
+              value: '>',
+              selected: compare === '>'
+            }, {
+              text: '<',
+              value: '<',
+              selected: compare === '<'
+            }, {
+              text: '==',
+              value: '==',
+              selected: compare === '=='
+            }], 30)
+
+            const temperatureValue = generateInput(value)
+
+            $(container).append(selectCompare)
+            $(container).append(temperatureValue)
+          },
+          removeItem: function(opt) {
+          },
+          sortable: true,
+          removable: true
+        });
+
+        this.temperatures.forEach(temperature => {
+          $("#node-input-temperature-container").editableList('addItem', temperature)
+        })
+
+        this.outputs = this.temperatures.length
+
+      } catch(e) {
+        console.log(e);
+      }
+    },
+    oneditsave: function() {
+      let temperatures = []
+      const children = $('#node-input-temperature-container').children()
+
+      for (let i = 0; i < children.length; i++) {
+        const wrapper = $(children[i]).find('.red-ui-editableList-item-content')[0];
+        const select = $(wrapper).find('select')[0];
+        const compare = select.value
+
+        const value = parseInt($(wrapper).find('input')[0].value, 10)
+
+
+        temperatures.push({ compare, value })
+      }
+
+      this.temperatures = temperatures
+      this.outputs = temperatures.length
+    }
+  });
+</script>
+
+<script type="text/x-red" data-template-name="filter-temperature">
+  <div class="form-row node-input-slaves-container-row">
+        <ol id="node-input-temperature-container"></ol>
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="filter-temperature">
+  <p>No help for you here. Sorry</p>
+</script>

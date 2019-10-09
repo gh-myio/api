@@ -1,0 +1,131 @@
+<script type="text/javascript">
+
+  function generateSelect(options, size) {
+    let select = document.createElement('select');
+    select.style.width = `${size}%`;
+
+    options.forEach(option => {
+      let optionElement = document.createElement('option');
+
+      optionElement.text = option.text
+      optionElement.value = option.value
+      optionElement.selected = option.selected
+      optionElement.style.width = '100%'
+
+      select.add(optionElement)
+    })
+
+    return select
+  }
+
+  RED.nodes.registerType('filter-channel_and', {
+    category: 'myio',
+    color: '#9371ce',
+    defaults: {
+      channels: { value: [], required: true }
+    },
+    icon: "switch.png",
+    inputs: 1,
+    outputs: 1,
+    label: function() {
+      return 'Channel (AND)'
+    },
+    oneditprepare: function () {
+      var def = this.slave
+
+      $.getJSON('slaves', (slaves) => {
+        try {
+          $("#node-input-channel-container").css('min-height','250px').css('min-width','450px').editableList({
+            addItem: function(container, i, channel) {
+              if (!channel) channel = {}
+
+              const selectSlave = generateSelect(slaves.map(slave => {
+                return {
+                  text: slave.name,
+                  value: slave.id,
+                  selected: slave.id === channel.slave
+                }
+              }), 40)
+
+              const selectChannel = generateSelect([0, 1, 2].map((val) => {
+                return {
+                  text: `Chan. ${val}`,
+                  value: val,
+                  selected: channel.channel === val
+                }
+              }), 20)
+
+              const zeroto100 = Array.apply(null, {length: 101}).map(Function.call, Number);
+
+              const selectCompare = generateSelect([{
+                text: '>',
+                value: '>',
+                selected: channel.compare === '>'
+              }, {
+                text: '<',
+                value: '<',
+                selected: channel.compare === '<'
+              }, {
+                text: '==',
+                value: '==',
+                selected: channel.compare === '=='
+              }], 15)
+
+              const selectValue = generateSelect(zeroto100.map(value => {
+                return {
+                  text: value,
+                  value: value,
+                  selected: channel.value === value
+                }
+              }), 25)
+
+              $(container).append(selectSlave)
+              $(container).append(selectChannel)
+              $(container).append(selectCompare)
+              $(container).append(selectValue)
+            },
+            removeItem: function(opt) {
+            },
+            sortable: true,
+            removable: true
+          });
+
+          this.channels.forEach(channel => {
+            $("#node-input-channel-container").editableList('addItem', channel)
+          })
+
+        } catch(e) {
+          console.log(e);
+        }
+    })
+  },
+    oneditsave: function() {
+      let channels = []
+      let children = $('#node-input-channel-container').children()
+
+      for (let i = 0; i < children.length; i++) {
+        let wrapper = $(children[i]).find('.red-ui-editableList-item-content')[0];
+        let selects = $(wrapper).find('select');
+
+        let slave = parseInt(selects[0].value)
+        let channel = parseInt(selects[1].value)
+        let compare = selects[2].value
+        let value = parseInt(selects[3].value)
+
+        channels.push({ slave, channel, compare, value })
+      }
+
+      this.channels = channels
+    }
+});
+</script>
+
+<script type="text/x-red" data-template-name="filter-channel_and">
+  <div class="form-row node-input-slaves-container-row">
+        <ol id="node-input-channel-container"></ol>
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="filter-channel_and">
+  <p>No help for you here. Sorry</p>
+</script>

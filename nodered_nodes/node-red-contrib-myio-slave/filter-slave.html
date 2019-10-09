@@ -1,0 +1,109 @@
+<script type="text/javascript">
+
+    var FilterSlave = {
+        category: 'myio',
+        color: '#9371ce',
+        defaults: {
+            slaves: {value: [], required: true},
+            outputs: {value: 0}
+        },
+        icon: "switch.png",
+        inputs: 1,
+        outputs: 0,
+        label: function() {
+            if (this.slaves) {
+                this.outputs = this.slaves.length
+            }
+            return 'Slave'
+        },
+        outputLabels: function(index) {
+            return this.slaves[index]
+        },
+        onpaletteadd: function() {
+        },
+        oneditprepare: function () {
+            var def = this.slave
+            this.outputs = this.slaves.length
+
+            try {
+                const url = location.hostname
+                $.getJSON('slaves', (slaves) => {
+
+                    $("#node-input-slave-container").css('min-height','250px').css('min-width','450px').editableList({
+                        addItem: function(container, i, slaveStr) {
+                            if (slaveStr) {
+                                let select = document.createElement('select');
+                                select.style.width = '100%';
+
+                                slaves.forEach(slave => {
+                                    let option = document.createElement('option');
+
+                                    option.text = `${slave.name}`;
+                                    option.value = `${slave.id}`
+                                    option.selected = `${slave.id}` === `${slaveStr}`;
+                                    option.style.width = '100%';
+                                    select.add(option)
+                                })
+
+                                $(container).append(select)
+                            } else {
+                                let select = document.createElement('select');
+                                select.style.width = '100%';
+
+                                slaves.forEach(slave => {
+                                    let option = document.createElement('option');
+
+                                    option.text = `${slave.name}`
+                                    option.value = `${slave.id}`
+                                    option.selected = `${slave.id}` === `${def}`;
+                                    option.style.width = '100%';
+
+                                    select.add(option)
+                                })
+
+                                $(container).append(select)
+                            }
+                        },
+                        removeItem: function(opt) {
+                        },
+                        sortable: true,
+                        removable: true
+                    });
+
+                    this.slaves.forEach(slave => {
+                        $("#node-input-slave-container").editableList('addItem', slave)
+                    })
+
+                    this.outputs = this.slaves.length
+                })
+
+            } catch(e) {
+            }
+        },
+        oneditsave: function() {
+            let children = $('#node-input-slave-container').children()
+
+
+            let selectedValues = []
+
+            children.each((x, y) => {
+                selectedValues.push(y.children[0].children[0].value)
+            });
+
+            this.slaves = selectedValues
+            this.outputs = this.slaves.length
+        }
+    }
+
+    RED.nodes.registerType('filter-slave', FilterSlave);
+</script>
+
+<script type="text/x-red" data-template-name="filter-slave">
+    <div class="form-row node-input-slaves-container-row">
+        <ol id="node-input-slave-container"></ol>
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="filter-slave">
+    <p>Filtra um ou mais dispositivos em um fluxo.</p>
+</script>

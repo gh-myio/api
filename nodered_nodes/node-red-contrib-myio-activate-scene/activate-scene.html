@@ -1,0 +1,89 @@
+<script type="text/javascript">
+
+    function generateSelect(options, size) {
+        let select = document.createElement('select');
+        select.style.width = `${size}%`;
+
+        options.forEach(option => {
+            let optionElement = document.createElement('option');
+
+            optionElement.text = option.text
+            optionElement.value = option.value
+            optionElement.selected = option.selected
+            optionElement.style.width = '100%'
+
+            select.add(optionElement)
+        })
+
+        return select
+    }
+
+    function generateInput(value) {
+        let input = document.createElement('input');
+        input.setAttribute('type', 'text');
+        input.style.width = '60%'
+
+        if (value) {
+            input.value = value
+        } else {
+            input.value = 0
+        }
+
+        return input
+    }
+
+    RED.nodes.registerType('activate-scene', {
+        category: 'myio',
+        color: '#9371ce',
+        defaults: {
+            selectedScene: {value: undefined, required: true},
+            selectedSceneName: {value: 'Cena', required: false}
+        },
+        icon: "bridge.png",
+        inputs: 1,
+        outputs: 1,
+        label: function() {
+            return this.selectedSceneName
+        },
+        oneditprepare: function () {
+            let select = document.querySelector('#scene-select');
+
+            $.getJSON('scenes', (scenes) => {
+
+                select.innerHTML = ''
+                scenes.forEach(scene => {
+                    let optionElement = document.createElement('option');
+
+                    optionElement.text = scene.name
+                    optionElement.value = `${scene.id}_${scene.name}`
+                    optionElement.selected = scene.id === this.selectedScene
+                    optionElement.style.width = '100%'
+
+                    select.add(optionElement)
+                })
+            })
+        },
+        oneditsave: function() {
+            const scene = document.querySelector('#scene-select')
+            const selectedScene = scene.value.split('_')
+            const selectedSceneId = parseInt(selectedScene[0])
+            const selectedSceneName = scene.value
+
+            this.selectedScene = selectedSceneId
+            this.selectedSceneName = selectedSceneName
+        }
+    });
+</script>
+
+<script type="text/x-red" data-template-name="activate-scene">
+    <div class="form-row node-input-slaves-container-row">
+    <label for="scene-select">Cena</label>
+    <select id="scene-select" name="scene-select" style="width: 100%;">
+        <option value="loading">Loading...</option>
+    </select>
+</div>
+</script>
+
+<script type="text/x-red" data-help-name="activate-scene">
+    <p>No help for you here. Sorry</p>
+</script>
