@@ -4,7 +4,7 @@ WORKDIR /api
 
 COPY package.json package-lock.json ./
 
-ENV TZ=Etc/UTC
+ENV TZ=America/Sao_Paulo
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && \
     echo $TZ > /etc/timezone && \
     npm install --production --verbose

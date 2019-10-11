@@ -65,4 +65,5 @@ app.use(settings.httpAdminRoot, RED.httpAdmin)
 app.use(settings.httpNodeRoot, RED.httpNode)
 
 server.listen(8080)
+
 RED.start()
