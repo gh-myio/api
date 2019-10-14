@@ -35,6 +35,7 @@
 
             $.getJSON('slaves', (slaves) => {
                 try {
+                    slaves = slaves.filter(slave => slave.type !== 'infrared')
                     $("#node-input-channel-container").css('min-height','250px').css('min-width','450px').editableList({
                         addItem: function(container, i, channel) {
                             if (!channel) channel = {}
@@ -47,13 +48,44 @@
                                 }
                             }), 40)
 
-                            const selectChannel = generateSelect([0, 1, 2].map((val) => {
-                                return {
-                                    text: `Chan. ${val}`,
-                                    value: val,
-                                    selected: channel.channel === val
+                            let selectChannel
+                            if (!channel.slave) {
+                                selectChannel = generateSelect(slaves[0].channels_list.map((channel) => {
+                                    return {
+                                        text: channel.name,
+                                        value: channel.channel,
+                                        selected: false
+                                    }
+                                }), 20)
+                            } else {
+                                const selectedSlave = slaves.find(slave => slave.id === channel.slave)
+                                selectChannel = generateSelect(selectedSlave.channels_list.map((ch) => {
+                                    return {
+                                        text: ch.name,
+                                        value: ch.channel,
+                                        selected: ch.channel === channel.channel
+                                    }
+                                }), 20)
+                            }
+
+                            selectSlave.onchange = () => {
+                                while (selectChannel.options.length > 0) {
+                                    selectChannel.remove(0)
                                 }
-                            }), 20)
+
+                                const selectedSlave = slaves[selectSlave.selectedIndex]
+
+                                selectedSlave.channels_list.forEach(channel => {
+                                    let optionElement = document.createElement('option');
+
+                                    optionElement.text = channel.name
+                                    optionElement.value = channel.channel
+                                    optionElement.selected = false
+                                    optionElement.style.width = '100%'
+
+                                    selectChannel.add(optionElement)
+                                })
+                            }
 
                             const zeroto100 = Array.apply(null, {length: 101}).map(Function.call, Number);
 

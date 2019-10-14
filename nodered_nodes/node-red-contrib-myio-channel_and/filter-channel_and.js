@@ -12,30 +12,30 @@ module.exports = function (RED) {
 
       const matchingRules = []
 
-      msg.payload.channels.forEach((msgChannel) => {
-        const key = `${msg.payload.message_type}_${msg.payload.id}_${msgChannel.id}`
-        /* Check for channel state change */
-        const channelState = nodeContext.get(key)
+      config.channels.forEach((configChannel) => {
+        const key = `${msg.payload.message_type}_${configChannel.slave}_${configChannel.channel}`
+        const oldChannelState = nodeContext.get(key)
+        let newChannelState
 
-        if (channelState === msgChannel.value && config.deveMudar) return
+        if (configChannel.slave !== msg.payload.id) {
+          newChannelState = oldChannelState
+        } else {
+          /* Check for channel state change */
+          newChannelState = msg.payload.channels.find(ch => ch.id === configChannel.channel).value
+        }
 
-        const comparators = config.channels.filter(channel => {
-          return channel.channel === msgChannel.id
-        })
+        let matched = false
+        switch (configChannel.compare) {
+          case '>': matched = newChannelState > configChannel.value; break;
+          case '<': matched = newChannelState < configChannel.value; break;
+          case '==': matched = newChannelState === configChannel.value; break;
+        }
 
-        const matched = comparators.filter((comparator) => {
-          switch (comparator.compare) {
-            case '>': return msgChannel.value > comparator.value
-            case '<': return msgChannel.value < comparator.value
-            case '==': return msgChannel.value === comparator.value
-          }
-        })
+        if (matched) {
+          matchingRules.push(configChannel);
+        }
 
-        matched.forEach(match => {
-          matchingRules.push(match)
-        })
-
-        nodeContext.set(key, msgChannel.value)
+        nodeContext.set(key, newChannelState);
       })
 
       const alarmed = nodeContext.get('alarmed')
