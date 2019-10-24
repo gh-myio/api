@@ -1,0 +1,148 @@
+<script type="text/javascript">
+
+    function generateSelect(options, size) {
+        let select = document.createElement('select');
+        select.style.width = `${size}%`;
+
+        options.forEach(option => {
+            let optionElement = document.createElement('option');
+
+            optionElement.text = option.text
+            optionElement.value = option.value
+            optionElement.selected = option.selected
+            optionElement.style.width = '100%'
+
+            select.add(optionElement)
+        })
+
+        return select
+    }
+
+    function generateInput(value) {
+        let input = document.createElement('input');
+        input.setAttribute('type', 'time');
+        input.style.width = '60%'
+
+        if (value) {
+            input.value = value
+        }
+
+        return input
+    }
+
+    var TimeRange = {
+        category: 'myio',
+        color: '#9371ce',
+        defaults: {
+            timeRanges: {value: [], required: true},
+            days: {value: [], required: true}
+        },
+        icon: "font-awesome/fa-filter",
+        inputs: 1,
+        outputs: 1,
+        label: function() {
+            return 'Filtro de Horário'
+        },
+        onpaletteadd: function() {
+        },
+        oneditprepare: function () {
+            try {
+                const checkboxes = $('.checkbox')
+                const arCheckboxes = Array.prototype.slice.call(checkboxes)
+                arCheckboxes.forEach(checkbox => {
+                    if (this.days.indexOf(checkbox.value) > -1) {
+                        checkbox.checked = true
+                    } else {
+                        checkbox.checked = false
+                    }
+                })
+
+                $("#node-input-slave-container").css('min-height','250px').css('min-width','450px').editableList({
+                    addItem: function(container, i, selectedTime) {
+                        if (!selectedTime) {
+                            selectedTime = {}
+                        }
+
+                        const selectCompare = generateSelect([{
+                            text: '>',
+                            value: '>',
+                            selected: selectedTime.compare === '>'
+                        }, {
+                            text: '<',
+                            value: '<',
+                            selected: selectedTime.compare === '<'
+                        }, {
+                            text: '==',
+                            value: '==',
+                            selected: selectedTime.compare === '=='
+                        }], 40)
+
+                        const time = generateInput(selectedTime.value)
+
+                        $(container).append(selectCompare)
+                        $(container).append(time)
+                    },
+                    removeItem: function(opt) {
+                    },
+                    sortable: true,
+                    removable: true
+                });
+
+                this.timeRanges.forEach(timeRange => {
+                    $("#node-input-slave-container").editableList('addItem', timeRange)
+                })
+
+            } catch(e) {
+            }
+        },
+        oneditsave: function() {
+            const days = Array.prototype.slice.call($('.checkbox'))
+            const checkedDays = days.filter(day => day.checked).map(day => day.value)
+            const children = $('#node-input-slave-container').children()
+
+            let timeRanges = []
+
+            for (let i = 0; i < children.length; i++) {
+                const wrapper = $(children[i]).find('.red-ui-editableList-item-content')[0];
+                const select = $(wrapper).find('select')[0];
+                const compare = select.value
+                const value = $(wrapper).find('input')[0].value
+
+                timeRanges.push({ compare, value })
+            }
+
+            this.timeRanges = timeRanges
+            this.days = checkedDays;
+        }
+    }
+
+    RED.nodes.registerType('time-range', TimeRange);
+</script>
+
+<script type="text/x-red" data-template-name="time-range">
+    <div id="inject-time-time-days" class="inject-time-days">
+        <div style="display:inline-block; vertical-align:top; margin-right:5px;" data-i18n="inject.on"></div>
+        <div style="display:inline-block;">
+            <div style="display: inline-block;">
+                <label><input class="checkbox" type='checkbox' checked value='1'/> <span>Seg</span></label>
+                <label><input class="checkbox" type='checkbox' checked value='2'/> <span>Ter</span></label>
+                <label><input class="checkbox" type='checkbox' checked value='3'/> <span>Qua</span></label>
+            </div>
+            <div style="display: inline-block;">
+                <label><input class="checkbox" type='checkbox' checked value='4'/> <span>Qui</span></label>
+                <label><input class="checkbox" type='checkbox' checked value='5'/> <span>Sex</span></label>
+                <label><input class="checkbox" type='checkbox' checked value='6'/> <span>Sáb</span></label>
+            </div>
+            <div style="display: inline-block;">
+                <label><input class="checkbox" type='checkbox' checked value='0'/> <span>Dom</span></label>
+            </div>
+        </div>
+    </div>
+    <div class="form-row node-input-slaves-container-row">
+        <ol id="node-input-slave-container"></ol>
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="time-range">
+    <p>Filtra um ou mais dispositivos em um fluxo.</p>
+</script>

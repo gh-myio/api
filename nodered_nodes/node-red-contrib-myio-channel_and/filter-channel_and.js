@@ -1,5 +1,37 @@
 const models = require('../../lib/models').Models
 
+function match(channels, msg) {
+  let matchingRules = []
+
+  channels.forEach((configChannel) => {
+    const key = `${msg.payload.message_type}_${configChannel.slave}_${configChannel.channel}`
+    const oldChannelState = nodeContext.get(key)
+    let newChannelState
+
+    if (configChannel.slave !== msg.payload.id) {
+      newChannelState = oldChannelState
+    } else {
+      /* Check for channel state change */
+      newChannelState = msg.payload.channels.find(ch => ch.id === configChannel.channel).value
+    }
+
+    let matched = false
+    switch (configChannel.compare) {
+      case '>': matched = newChannelState > configChannel.value; break;
+      case '<': matched = newChannelState < configChannel.value; break;
+      case '==': matched = newChannelState === configChannel.value; break;
+    }
+
+    if (matched) {
+      matchingRules.push(configChannel);
+    }
+
+    nodeContext.set(key, newChannelState);
+  })
+
+  return matchingRules
+}
+
 module.exports = function (RED) {
   function FilterChannelAnd (config) {
     RED.nodes.createNode(this, config)
@@ -10,38 +42,17 @@ module.exports = function (RED) {
     node.on('input', function (msg) {
       if (!config.channels) return
 
-      const matchingRules = []
-
-      config.channels.forEach((configChannel) => {
-        const key = `${msg.payload.message_type}_${configChannel.slave}_${configChannel.channel}`
-        const oldChannelState = nodeContext.get(key)
-        let newChannelState
-
-        if (configChannel.slave !== msg.payload.id) {
-          newChannelState = oldChannelState
-        } else {
-          /* Check for channel state change */
-          newChannelState = msg.payload.channels.find(ch => ch.id === configChannel.channel).value
-        }
-
-        let matched = false
-        switch (configChannel.compare) {
-          case '>': matched = newChannelState > configChannel.value; break;
-          case '<': matched = newChannelState < configChannel.value; break;
-          case '==': matched = newChannelState === configChannel.value; break;
-        }
-
-        if (matched) {
-          matchingRules.push(configChannel);
-        }
-
-        nodeContext.set(key, newChannelState);
-      })
+      const matchingChannels = match(config.channels, msg)
+      const matchingOR = match(config.channelsOr, msg)
 
       const alarmed = nodeContext.get('alarmed')
-      const filled = `${matchingRules.length}/${config.channels.length}`
+      const filled = `${matchingChannels.length}/${config.channels.length}`
 
-      if (matchingRules.length === config.channels.length) {
+      const passing = (matchingRules.length === config.channels.length) && (
+        config.channelsOr === 0 || matchingOR.length > 0
+      )
+
+      if (passing) {
         this.status({ fill: 'green', shape: 'dot', text: filled })
 
         if (alarmed) return

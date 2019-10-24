@@ -1,0 +1,16 @@
+{
+  "name": "red-contrib-myio-time-range",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "Absolutelly Proprietary",
+  "node-red": {
+      "nodes": {
+          "time-range": "time-range.js"
+      }
+  }
+}
