@@ -26,6 +26,8 @@
     "lodash": "^4.17.14",
     "moment": "^2.19.3",
     "node-red": "^1.0.1",
+    "node-red-dashboard": "^2.17.1",
+    "node-red-contrib-telegrambot": "~6.0.0",
     "node-schedule": "^1.3.0",
     "npm": "^6.10.1",
     "onesignal-node": "^1.0.2",

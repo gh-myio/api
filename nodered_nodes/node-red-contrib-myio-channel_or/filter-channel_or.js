@@ -33,7 +33,7 @@ function match(nodeContext, channels, msg) {
 }
 
 module.exports = function (RED) {
-  function FilterChannelAnd (config) {
+  function FilterChannelOr (config) {
     RED.nodes.createNode(this, config)
 
     const node = this
@@ -46,10 +46,11 @@ module.exports = function (RED) {
       const matchingOR = match(nodeContext, config.channelsOr, msg)
 
       const alarmed = nodeContext.get('alarmed')
-      const filled = `${matchingChannels.length}/${config.channels.length} - ${matchingOR.length}`
+      const filled = `${matchingChannels.length} - ${matchingOR.length}`
 
-      const passing = (matchingChannels.length === config.channels.length) && (
-        config.channelsOr.length === 0 || matchingOR.length > 0
+      const passing = (
+        (matchingChannels.length > 0) &&
+        (config.channelsOr.length === 0 || matchingOR.length > 0)
       )
 
       if (passing) {
@@ -68,7 +69,7 @@ module.exports = function (RED) {
     })
   }
 
-  RED.nodes.registerType('filter-channel_and', FilterChannelAnd)
+  RED.nodes.registerType('filter-channel_or', FilterChannelOr)
 
   RED.httpAdmin.get('/slaves', async (req, res) => {
     const slaves = await models.Slave.findAll({
