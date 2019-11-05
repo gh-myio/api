@@ -1,0 +1,16 @@
+{
+  "name": "red-contrib-slave-info",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "Absolutelly Proprietary",
+  "node-red": {
+      "nodes": {
+          "slave-info": "slave-info.js"
+      }
+  }
+}

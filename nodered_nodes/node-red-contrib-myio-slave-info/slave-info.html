@@ -1,0 +1,27 @@
+<script type="text/javascript">
+
+    var FilterSlave = {
+        category: 'myio',
+        color: '#9371ce',
+        defaults: {},
+        icon: "font-awesome/fa-filter",
+        inputs: 1,
+        outputs: 1,
+        label: function() {
+            return 'Slave Info'
+        },
+        onpaletteadd: function() {
+        },
+        oneditprepare: function () {},
+        oneditsave: function() {}
+    }
+
+    RED.nodes.registerType('slave-info', FilterSlave);
+</script>
+
+<script type="text/x-red" data-template-name="slave-info">
+</script>
+
+<script type="text/x-red" data-help-name="slave-info">
+    <p>Mostra informações sobre um slave.</p>
+</script>
