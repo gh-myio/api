@@ -6,7 +6,6 @@ module.exports = function (RED) {
     RED.nodes.createNode(this, config)
 
     const node = this
-    const nodeContext = node.context()
 
     node.on('input', function (msg) {
       if (!msg.payload) return
@@ -63,7 +62,7 @@ module.exports = function (RED) {
                 addr_low: message.address[1],
                 addr_high: message.address[0],
                 type: message.slave_type,
-                name: `${message.slave_type} — ${message.address[0]}`,
+                name: `${message.slave_type}—${message.address[0]}`,
                 channels: message.channels,
                 code: code.join(''),
                 version: '2.0.0'

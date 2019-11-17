@@ -29,7 +29,7 @@ async function newUser () {
     message: 'Enter the user password: '
   }])
 
-  const user = await models.User.create({
+  await models.User.create({
     name: answers.name,
     email: answers.email,
     password: answers.password

@@ -6,7 +6,6 @@ module.exports = function (RED) {
     RED.nodes.createNode(this, config)
 
     const node = this
-    const nodeContext = node.context()
 
     node.on('input', function (msg) {
       if (!config.channels) return
