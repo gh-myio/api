@@ -15,11 +15,11 @@ module.exports = function (RED) {
 
       config.channels.forEach((channel) => {
         const payload = {
-          'type': 'slave',
-          'id': channel.slave,
-          'command': 'light_control',
-          'channel': channel.channel,
-          'value': channel.value
+          type: 'slave',
+          id: channel.slave,
+          command: 'light_control',
+          channel: channel.channel,
+          value: channel.value
         }
 
         setTimeout(() => {

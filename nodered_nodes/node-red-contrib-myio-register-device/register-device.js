@@ -18,10 +18,10 @@ module.exports = function (RED) {
 
       // WebSocketHandler.once('')
       const payload = {
-        'type': 'admin',
-        'command': 'add_slave',
-        'factory_address': code
-      };
+        type: 'admin',
+        command: 'add_slave',
+        factory_address: code
+      }
 
       WebSocketHandler.send(JSON.stringify(payload))
 
@@ -32,22 +32,22 @@ module.exports = function (RED) {
 
           switch (code[3]) {
             case 12:
-              slaveType = 'outlet';
-              break;
+              slaveType = 'outlet'
+              break
             case 14:
-              slaveType = 'infrared';
-              break;
+              slaveType = 'infrared'
+              break
             case 15:
-              slaveType = 'three_phase_sensor';
-              break;
+              slaveType = 'three_phase_sensor'
+              break
           }
 
           const buttonlessRegisterPayload = {
-            'type': 'admin',
-            'command': 'buttonless_register',
-            'slave_type': slaveType,
-            'idl': message.address[1],
-            'idh': message.address[0]
+            type: 'admin',
+            command: 'buttonless_register',
+            slave_type: slaveType,
+            idl: message.address[1],
+            idh: message.address[0]
           }
 
           setTimeout(() => {
@@ -81,7 +81,6 @@ module.exports = function (RED) {
                   })
                 }
               }
-
 
               WebSocketHandler.send(JSON.stringify({
                 type: 'admin',

@@ -1,7 +1,7 @@
 const models = require('../../lib/models').Models
 
-function match(nodeContext, channels, msg) {
-  let matchingRules = []
+function match (nodeContext, channels, msg) {
+  const matchingRules = []
 
   channels.forEach((configChannel) => {
     const key = `${msg.payload.message_type}_${configChannel.slave}_${configChannel.channel}`
@@ -17,16 +17,16 @@ function match(nodeContext, channels, msg) {
 
     let matched = false
     switch (configChannel.compare) {
-      case '>': matched = newChannelState > configChannel.value; break;
-      case '<': matched = newChannelState < configChannel.value; break;
-      case '==': matched = newChannelState === configChannel.value; break;
+      case '>': matched = newChannelState > configChannel.value; break
+      case '<': matched = newChannelState < configChannel.value; break
+      case '==': matched = newChannelState === configChannel.value; break
     }
 
     if (matched) {
-      matchingRules.push(configChannel);
+      matchingRules.push(configChannel)
     }
 
-    nodeContext.set(key, newChannelState);
+    nodeContext.set(key, newChannelState)
   })
 
   return matchingRules

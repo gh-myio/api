@@ -26,4 +26,4 @@ module.exports = {
       queryInterface.removeColumn('users', 'updatedAt')
     ])
   }
-};
+}
