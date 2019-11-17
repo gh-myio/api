@@ -1,0 +1,146 @@
+<html>
+    <head>
+        <style>
+body {
+    padding: 20px;
+}
+            form {
+                margin:0 auto;
+                width:300px
+            }
+            input {
+                margin-bottom:3px;
+                padding:10px;
+                width: 100%;
+                border:1px solid #CCC
+            }
+            button {
+                padding:10px
+            }
+            label {
+                cursor:pointer
+            }
+            #form-switch {
+                display:none
+            }
+            #register-form {
+                display:none
+            }
+            #form-switch:checked~#register-form {
+                display:block
+            }
+            #form-switch:checked~#login-form {
+                display:none
+            }
+        </style>
+    </head>
+    <body>
+
+        <center>
+            <svg width="153px" height="46px" viewBox="0 0 453 156" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                <!-- Generator: Sketch 51.2 (57519) - http://www.bohemiancoding.com/sketch -->
+                <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                <g id="myio_color-copy">
+                <g id="myio">
+                <path d="M452.286,57.0904996 C452.286,87.5454996 427.598,112.2335 397.143,112.2335 C366.688,112.2335 342,87.5454996 342,57.0904996 C342,26.6354996 366.688,1.94749964 397.143,1.94749964 C427.598,1.94749964 452.286,26.6354996 452.286,57.0904996 Z M425.3558,57.0904996 C425.3558,41.5084996 412.7248,28.8774996 397.1428,28.8774996 C381.5618,28.8774996 368.9298,41.5084996 368.9298,57.0904996 C368.9298,72.6724996 381.5618,85.3034996 397.1428,85.3034996 C412.7248,85.3034996 425.3558,72.6724996 425.3558,57.0904996 Z" id="Combined-Shape" fill="#0FC482"></path>
+                <path d="M178.1089,20.7202 C177.2879,18.4612 176.6719,16.2022 176.6719,13.1232 C176.6719,5.7322 184.4739,0.3952 190.6319,0.3952 C197.8179,0.3952 202.9509,4.2942 205.4149,10.8642 L225.7409,66.5032 L247.5019,10.8642 C249.9659,4.2942 255.0979,0.3952 262.2839,0.3952 C268.4429,0.3952 276.2449,5.7322 276.2449,13.1232 C276.2449,16.2022 275.8349,18.4612 274.8079,20.7202 L225.3299,143.9032 C222.8649,150.0622 218.3499,155.6052 211.3689,155.6052 C201.3079,155.6052 195.9699,149.2412 195.9699,142.8762 C195.9699,140.0032 196.7919,136.9232 197.8179,134.2522 L210.7529,102.2252 L178.1089,20.7202 Z" id="Fill-68" fill="#673AB6"></path>
+                <path d="M307.791228,1 C299.621228,1 292.402228,8.218 292.402228,16.008 C292.402228,16.312 292.431228,16.612 292.450228,16.914 L292.402228,96.423 C292.949228,104.404 299.919228,111.287 307.791228,111.287 C316.034228,111.287 322.669228,104.569 323.134228,96.423 L323.179228,16.914 C323.151228,16.612 323.179228,16.313 323.179228,16.008 C323.179228,8.028 315.959228,1 307.791228,1 Z" id="Fill-70" fill="#0FC482" transform="translate(307.790728, 56.143500) rotate(-360.000000) translate(-307.790728, -56.143500) "></path>
+                <path d="M323.179228,20.008 C323.179228,28.558 316.339228,35.778 307.791228,35.778 C299.621228,35.778 292.402228,28.368 292.402228,20.008 C292.402228,12.218 299.621228,5 307.791228,5 C315.959228,5 323.179228,12.028 323.179228,20.008" id="Fill-72" fill="#0F935A" transform="translate(307.790728, 20.389000) rotate(-360.000000) translate(-307.790728, -20.389000) "></path>
+                <path d="M323.179228,17.008 C323.179228,25.558 316.339228,32.778 307.791228,32.778 C299.621228,32.778 292.402228,25.368 292.402228,17.008 C292.402228,9.218 299.621228,2 307.791228,2 C315.959228,2 323.179228,9.028 323.179228,17.008" id="Fill-74" fill="#0FC482" transform="translate(307.790728, 17.389000) rotate(-360.000000) translate(-307.790728, -17.389000) "></path>
+                <path d="M160.4717,52.7446 C160.4557,49.1576 160.3597,44.4326 159.7427,39.6916 C158.1887,27.7396 153.7667,18.7476 146.2227,12.2036 C133.8107,1.4346 118.4277,-1.4534 100.5017,3.6196 C92.4187,5.9076 85.7427,10.5566 80.5767,17.4786 C72.6267,7.0086 61.1547,1.5876 46.3807,1.3446 C24.7287,1.0016 8.9197,12.1876 3.0747,32.0746 C2.3027,34.7016 1.8337,37.3216 1.3807,39.8556 C1.1857,40.9466 0.9907,42.0376 0.7707,43.1216 L0.6727,43.6066 L0.6727,99.6486 C0.6727,106.8626 6.5417,112.7316 13.7567,112.7316 C17.2517,112.7316 20.5367,111.3716 23.0087,108.9026 C25.4807,106.4316 26.8417,103.1456 26.8407,99.6496 C26.8367,87.5586 26.8347,63.9686 26.8647,51.4216 C26.8697,49.1066 27.0007,46.7446 27.2517,44.4026 C28.2637,34.9626 35.6937,27.3486 44.9177,26.2986 C54.6987,25.1746 63.1307,30.2226 65.8867,38.8386 C67.0297,42.4156 67.6417,46.6436 67.7057,51.4036 C67.8727,63.8316 67.8487,86.8986 67.8207,99.5416 C67.8127,103.0296 69.1647,106.3086 71.6267,108.7776 C74.0917,111.2476 77.3717,112.6076 80.8777,112.6076 C84.3617,112.6076 87.6357,111.2536 90.0987,108.7936 C92.5637,106.3306 93.9207,103.0556 93.9187,99.5706 C93.9157,89.7196 93.9137,72.2726 93.9297,63.0656 C93.9317,61.7186 93.9277,60.3696 93.9227,59.0216 C93.9077,54.7296 93.8917,50.2916 94.1257,46.0126 C94.7457,34.6606 101.0717,27.6666 111.9367,26.3196 C120.9297,25.2026 128.6987,29.1796 131.7227,36.4486 C133.2177,40.0426 134.0737,43.8546 134.1337,47.1836 C134.3737,60.6136 134.4037,85.7416 134.3997,99.5236 C134.3987,103.0106 135.7557,106.2886 138.2207,108.7546 C140.6857,111.2206 143.9637,112.5776 147.4707,112.5776 C154.6547,112.5776 160.5037,106.7366 160.5087,99.5566 C160.5157,89.6806 160.5267,65.3486 160.4717,52.7446" id="Fill-80" fill="#673AB6"></path>
+                </g>
+                </g>
+                </g>
+            </svg>
+        </center>
+
+        <div style="margin-top: 32px;">
+            <input type='checkbox' id='form-switch'>
+            <form id='login-form'>
+                <input name="email" type="text" placeholder="Email" required>
+                <input name="password" type="password" placeholder="Senha" required>
+                <button type='submit'>Login</button>
+            </form>
+        </div>
+
+        <script>
+            const element = document.querySelector('form')
+
+            element.addEventListener('submit', async (event) => {
+                event.preventDefault()
+
+                const formData = new FormData(document.getElementById('login-form'))
+                const body = {}
+
+                formData.forEach((value, key) => {
+                    body[key] = value
+                })
+
+                const response = await fetch('/acl/auth', {
+                    method: 'POST',
+                    body: JSON.stringify(body),
+                    credentials: 'include',
+                    headers: {
+                        'Accept': 'application/json, text/plain, */*',
+                        'Content-Type': 'application/json'
+                    }
+                })
+
+                if (response.status === 200) {
+                    console.log(getAllUrlParams())
+                    const redirectTo = getAllUrlParams().redirectto
+
+                    location.href = redirectTo
+                }
+            })
+
+            function login(e) {
+                e.preventDefault()
+
+                console.log('auth: ', auth)
+
+                return false
+            }
+
+            function getAllUrlParams(url) {
+              var queryString = url ? url.split('?')[1] : window.location.search.slice(1);
+              var obj = {};
+
+              if (queryString) {
+                queryString = queryString.split('#')[0];
+                var arr = queryString.split('&');
+
+                for (var i = 0; i < arr.length; i++) {
+                  var a = arr[i].split('=');
+                  var paramName = a[0];
+                  var paramValue = typeof (a[1]) === 'undefined' ? true : a[1];
+
+                  paramName = paramName.toLowerCase();
+                  if (typeof paramValue === 'string') paramValue = paramValue.toLowerCase();
+                  if (paramName.match(/\[(\d+)?\]$/)) {
+                    var key = paramName.replace(/\[(\d+)?\]/, '');
+                    if (!obj[key]) obj[key] = [];
+                    if (paramName.match(/\[\d+\]$/)) {
+                      var index = /\[(\d+)\]/.exec(paramName)[1];
+                      obj[key][index] = paramValue;
+                    } else {
+                      obj[key].push(paramValue);
+                    }
+                  } else {
+                    if (!obj[paramName]) {
+                      obj[paramName] = paramValue;
+                    } else if (obj[paramName] && typeof obj[paramName] === 'string'){
+                      obj[paramName] = [obj[paramName]];
+                      obj[paramName].push(paramValue);
+                    } else {
+                      obj[paramName].push(paramValue);
+                    }
+                  }
+                }
+              }
+
+  return obj;
+}
+        </script>
+    </body>
+</html>
