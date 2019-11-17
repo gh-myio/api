@@ -1,7 +1,7 @@
 const models = require('../../lib/models').Models
 
 module.exports = function (RED) {
-  function SlaveInfo (config) {
+  async function SlaveInfo (config) {
     RED.nodes.createNode(this, config)
 
     const slaves = await models.Slave.findAll({

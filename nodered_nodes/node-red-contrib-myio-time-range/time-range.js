@@ -1,5 +1,3 @@
-const models = require('../../lib/models').Models
-
 module.exports = function (RED) {
   function FilterSlave (config) {
     RED.nodes.createNode(this, config)
@@ -14,11 +12,11 @@ module.exports = function (RED) {
       const today = new Date()
       const nowHour = today.getHours()
       const nowMinute = today.getMinutes()
-      const now = new Date(1970, 01, 01, nowHour, nowMinute, 00);
+      const now = new Date(1970, 1, 1, nowHour, nowMinute, 0)
 
       const matchingRules = comparators.filter((comparator) => {
-        let [hour, minute] = comparator.value.split(':')
-        let filterDate = new Date(1970, 01, 01, hour, minute, 00);
+        const [hour, minute] = comparator.value.split(':')
+        const filterDate = new Date(1970, 1, 1, hour, minute, 0)
 
         if (comparator.compare === '==') {
           return now.getTime() === filterDate.getTime()
@@ -34,7 +32,6 @@ module.exports = function (RED) {
 
         node.send(msg)
       }
-
     })
   }
 
