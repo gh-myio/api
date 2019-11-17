@@ -1,5 +1,8 @@
 const express = require('express')
 const bodyParser = require('body-parser')
+const cookieParser = require('cookie-parser')
+const session = require('express-session')
+
 const cors = require('cors')
 const ws = require('./lib/WebSocketHandler')
 const Scheduler = require('./scheduler')
@@ -11,6 +14,15 @@ Scheduler.setSocket(ws)
 Scheduler.prepare()
 
 let app = express()
+app.use(session({
+  key: 'users_sid',
+  secret: process.env.PRIVATE_KEY,
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    expires: 600000
+  }
+}))
 
 if (process.env.PRIVATE_KEY && process.env.CENTRAL_UUID) {
   try {
@@ -28,6 +40,7 @@ if (process.env.PRIVATE_KEY && process.env.CENTRAL_UUID) {
 app.use(cors())
 app.options('*', cors())
 
+app.use(cookieParser())
 app.use(bodyParser.json())
 app = require('./lib/routes')(app)
 
@@ -61,8 +74,17 @@ const server = http.createServer(app)
 
 RED.init(server, settings)
 
-app.use(settings.httpAdminRoot, RED.httpAdmin)
-app.use(settings.httpNodeRoot, RED.httpNode)
+const cookieMiddleware = (req, res, next) => {
+  if (req.session.user && req.cookies.users_sid) {
+    next()
+  } else {
+    res.redirect('/acl/login?redirectTo=/red')
+  }
+}
+
+app.use(settings.httpAdminRoot, cookieMiddleware, RED.httpAdmin)
+
+app.use(settings.httpNodeRoot, cookieMiddleware, RED.httpNode)
 
 server.listen(8080)
 
