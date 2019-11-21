@@ -9,6 +9,7 @@ const Scheduler = require('./scheduler')
 const RED = require('node-red')
 const http = require('http')
 const path = require('path')
+const models = require('./lib/models').Models
 
 Scheduler.setSocket(ws)
 Scheduler.prepare()
@@ -63,30 +64,36 @@ app.use((err, req, res, next) => {
   })
 })
 
-const settings = {
-  httpAdminRoot: '/red',
-  httpNodeRoot: '/api',
-  userDir: path.join(__dirname, '/nodered_data/'),
-  nodesDir: path.join(__dirname, '/nodered_nodes/'),
-  functionGlobalContext: {}
-}
-
 const server = http.createServer(app)
-
-RED.init(server, settings)
-
-/* const cookieMiddleware = (req, res, next) => {
-  if (req.session.user && req.cookies.users_sid) {
-    next()
-  } else {
-    res.redirect('/acl/login?redirectTo=/red')
-  }
-} */
-
-app.use(settings.httpAdminRoot, RED.httpAdmin)
-
-app.use(settings.httpNodeRoot, RED.httpNode)
 
 server.listen(8080)
 
-RED.start()
+models.User.scope('login').findAll()
+  .then((users) => {
+    const _users = users.map((user) => {
+      return {
+        username: user.email,
+        password: user.password,
+        permissions: '*'
+      }
+    })
+    const settings = {
+      httpAdminRoot: '/red',
+      httpNodeRoot: '/api',
+      userDir: path.join(__dirname, '/nodered_data/'),
+      nodesDir: path.join(__dirname, '/nodered_nodes/'),
+      functionGlobalContext: {},
+      adminAuth: {
+        type: "credentials",
+        users: _users
+      }
+    }
+
+    RED.init(server, settings)
+
+    app.use(settings.httpAdminRoot, RED.httpAdmin)
+    app.use(settings.httpNodeRoot, RED.httpNode)
+
+    RED.start()
+  })
+
