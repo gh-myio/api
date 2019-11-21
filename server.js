@@ -84,7 +84,7 @@ models.User.scope('login').findAll()
       nodesDir: path.join(__dirname, '/nodered_nodes/'),
       functionGlobalContext: {},
       adminAuth: {
-        type: "credentials",
+        type: 'credentials',
         users: _users
       }
     }
@@ -96,4 +96,3 @@ models.User.scope('login').findAll()
 
     RED.start()
   })
-
