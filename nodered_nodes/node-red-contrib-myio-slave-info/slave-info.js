@@ -1,7 +1,6 @@
 const models = require('../../lib/models').Models
 
 module.exports = function (RED) {
-
   function SlaveInfo (config) {
     RED.nodes.createNode(this, config)
 
@@ -12,7 +11,9 @@ module.exports = function (RED) {
         model: models.Channels,
         as: 'channels_list'
       }]
-    }).then(_slaves => slaves = _slaves)
+    }).then((_slaves) => {
+      slaves = _slaves
+    })
 
     const node = this
 

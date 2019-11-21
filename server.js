@@ -41,7 +41,8 @@ app.use(cors())
 app.options('*', cors())
 
 app.use(cookieParser())
-app.use(bodyParser.json())
+app.use(bodyParser.json({ limit: '50mb' }))
+// app.use(bodyParser.json())
 app = require('./lib/routes')(app)
 
 // Error handling middleware
@@ -74,17 +75,17 @@ const server = http.createServer(app)
 
 RED.init(server, settings)
 
-const cookieMiddleware = (req, res, next) => {
+/* const cookieMiddleware = (req, res, next) => {
   if (req.session.user && req.cookies.users_sid) {
     next()
   } else {
     res.redirect('/acl/login?redirectTo=/red')
   }
-}
+} */
 
-app.use(settings.httpAdminRoot, cookieMiddleware, RED.httpAdmin)
+app.use(settings.httpAdminRoot, RED.httpAdmin)
 
-app.use(settings.httpNodeRoot, cookieMiddleware, RED.httpNode)
+app.use(settings.httpNodeRoot, RED.httpNode)
 
 server.listen(8080)
 
