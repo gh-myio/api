@@ -1,15 +1,18 @@
 const models = require('../../lib/models').Models
 
 module.exports = function (RED) {
-  async function SlaveInfo (config) {
+
+  function SlaveInfo (config) {
     RED.nodes.createNode(this, config)
 
-    const slaves = await models.Slave.findAll({
+    let slaves = []
+
+    models.Slave.findAll({
       include: [{
         model: models.Channels,
         as: 'channels_list'
       }]
-    })
+    }).then(_slaves => slaves = _slaves)
 
     const node = this
 

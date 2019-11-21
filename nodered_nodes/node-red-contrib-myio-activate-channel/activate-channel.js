@@ -13,12 +13,26 @@ module.exports = function (RED) {
       let time = 0
 
       config.channels.forEach((channel) => {
-        const payload = {
-          type: 'slave',
-          id: channel.slave,
-          command: 'light_control',
-          channel: channel.channel,
-          value: channel.value
+        let payload = {}
+
+        if (channel.value === 'pulse_up' || channel.value === 'pulse_down') {
+          const value = channel.value === 'pulse_up' ? 100 : 0
+
+          payload = {
+            type: 'slave',
+            id: channel.slave,
+            command: 'pulse',
+            channel: channel.channel,
+            value: value
+          }
+        } else {
+          payload = {
+            type: 'slave',
+            id: channel.slave,
+            command: 'light_control',
+            channel: channel.channel,
+            value: channel.value
+          }
         }
 
         setTimeout(() => {

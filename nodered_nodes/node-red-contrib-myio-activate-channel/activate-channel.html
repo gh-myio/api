@@ -88,14 +88,27 @@
                             }
 
                             const zeroto100 = Array.apply(null, {length: 101}).map(Function.call, Number);
-
-                            const selectValue = generateSelect(zeroto100.map(value => {
+                            const values = zeroto100.map(value => {
                                 return {
                                     text: value,
                                     value: value,
                                     selected: channel.value === value
                                 }
-                            }), 25)
+                            })
+
+                            values.unshift({
+                                text: 'pulse_up',
+                                value: 'pulse_up',
+                                selected: channel.value === 'pulse_up'
+                            })
+
+                            values.unshift({
+                                text: 'pulse_down',
+                                value: 'pulse_down',
+                                selected: channel.value === 'pulse_down'
+                            })
+
+                            const selectValue = generateSelect(values, 25)
 
                             $(container).append(selectSlave)
                             $(container).append(selectChannel)
@@ -126,7 +139,12 @@
 
                 let slave = parseInt(selects[0].value)
                 let channel = parseInt(selects[1].value)
-                let value = parseInt(selects[2].value)
+                let value
+                if (selects[2].value === 'pulse_up' || selects[2].value === 'pulse_down') {
+                    value = selects[2].value
+                } else {
+                    value = parseInt(selects[2].value)
+                }
 
                 channels.push({ slave, channel, value })
             }
