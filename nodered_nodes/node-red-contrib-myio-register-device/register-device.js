@@ -89,7 +89,7 @@ module.exports = function (RED) {
 
               msg.payload = {
                 ...msg.payload,
-                slave
+                slave: slave.toJSON()
               }
 
               node.send([msg])

@@ -24,6 +24,8 @@ module.exports = function (RED) {
     })
 
     WebSocketHandler.on('consumption', (msg) => {
+      if (msg.scope === 'all') return
+
       node.send([null, null, {
         payload: msg
       }])

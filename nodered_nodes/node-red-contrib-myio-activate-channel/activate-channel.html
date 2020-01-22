@@ -37,8 +37,11 @@
                 try {
                     slaves = slaves.filter(slave => slave.type !== 'infrared')
                     $("#node-input-channel-container").css('min-height','250px').css('min-width','450px').editableList({
+
                         addItem: function(container, i, channel) {
                             if (!channel) channel = {}
+
+                            console.log('CHANNEL => ', channel)
 
                             const selectSlave = generateSelect(slaves.map(slave => {
                                 return {
@@ -48,7 +51,16 @@
                                 }
                             }), 40)
 
+                            let genericOption = document.createElement('option');
                             let selectChannel
+
+                            genericOption.text = 'Entrada Genérica'
+                            genericOption.value = 'generic'
+                            genericOption.selected = (!channel.slave || channel.slave === 'generic') ? true : false
+                            genericOption.style.width = '100%'
+
+                            selectSlave.add(genericOption)
+
                             if (!channel.slave) {
                                 selectChannel = generateSelect(slaves[0].channels_list.map((channel) => {
                                     return {
@@ -58,34 +70,69 @@
                                     }
                                 }), 20)
                             } else {
-                                const selectedSlave = slaves.find(slave => slave.id === channel.slave)
-                                selectChannel = generateSelect(selectedSlave.channels_list.map((ch) => {
-                                    return {
-                                        text: ch.name,
-                                        value: ch.channel,
-                                        selected: ch.channel === channel.channel
-                                    }
-                                }), 20)
+                                if (channel.slave === 'generic') {
+
+                                    console.log('CHANNEL.CHANNEL', channel.channel)
+                                    selectChannel = generateSelect([{
+                                        text: 'Channel 0',
+                                        value: 0,
+                                        selected: channel.channel == 0
+                                    }, {
+                                        text: 'Channel 1',
+                                        value: 1,
+                                        selected: channel.channel == 1
+                                    }], 20)
+
+                                    console.log(selectChannel)
+
+                                } else {
+                                    const selectedSlave = slaves.find(slave => slave.id === channel.slave)
+                                    selectChannel = generateSelect(selectedSlave.channels_list.map((ch) => {
+                                        return {
+                                            text: ch.name,
+                                            value: ch.channel,
+                                            selected: ch.channel === channel.channel
+                                        }
+                                    }), 20)
+                                }
                             }
 
                             selectSlave.onchange = () => {
+                                console.log('ON CHANGE')
                                 while (selectChannel.options.length > 0) {
                                     selectChannel.remove(0)
                                 }
 
-                                const selectedSlave = slaves[selectSlave.selectedIndex]
+                                const selectedOption = selectSlave.options[selectSlave.selectedIndex]
 
-                                selectedSlave.channels_list.forEach(channel => {
-                                    let optionElement = document.createElement('option');
+                                if (selectedOption.value === 'generic') {
+                                    [0, 1].forEach(channel => {
+                                        let optionElement = document.createElement('option');
 
-                                    optionElement.text = channel.name
-                                    optionElement.value = channel.channel
-                                    optionElement.selected = false
-                                    optionElement.style.width = '100%'
+                                        optionElement.text = `Channel ${channel}`
+                                        optionElement.value = channel
+                                        optionElement.selected = false
+                                        optionElement.style.width = '100%'
 
-                                    selectChannel.add(optionElement)
-                                })
+                                        selectChannel.add(optionElement)
+                                    })
+                                } else {
+                                    const selectedSlave = slaves[selectSlave.selectedIndex]
+
+                                    selectedSlave.channels_list.forEach(channel => {
+                                        let optionElement = document.createElement('option');
+
+                                        optionElement.text = channel.name
+                                        optionElement.value = channel.channel
+                                        optionElement.selected = false
+                                        optionElement.style.width = '100%'
+
+                                        selectChannel.add(optionElement)
+                                    })
+                                }
                             }
+
+                            // selectSlave.onchange()
 
                             const zeroto100 = Array.apply(null, {length: 101}).map(Function.call, Number);
                             const values = zeroto100.map(value => {
@@ -128,6 +175,8 @@
                     console.log(e);
                 }
             })
+
+
         },
         oneditsave: function() {
             let channels = []
@@ -136,8 +185,13 @@
             for (let i = 0; i < children.length; i++) {
                 let wrapper = $(children[i]).find('.red-ui-editableList-item-content')[0];
                 let selects = $(wrapper).find('select');
+                let slave
 
-                let slave = parseInt(selects[0].value)
+                if (selects[0].value === 'generic') {
+                    slave = selects[0].value
+                } else {
+                    slave = parseInt(selects[0].value)
+                }
                 let channel = parseInt(selects[1].value)
                 let value
                 if (selects[2].value === 'pulse_up' || selects[2].value === 'pulse_down') {

@@ -5,16 +5,14 @@
         color: '#9371ce',
         defaults: {
             slaves: {value: [], required: true},
-            outputs: {value: 0}
+            outputs: {value: 0},
+            generic: { value: false, required: true }
         },
         icon: "font-awesome/fa-filter",
         inputs: 1,
         outputs: 0,
         label: function() {
-            if (this.slaves) {
-                this.outputs = this.slaves.length
-            }
-            return 'Slave'
+            return 'Filter Slave'
         },
         outputLabels: function(index) {
             return this.slaves[index]
@@ -75,6 +73,14 @@
                     })
 
                     this.outputs = this.slaves.length
+
+                    const genericCheckbox = $('.generic-checkbox')
+
+                    genericCheckbox.prop('checked', this.generic)
+
+                    if (this.generic && this.outputs === 0) {
+                        this.outputs = 1;
+                    }
                 })
 
             } catch(e) {
@@ -92,6 +98,14 @@
 
             this.slaves = selectedValues
             this.outputs = this.slaves.length
+
+            const genericCheckbox = $('.generic-checkbox').prop('checked')
+
+            this.generic = genericCheckbox
+
+            if (this.generic && this.outputs < 1) {
+                this.outputs = 1
+            }
         }
     }
 
@@ -99,6 +113,7 @@
 </script>
 
 <script type="text/x-red" data-template-name="filter-slave">
+    <label><input class="generic-checkbox" type='checkbox'/> <span>Saída Genérica?</span></label>
     <div class="form-row node-input-slaves-container-row">
         <ol id="node-input-slave-container"></ol>
     </div>

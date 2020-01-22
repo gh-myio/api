@@ -6,10 +6,26 @@ module.exports = function (RED) {
     RED.nodes.createNode(this, config)
 
     const node = this
+    let genericSlave = undefined
 
     node.outputs = config.slaves.length
 
     node.on('input', function (msg) {
+      if (msg.payload && msg.payload.message_type === 'set_value') {
+        genericSlave = parseInt(msg.payload.value)
+
+        this.status({fill: "green", shape: "ring", text: genericSlave});
+
+        return
+      }
+
+      console.log(msg.payload)
+      console.log(config.generic, msg.payload.id, genericSlave)
+
+      if (config.generic && msg.payload.id === genericSlave) {
+        return node.send([msg])
+      }
+
       if (!config.slaves) return
       const slaveIndex = config.slaves.indexOf(`${msg.payload.id}`)
       if (slaveIndex < 0) return

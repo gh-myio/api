@@ -1,0 +1,16 @@
+{
+  "name": "red-contrib-myio-send-check",
+  "version": "3.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "node-red": {
+      "nodes": {
+          "send-check": "send-check.js"
+      }
+  }
+}

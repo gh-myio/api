@@ -3,10 +3,60 @@ module.exports = function (RED) {
     RED.nodes.createNode(this, config)
 
     const node = this
+    let filterValue = undefined
 
     node.on('input', function (msg) {
       if (!config.consumptions) return
+      if (msg.payload && msg.payload.message_type === 'set_value') {
+        filterValue = msg.payload.value
+        console.log('SETTING FILTER VALUE TO ', msg.payload.value)
+
+        this.status({fill: "green", shape: "ring", text: filterValue});
+
+        return
+      }
+
       if (!msg.payload || msg.payload.message_type !== 'consumption') return
+
+      if (filterValue) {
+        const comparator = filterValue.split(' ')[0]
+        const value = parseInt(filterValue.split(' ')[1])
+
+        console.log('filter-consumption', msg.payload.value, comparator, value)
+
+        switch(comparator) {
+          case '>':
+            console.log('>')
+            if (msg.payload.value > value) {
+              console.log('true')
+              node.send(msg)
+              return
+            }
+          break;
+          case '<':
+            console.log('<')
+            if (msg.payload.value < value) {
+              console.log('true')
+              node.send(msg)
+
+              return
+            }
+          break;
+          case '==':
+            console.log('==')
+            if (msg.payload.value == value) {
+              console.log('true')
+              node.send(msg)
+
+              return
+            }
+          break;
+        }
+
+        return
+      } else {
+        console.log('NO FILTER VALUE !! ', filterValue)
+      }
 
       const comparators = config.consumptions
 

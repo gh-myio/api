@@ -1,121 +1,135 @@
 <script type="text/javascript">
 
-  function generateSelect(options, size) {
+    function generateSelect(options, size) {
 
-    options.forEach(option => {
-      let optionElement = document.createElement('option');
+        options.forEach(option => {
+            let optionElement = document.createElement('option');
 
-      optionElement.text = option.text
-      optionElement.value = option.value
-      optionElement.selected = option.selected
-      optionElement.style.width = '100%'
+            optionElement.text = option.text
+            optionElement.value = option.value
+            optionElement.selected = option.selected
+            optionElement.style.width = '100%'
 
-      select.add(optionElement)
-    })
-
-    return select
-  }
-
-  function generateConsumptionInput(value) {
-      let input = document.createElement('input');
-      input.setAttribute('type', 'text');
-      input.style.width = '60%'
-
-      if (value) {
-          input.value = value
-      } else {
-          input.value = 0
-      }
-
-      return input
-  }
-
-  RED.nodes.registerType('filter-consumption', {
-    category: 'myio',
-    color: '#9371ce',
-    defaults: {
-      consumptions: {value: [], required: true},
-      outputs: { value: 0 }
-    },
-    icon: "font-awesome/fa-bolt",
-    inputs: 1,
-    outputs: 0,
-    label: function() {
-      return 'Consumption'
-    },
-    oneditprepare: function () {
-      var def = this.slave
-
-      try {
-        $("#node-input-consumption-container").css('min-height','250px').css('min-width','450px').editableList({
-          addItem: function(container, i, consumption) {
-            if (!consumption) consumption = {}
-
-            const { compare, value } = consumption;
-
-            const zeroto100 = Array.apply(null, {length: 101}).map(Function.call, Number);
-            const selectCompare = generateSelect([{
-              text: '>',
-              value: '>',
-              selected: compare === '>'
-            }, {
-              text: '<',
-              value: '<',
-              selected: compare === '<'
-            }, {
-              text: '==',
-              value: '==',
-              selected: compare === '=='
-            }], 30)
-
-            const consumptionValue = generateConsumptionInput(value)
-
-            $(container).append(selectCompare)
-            $(container).append(consumptionValue)
-          },
-          removeItem: function(opt) {
-          },
-          sortable: true,
-          removable: true
-        });
-
-        this.consumptions.forEach(consumption => {
-          $("#node-input-consumption-container").editableList('addItem', consumption)
+            select.add(optionElement)
         })
 
-        this.outputs = this.consumptions.length
-
-      } catch(e) {
-        console.log(e);
-      }
-    },
-    oneditsave: function() {
-      let consumptions = []
-      const children = $('#node-input-consumption-container').children()
-
-      for (let i = 0; i < children.length; i++) {
-        const wrapper = $(children[i]).find('.red-ui-editableList-item-content')[0];
-        const select = $(wrapper).find('select')[0];
-        const compare = select.value
-
-        const value = parseInt($(wrapper).find('input')[0].value, 10)
-
-
-        consumptions.push({ compare, value })
-      }
-
-      this.consumptions = consumptions
-      this.outputs = consumptions.length
+        return select
     }
-  });
+
+    function generateConsumptionInput(value) {
+        let input = document.createElement('input');
+        input.setAttribute('type', 'text');
+        input.style.width = '60%'
+
+        if (value) {
+            input.value = value
+        } else {
+            input.value = 0
+        }
+
+        return input
+    }
+
+    RED.nodes.registerType('filter-consumption', {
+        category: 'myio',
+        color: '#9371ce',
+        defaults: {
+            consumptions: {value: [], required: true},
+            outputs: { value: 0 },
+            generic: { value: false, required: true }
+        },
+        icon: "font-awesome/fa-bolt",
+        inputs: 1,
+        outputs: 1,
+        label: function() {
+            return 'Consumption'
+        },
+        oneditprepare: function () {
+            var def = this.slave
+
+            try {
+                $("#node-input-consumption-container").css('min-height','250px').css('min-width','450px').editableList({
+                    addItem: function(container, i, consumption) {
+                        if (!consumption) consumption = {}
+
+                        const { compare, value } = consumption;
+
+                        const zeroto100 = Array.apply(null, {length: 101}).map(Function.call, Number);
+                        const selectCompare = generateSelect([{
+                            text: '>',
+                            value: '>',
+                            selected: compare === '>'
+                        }, {
+                            text: '<',
+                            value: '<',
+                            selected: compare === '<'
+                        }, {
+                            text: '==',
+                            value: '==',
+                            selected: compare === '=='
+                        }], 30)
+
+                        const consumptionValue = generateConsumptionInput(value)
+
+                        $(container).append(selectCompare)
+                        $(container).append(consumptionValue)
+                    },
+                    removeItem: function(opt) {
+                    },
+                    sortable: true,
+                    removable: true
+                });
+
+                this.consumptions.forEach(consumption => {
+                    $("#node-input-consumption-container").editableList('addItem', consumption)
+                })
+
+                this.outputs = this.consumptions.length
+
+                const genericCheckbox = $('.generic-checkbox')
+
+                genericCheckbox.prop('checked', this.generic)
+
+            } catch(e) {
+                console.log(e);
+            }
+        },
+        oneditsave: function() {
+            let consumptions = []
+            const children = $('#node-input-consumption-container').children()
+
+            for (let i = 0; i < children.length; i++) {
+                const wrapper = $(children[i]).find('.red-ui-editableList-item-content')[0];
+                const select = $(wrapper).find('select')[0];
+                const compare = select.value
+
+                const value = parseInt($(wrapper).find('input')[0].value, 10)
+
+
+                consumptions.push({ compare, value })
+            }
+
+            this.consumptions = consumptions
+            this.outputs = consumptions.length
+
+            const genericCheckbox = $('.generic-checkbox').prop('checked')
+
+            this.generic = genericCheckbox
+
+            if (this.generic && this.outputs < 1) {
+                this.outputs = 1
+            }
+        }
+    });
 </script>
 
 <script type="text/x-red" data-template-name="filter-consumption">
-  <div class="form-row node-input-slaves-container-row">
+    <label><input class="generic-checkbox" type='checkbox'/> <span>Saída Genérica?</span></label>
+    <div class="form-row node-input-slaves-container-row">
         <ol id="node-input-consumption-container"></ol>
     </div>
 </script>
 
 <script type="text/x-red" data-help-name="filter-consumption">
-  <p>Filtro de consumo</p>
+    <p>Filtro de consumo</p>
 </script>
