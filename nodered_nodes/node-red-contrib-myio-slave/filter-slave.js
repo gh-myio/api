@@ -6,7 +6,7 @@ module.exports = function (RED) {
     RED.nodes.createNode(this, config)
 
     const node = this
-    let genericSlave = undefined
+    let genericSlave
 
     node.outputs = config.slaves.length
 
@@ -14,7 +14,7 @@ module.exports = function (RED) {
       if (msg.payload && msg.payload.message_type === 'set_value') {
         genericSlave = parseInt(msg.payload.value)
 
-        this.status({fill: "green", shape: "ring", text: genericSlave});
+        this.status({ fill: 'green', shape: 'ring', text: genericSlave })
 
         return
       }

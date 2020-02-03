@@ -1,4 +1,3 @@
-const models = require('../../lib/models').Models
 const WebSocketHandler = require('../../lib/WebSocketHandler')
 
 module.exports = function (RED) {
@@ -11,9 +10,9 @@ module.exports = function (RED) {
       const slaveId = msg.payload.slave.id
 
       WebSocketHandler.send(JSON.stringify({
-        'type': 'slave',
-        'command': 'check',
-        'id': slaveId
+        type: 'slave',
+        command: 'check',
+        id: slaveId
       }))
     })
   }
