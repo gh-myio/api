@@ -1,0 +1,26 @@
+<script type="text/javascript">
+    RED.nodes.registerType('three-phase', {
+        category: 'myio',
+        color: '#9371ce',
+        defaults: {},
+        icon: "font-awesome/fa-bolt",
+        inputs: 1,
+        outputs: 3,
+        label: function() {
+            return 'Sensor Trifásico'
+        },
+        oneditprepare: function () {},
+        oneditsave: function() {}
+    });
+</script>
+
+<script type="text/x-red" data-template-name="three-phase">
+    <label><input class="generic-checkbox" type='checkbox'/>
+    <div class="form-row node-input-slaves-container-row">
+        <ol id="node-input-consumption-container"></ol>
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="three-phase">
+    <p>Trifásico</p>
+</script>

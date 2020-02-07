@@ -3,31 +3,8 @@ let schedules = []
 let ws
 
 module.exports = {
-  setSocket: (socket) => {
-    ws = socket
-  },
-  setupEnergy: () => {
-    /* console.log('DIRNAME', __dirname)
-        // Schedule energy consumption aggregation
-        // let consumptionCron = '5 * * * *'
-
-        // /opt/monorepo/consumption/consumption_aggregator.py >> /var/log/consumption.log 2>&1
-        scheduler.scheduleJob(consumptionCron, () => {
-            let cons = spawn('python', [`${__dirname}/consumption/consumption_aggregator.py`]);
-
-            cons.stdout.on('data', (data) => {
-              console.log(`Agreggator running: ${data}`);
-            });
-
-            cons.stderr.on('data', (data) => {
-              console.log(`stderr: ${data}`);
-            });
-
-            cons.on('close', (code) => {
-              console.log(`Aggregator process exited with code ${code}`);
-            });
-        }) */
-  },
+  setSocket: (socket) => { ws = socket },
+  setupEnergy: () => {},
   prepare: () => {
     const _ = require('lodash')
     const models = require('./lib/models').Models
