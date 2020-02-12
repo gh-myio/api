@@ -6,7 +6,7 @@ COPY package.json package-lock.json ./
 
 RUN npm install --production --verbose
 
-FROM arm32v6/node:12.15.0-alpine
+FROM arm32v7/node:12.15.0-alpine
 
 ENV TZ=America/Sao_Paulo
 
