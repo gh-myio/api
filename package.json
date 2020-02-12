@@ -29,7 +29,7 @@
     "express": "4.16.3",
     "express-session": "1.17.0",
     "getmac": "1.4.3",
-    "hubot-networking": "1.18.1",
+    "hubot-networking": "1.19.2",
     "inquirer": "7.0.3",
     "install": "0.12.1",
     "jsonwebtoken": "8.3.0",
