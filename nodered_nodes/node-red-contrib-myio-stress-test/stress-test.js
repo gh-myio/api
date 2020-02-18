@@ -17,7 +17,6 @@ module.exports = function (RED) {
       }))
 
       WebSocketHandler.once('stress_finished', (msg) => {
-        console.log('MSG => ', msg)
         node.send({
           payload: msg
         })

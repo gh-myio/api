@@ -41,8 +41,6 @@
                         addItem: function(container, i, channel) {
                             if (!channel) channel = {}
 
-                            console.log('CHANNEL => ', channel)
-
                             const selectSlave = generateSelect(slaves.map(slave => {
                                 return {
                                     text: slave.name,
@@ -72,7 +70,6 @@
                             } else {
                                 if (channel.slave === 'generic') {
 
-                                    console.log('CHANNEL.CHANNEL', channel.channel)
                                     selectChannel = generateSelect([{
                                         text: 'Channel 0',
                                         value: 0,
@@ -82,8 +79,6 @@
                                         value: 1,
                                         selected: channel.channel == 1
                                     }], 20)
-
-                                    console.log(selectChannel)
 
                                 } else {
                                     const selectedSlave = slaves.find(slave => slave.id === channel.slave)
@@ -98,7 +93,6 @@
                             }
 
                             selectSlave.onchange = () => {
-                                console.log('ON CHANGE')
                                 while (selectChannel.options.length > 0) {
                                     selectChannel.remove(0)
                                 }

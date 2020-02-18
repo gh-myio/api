@@ -19,9 +19,6 @@ module.exports = function (RED) {
         return
       }
 
-      console.log(msg.payload)
-      console.log(config.generic, msg.payload.id, genericSlave)
-
       if (config.generic && msg.payload.id === genericSlave) {
         return node.send([msg])
       }

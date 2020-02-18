@@ -45,8 +45,6 @@ module.exports = function (RED) {
           }
         }
 
-        console.log(payload)
-
         setTimeout(() => {
           WebSocketHandler.send(JSON.stringify(payload))
         }, time)
