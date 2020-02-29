@@ -1,6 +1,6 @@
 <script type="text/javascript">
 
-  function generateSelect(options, size) {
+  function generateTemperatureSelect(options, size) {
     let select = document.createElement('select');
     select.style.width = `${size}%`;
 
@@ -18,7 +18,7 @@
     return select
   }
 
-  function generateInput(value) {
+  function generateTemperatureInput(value) {
       let input = document.createElement('input');
       input.setAttribute('type', 'text');
       input.style.width = '60%'
@@ -56,7 +56,7 @@
             const { compare, value } = temperature;
 
 
-            const selectCompare = generateSelect([{
+            const selectCompare = generateTemperatureSelect([{
               text: '>',
               value: '>',
               selected: compare === '>'
@@ -70,7 +70,7 @@
               selected: compare === '=='
             }], 30)
 
-            const temperatureValue = generateInput(value)
+            const temperatureValue = generateTemperatureInput(value)
 
             $(container).append(selectCompare)
             $(container).append(temperatureValue)
