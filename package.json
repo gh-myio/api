@@ -31,7 +31,7 @@
     "getmac": "1.4.3",
     "hubot-networking": "1.19.2",
     "inquirer": "7.0.5",
-    "install": "0.12.1",
+    "install": "0.12.2",
     "jsonwebtoken": "8.3.0",
     "lodash": "4.17.15",
     "moment": "2.22.2",
