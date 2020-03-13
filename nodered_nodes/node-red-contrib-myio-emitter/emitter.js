@@ -9,6 +9,8 @@ module.exports = function (RED) {
     /* 1) channel_update
      * 2) infrared_update
      * 3) consumption
+     * 4) user_action
+     * 5) infrared_detection
      */
 
     WebSocketHandler.on('channel_update', (msg) => {
@@ -27,6 +29,18 @@ module.exports = function (RED) {
       if (msg.scope === 'all') return
 
       node.send([null, null, {
+        payload: msg
+      }])
+    })
+
+    WebSocketHandler.on('user_action', (msg) => {
+      node.send([null, null, null, {
+        payload: msg
+      }])
+    })
+
+    WebSocketHandler.on('infrared_detection', (msg) => {
+      node.send([null, null, null, null, {
         payload: msg
       }])
     })
