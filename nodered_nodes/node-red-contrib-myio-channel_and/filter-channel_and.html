@@ -23,7 +23,8 @@
         color: '#9371ce',
         defaults: {
             channels: { value: [], required: true },
-            channelsOr: { value: [], required: true }
+            channelsOr: { value: [], required: true },
+            consumption: { value: [], required: false }
         },
         icon: "font-awesome/fa-filter",
         inputs: 1,
@@ -33,6 +34,20 @@
         },
         oneditprepare: function () {
             var def = this.slave
+
+            const generateConsumptionInput = (value, size) => {
+                let input = document.createElement('input');
+                input.setAttribute('type', 'text');
+                input.style.width = size + 'px'
+
+                if (value) {
+                    input.value = value
+                } else {
+                    input.value = 0
+                }
+
+                return input
+            }
 
             $.getJSON('slaves', (slaves) => {
                 try {
@@ -114,6 +129,60 @@
 
                             $(container).append(selectSlave)
                             $(container).append(selectChannel)
+                            $(container).append(selectCompare)
+                            $(container).append(selectValue)
+                        },
+                        removeItem: function(opt) {
+                        },
+                        sortable: true,
+                        removable: true
+                    });
+
+                    // Consumption container
+
+                    $("#node-input-consumption-container").css('min-height','250px').css('min-width','450px').editableList({
+                        addItem: function(container, i, consumption) {
+                            if (!consumption) consumption = {}
+
+                            const selectSlave = generateSelect(slaves.filter(slave => {
+                                return slave.type !== 'infrared'
+                            }).map(slave => {
+                                return {
+                                    text: slave.name,
+                                    value: slave.id,
+                                    selected: slave.id === consumption.slave
+                                }
+                            }), 40)
+
+                            let selectConsumption
+                            selectConsumption = generateSelect(['Total', 'Fase A', 'Fase B', 'Fase C'].map((phase) => {
+                                return {
+                                    text: phase,
+                                    value: phase,
+                                    selected: consumption.phase === phase
+                                }
+                            }), 20)
+
+                            const zeroto100 = Array.apply(null, {length: 101}).map(Function.call, Number);
+
+                            const selectCompare = generateSelect([{
+                                text: '>',
+                                value: '>',
+                                selected: consumption.compare === '>'
+                            }, {
+                                text: '<',
+                                value: '<',
+                                selected: consumption.compare === '<'
+                            }, {
+                                text: '==',
+                                value: '==',
+                                selected: consumption.compare === '=='
+                            }], 15)
+
+                            const selectValue = generateConsumptionInput(consumption.value, 80)
+
+                            $(container).append(selectSlave)
+                            $(container).append(selectConsumption)
                             $(container).append(selectCompare)
                             $(container).append(selectValue)
                         },
@@ -218,6 +287,10 @@
                     this.channelsOr.forEach(channel => {
                         $("#node-input-channel_or-container").editableList('addItem', channel)
                     })
+
+                    this.consumption.forEach(consumption => {
+                        $("#node-input-consumption-container").editableList('addItem', consumption)
+                    })
                 } catch(e) {
                     console.log(e);
                 }
@@ -226,8 +299,10 @@
         oneditsave: function() {
             let channels = []
             let channelsOr = []
+            let consumption = []
             let children = $('#node-input-channel-container').children()
             let childrenOr = $('#node-input-channel_or-container').children()
+            let childrenConsumption = $('#node-input-consumption-container').children()
 
             for (let i = 0; i < children.length; i++) {
                 let wrapper = $(children[i]).find('.red-ui-editableList-item-content')[0];
@@ -253,8 +328,22 @@
                 channelsOr.push({ slave, channel, compare, value })
             }
 
+            for (let i = 0; i < childrenConsumption.length; i++) {
+                let wrapper = $(childrenConsumption[i]).find('.red-ui-editableList-item-content')[0];
+                let selects = $(wrapper).find('select');
+                let input = $(wrapper).find('input');
+
+                let slave = parseInt(selects[0].value)
+                let phase = selects[1].value
+                let compare = selects[2].value
+                let value = parseInt(input[0].value)
+
+                consumption.push({ slave, phase, compare, value })
+            }
+
             this.channels = channels
             this.channelsOr = channelsOr
+            this.consumption = consumption
         }
     });
 </script>
@@ -263,6 +352,11 @@
     <h3>Todos</h3>
     <div class="form-row node-input-slaves-container-row">
         <ol id="node-input-channel-container"></ol>
+    </div>
+
+    <h3>Todos — Consumo</h3>
+    <div class="form-row node-input-slaves-container-row">
+        <ol id="node-input-consumption-container"></ol>
     </div>
 
     <h3>Pelo menos um</h3>

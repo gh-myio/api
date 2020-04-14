@@ -32,6 +32,42 @@ function match (nodeContext, channels, msg) {
   return matchingRules
 }
 
+function matchConsumption (nodeContext, consumption, msg) {
+  console.log('CONSUMPTION TO MATCH: ', consumption)
+  const matchingRules = []
+
+  consumption.forEach((configConsumption) => {
+    let key = `${configConsumption.slave}_consumption`
+
+    if (configConsumption.phase === 'Fase A') {
+      key = `${configConsumption.slave}_consumption_phase_a`
+    } else if (configConsumption.phase === 'Fase B') {
+      key = `${configConsumption.slave}_consumption_phase_b`
+    } else if (configConsumption.phase === 'Fase C') {
+      key = `${configConsumption.slave}_consumption_phase_c`
+    }
+
+    console.log('KEY: ', key)
+    const consumptionLastValue = nodeContext.get(key)
+    console.log('LAST VALUE: ', consumptionLastValue)
+
+    let matched = false
+    switch (configConsumption.compare) {
+      case '>': matched = consumptionLastValue > configConsumption.value; break
+      case '<': matched = consumptionLastValue < configConsumption.value; break
+      case '==': matched = consumptionLastValue === configConsumption.value; break
+    }
+
+    if (matched) {
+      matchingRules.push(configConsumption)
+    }
+  })
+
+  console.log('MATCHING: ', matchingRules)
+
+  return matchingRules
+}
+
 module.exports = function (RED) {
   function FilterChannelAnd (config) {
     RED.nodes.createNode(this, config)
@@ -40,17 +76,32 @@ module.exports = function (RED) {
     const nodeContext = node.context()
 
     node.on('input', function (msg) {
-      if (!config.channels) return
+      if (!config.channels && !config.consumption) return
+
+      if (msg.payload.message_type === 'consumption') {
+        const update = msg.payload
+
+        nodeContext.set(`${update.id}_consumption`, update.value)
+
+        if (msg.payload.phases) {
+          nodeContext.set(`${update.id}_consumption_phase_a`, update.phases.a)
+          nodeContext.set(`${update.id}_consumption_phase_b`, update.phases.b)
+          nodeContext.set(`${update.id}_consumption_phase_c`, update.phases.c)
+        }
+
+        return
+      }
 
       const matchingChannels = match(nodeContext, config.channels, msg)
       const matchingOR = match(nodeContext, config.channelsOr, msg)
+      const matchingConsumption = matchConsumption(nodeContext, config.consumption, msg)
 
       const alarmed = nodeContext.get('alarmed')
-      const filled = `${matchingChannels.length}/${config.channels.length} - ${matchingOR.length}`
+      const filled = `${matchingChannels.length}/${config.channels.length} - ${matchingConsumption.length}/${config.consumption.length} - ${matchingOR.length}`
 
       const passing = (matchingChannels.length === config.channels.length) && (
         config.channelsOr.length === 0 || matchingOR.length > 0
-      )
+      ) && config.consumption.length === matchingConsumption.length
 
       if (passing) {
         this.status({ fill: 'green', shape: 'dot', text: filled })
