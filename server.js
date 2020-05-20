@@ -77,6 +77,7 @@ models.User.scope('login').findAll()
         permissions: '*'
       }
     })
+
     const settings = {
       httpAdminRoot: '/red',
       httpNodeRoot: '/api',
