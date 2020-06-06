@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 
 module.exports = {
   up: (queryInterface, Sequelize) => {
@@ -33,4 +33,4 @@ DROP CONSTRAINT scenes_ambient_id_fkey,
 
     return queryInterface.sequelize.query(query)
   }
-};
+}
