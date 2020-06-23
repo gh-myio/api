@@ -87,6 +87,15 @@ models.User.scope('login').findAll()
       adminAuth: {
         type: 'credentials',
         users: _users
+      },
+      editorTheme: {
+        header: {
+          title: 'Myio',
+          image: path.join(__dirname, '/misc/myio-logo-1024.png')
+        },
+        page: {
+          css: path.join(__dirname, '/node_modules/@node-red-contrib-themes/midnight-red/theme.css')
+        }
       }
     }
 
