@@ -33,7 +33,6 @@ function match (nodeContext, channels, msg) {
 }
 
 function matchConsumption (nodeContext, consumption, msg) {
-  console.log('CONSUMPTION TO MATCH: ', consumption)
   const matchingRules = []
 
   consumption.forEach((configConsumption) => {
@@ -47,9 +46,7 @@ function matchConsumption (nodeContext, consumption, msg) {
       key = `${configConsumption.slave}_consumption_phase_c`
     }
 
-    console.log('KEY: ', key)
     const consumptionLastValue = nodeContext.get(key)
-    console.log('LAST VALUE: ', consumptionLastValue)
 
     let matched = false
     switch (configConsumption.compare) {
@@ -62,8 +59,6 @@ function matchConsumption (nodeContext, consumption, msg) {
       matchingRules.push(configConsumption)
     }
   })
-
-  console.log('MATCHING: ', matchingRules)
 
   return matchingRules
 }
@@ -97,7 +92,10 @@ module.exports = function (RED) {
       const matchingConsumption = matchConsumption(nodeContext, config.consumption, msg)
 
       const alarmed = nodeContext.get('alarmed')
-      const filled = `${matchingChannels.length}/${config.channels.length} - ${matchingConsumption.length}/${config.consumption.length} - ${matchingOR.length}`
+      const matchingChannelsLen = `${matchingChannels.length}/${config.channels.length}`
+      const matchingConsumptionLen = `${matchingConsumption.length}/${config.consumption.length}`
+      const matchingOrLen = `${matchingOR.length}`
+      const filled = `${matchingChannelsLen} -  ${matchingConsumptionLen} - ${matchingOrLen}`
 
       const passing = (matchingChannels.length === config.channels.length) && (
         config.channelsOr.length === 0 || matchingOR.length > 0
@@ -106,7 +104,7 @@ module.exports = function (RED) {
       if (passing) {
         this.status({ fill: 'green', shape: 'dot', text: filled })
 
-        if (alarmed) return
+        if (alarmed && !config.stateChange) return
 
         nodeContext.set('alarmed', true)
 

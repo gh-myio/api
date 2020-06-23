@@ -24,7 +24,8 @@
         defaults: {
             channels: { value: [], required: true },
             channelsOr: { value: [], required: true },
-            consumption: { value: [], required: false }
+            consumption: { value: [], required: false },
+            stateChange: { value: false, required: true }
         },
         icon: "font-awesome/fa-filter",
         inputs: 1,
@@ -291,6 +292,10 @@
                     this.consumption.forEach(consumption => {
                         $("#node-input-consumption-container").editableList('addItem', consumption)
                     })
+
+                    const stateChangeCheckbox = $('.statechange-checkbox')
+
+                    stateChangeCheckbox.prop('checked', this.stateChange)
                 } catch(e) {
                     console.log(e);
                 }
@@ -341,6 +346,10 @@
                 consumption.push({ slave, phase, compare, value })
             }
 
+            const stateChange= $('.statechange-checkbox').prop('checked')
+
+            this.stateChange = stateChange
+
             this.channels = channels
             this.channelsOr = channelsOr
             this.consumption = consumption
@@ -349,6 +358,11 @@
 </script>
 
 <script type="text/x-red" data-template-name="filter-channel_and">
+    <label>
+        <input class="statechange-checkbox" type='checkbox'/>
+        <span>Somente mudança de estado?</span>
+    </label>
+
     <h3>Todos</h3>
     <div class="form-row node-input-slaves-container-row">
         <ol id="node-input-channel-container"></ol>
