@@ -11,6 +11,7 @@ module.exports = function (RED) {
      * 3) consumption
      * 4) user_action
      * 5) infrared_detection
+     * 6) temperature_update
      */
 
     WebSocketHandler.on('channel_update', (msg) => {
@@ -41,6 +42,12 @@ module.exports = function (RED) {
 
     WebSocketHandler.on('infrared_detection', (msg) => {
       node.send([null, null, null, null, {
+        payload: msg
+      }])
+    })
+
+    WebSocketHandler.on('temperature_update', (msg) => {
+      node.send([null, null, null, null, null, {
         payload: msg
       }])
     })
