@@ -12,6 +12,20 @@ module.exports = function (RED) {
 
       let time = 500
 
+      if (msg.payload.generic) {
+        const newPayload = {
+          type: 'slave',
+          id: msg.payload.id,
+          command: 'light_control',
+          channel: msg.payload.channel,
+          value: msg.payload.value
+        }
+
+        WebSocketHandler.send(JSON.stringify(newPayload))
+
+        return
+      }
+
       config.channels.forEach((channel) => {
         let payload = {}
 
