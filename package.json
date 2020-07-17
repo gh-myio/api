@@ -20,7 +20,7 @@
   },
   "dependencies": {
     "@node-red-contrib-themes/midnight-red": "1.4.4",
-    "async": "2.6.1",
+    "async": "2.6.3",
     "bcryptjs": "2.4.3",
     "bluebird": "3.5.5",
     "body-parser": "1.18.3",
