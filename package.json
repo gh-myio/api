@@ -36,7 +36,7 @@
     "jsonwebtoken": "8.3.0",
     "lodash": "4.17.15",
     "moment": "2.22.2",
-    "node-red": "1.0.3",
+    "node-red": "1.0.6",
     "node-red-contrib-telegrambot": "6.0.1",
     "node-red-contrib-uibuilder": "2.0.7",
     "node-red-contrib-wait-paths": "^0.3.2",
