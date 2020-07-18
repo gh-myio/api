@@ -29,7 +29,7 @@
     "cors": "2.8.5",
     "express": "4.16.4",
     "express-session": "1.17.1",
-    "getmac": "1.4.3",
+    "getmac": "1.4.6",
     "hubot-networking": "1.19.2",
     "inquirer": "7.0.5",
     "install": "0.12.2",
