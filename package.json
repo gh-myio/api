@@ -27,7 +27,7 @@
     "compression": "1.7.4",
     "cookie-parser": "1.4.5",
     "cors": "2.8.5",
-    "express": "4.16.3",
+    "express": "4.16.4",
     "express-session": "1.17.0",
     "getmac": "1.4.3",
     "hubot-networking": "1.19.2",
