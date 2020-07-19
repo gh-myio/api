@@ -11,7 +11,7 @@ module.exports = function (RED) {
 
       WebSocketHandler.send(JSON.stringify({
         type: 'slave',
-        command: 'check',
+        command: msg.payload.command || 'check',
         id: slaveId
       }))
     })
