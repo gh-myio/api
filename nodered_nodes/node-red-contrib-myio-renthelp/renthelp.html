@@ -1,0 +1,72 @@
+<script type="text/javascript">
+    RED.nodes.registerType('renthelp', {
+        category: 'myio',
+        color: '#9371ce',
+        defaults: {
+            ip: { value: undefined, required: true },
+            port: { value: undefined, required: true },
+            clientId: { value: undefined, required: true },
+            centralId: { value: undefined, required: true },
+            partition: { value: undefined, required: true }
+        },
+        icon: "bridge.png",
+        inputs: 1,
+        outputs: 0,
+        label: function() {
+            return 'Rent Help'
+        },
+        oneditprepare: function () {
+            const ip = $('#node-config-input-ip')
+            const port = $('#node-config-input-port')
+            const clientId = $('#node-config-input-client-id')
+            const centralId = $('#node-config-input-central-id')
+            const partition = $('#node-config-input-partition')
+
+            ip.val(this.ip)
+            port.val(this.port)
+            clientId.val(this.clientId)
+            centralId.val(this.centralId)
+            partition.val(this.partition)
+        },
+        oneditsave: function() {
+            const ip = $('#node-config-input-ip').val()
+            const port = $('#node-config-input-port').val()
+            const clientId = $('#node-config-input-client-id').val()
+            const centralId = $('#node-config-input-central-id').val()
+            const partition = $('#node-config-input-partition').val()
+
+            this.ip = ip
+            this.port = port
+            this.clientId = clientId
+            this.centralId = centralId
+            this.partition = partition
+        }
+    });
+</script>
+
+<script type="text/x-red" data-template-name="renthelp">
+    <div class="form-row">
+        <label for="node-config-input-ip"><span>Ip: </span></label>
+        <input type="text" id="node-config-input-ip">
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-port"><span>Port: </span></label>
+        <input type="text" id="node-config-input-port">
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-client-id"><span>Client id: </span></label>
+        <input type="text" id="node-config-input-client-id">
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-central-id"><span>Central id: </span></label>
+        <input type="text" id="node-config-input-central-id">
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-central-id"><span>Partição: </span></label>
+        <input type="text" id="node-config-input-partition">
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="renthelp">
+    <p></p>
+</script>
