@@ -2,22 +2,35 @@
 
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    /*
-      Add altering commands here.
-      Return a promise to correctly handle asynchronicity.
+    const query = `
+          BEGIN TRANSACTION;
 
-      Example:
-      return queryInterface.createTable('users', { id: Sequelize.INTEGER });
-    */
+    ALTER TABLE alert_history
+DROP CONSTRAINT alert_history_slave_id_fkey,
+ ADD CONSTRAINT alert_history_slave_id_fkey
+    FOREIGN KEY (slave_id)
+     REFERENCES slaves(id)
+      ON DELETE SET NULL;
+
+         COMMIT;
+    `
+
+    return queryInterface.sequelize.query(query)
   },
 
   down: (queryInterface, Sequelize) => {
-    /*
-      Add reverting commands here.
-      Return a promise to correctly handle asynchronicity.
+    const query = `
+          BEGIN TRANSACTION;
 
-      Example:
-      return queryInterface.dropTable('users');
-    */
+    ALTER TABLE alert_history
+DROP CONSTRAINT alert_history_slave_id_fkey,
+ ADD CONSTRAINT alert_history_slave_id_fkey
+    FOREIGN KEY (slave_id)
+     REFERENCES slaves(id)
+
+         COMMIT;
+    `
+
+    return queryInterface.sequelize.query(query)
   }
 }
