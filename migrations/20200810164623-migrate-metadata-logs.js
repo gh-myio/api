@@ -1,8 +1,8 @@
-'use strict';
+'use strict'
 
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    /*const migrate = ``*/
+    /* const migrate = `` */
 
     return Promise.resolve() // queryInterface.sequelize.query(migrate)
   },
@@ -10,4 +10,4 @@ module.exports = {
   down: (queryInterface, Sequelize) => {
     return queryInterface.sequelize.query('TRUNCATE TABLE public.logs')
   }
-};
+}
