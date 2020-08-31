@@ -1,0 +1,27 @@
+<script type="text/javascript">
+    RED.nodes.registerType('send-email', {
+        category: 'myio',
+        color: '#9371ce',
+        defaults: {},
+        icon: "envelope.svg",
+        inputs: 1,
+        outputs: 0,
+        label: function() {
+            return 'Send Email'
+        },
+        oneditprepare: function () {
+        },
+        oneditsave: function() {
+        }
+    });
+</script>
+
+<script type="text/x-red" data-template-name="send-email">
+    <div class="form-row node-input-slaves-container-row">
+        <ol id="node-input-channel-container"></ol>
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="send-email">
+    <p></p>
+</script>

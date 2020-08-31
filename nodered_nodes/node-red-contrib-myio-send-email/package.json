@@ -1,0 +1,16 @@
+{
+  "name": "red-contrib-myio-send-email",
+  "version": "3.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "node-red": {
+      "nodes": {
+          "send-email": "send-email.js"
+      }
+  }
+}
