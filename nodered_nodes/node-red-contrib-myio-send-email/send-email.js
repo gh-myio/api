@@ -15,7 +15,7 @@ module.exports = function (RED) {
 
       const headers = {
         'x-access-token': token,
-        'central_id': centralUUID
+        central_id: centralUUID
       }
 
       request.post('https://server.myio.com.br/central/email', {
