@@ -14,7 +14,9 @@ module.exports = function (RED) {
      * 6) temperature_update
      * 7) current_update
      * 8) voltage_update
-     * 9) flow_update
+     * 9) alarm_update
+     * 10) pulse_update
+     * 11) humidity_update
      */
 
     WebSocketHandler.on('channel_update', (msg) => {
@@ -75,6 +77,12 @@ module.exports = function (RED) {
 
     WebSocketHandler.on('pulse_update', (msg) => {
       node.send([null, null, null, null, null, null, null, null, null, {
+        payload: msg
+      }])
+    })
+
+    WebSocketHandler.on('humidity_update', (msg) => {
+      node.send([null, null, null, null, null, null, null, null, null, null, {
         payload: msg
       }])
     })
