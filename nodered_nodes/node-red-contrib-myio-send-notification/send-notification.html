@@ -1,0 +1,49 @@
+<script type="text/javascript">
+    function generateNotificationSelect (options) {
+        let select = document.createElement('select');
+        select.style.width = `100%`;
+
+        options.forEach(option => {
+            let optionElement = document.createElement('option');
+
+            optionElement.text = option.text
+            optionElement.value = option.value
+            optionElement.selected = option.selected
+            optionElement.style.width = '100%'
+
+            select.add(optionElement)
+        })
+
+        return select
+    }
+
+    RED.nodes.registerType('send-notification', {
+        category: 'myio',
+        color: '#9371ce',
+        defaults: {
+            users: { value: [], required: true },
+        },
+        icon: "envelope.svg",
+        inputs: 1,
+        outputs: 0,
+        label: function() {
+            return 'Send notification'
+        },
+        oneditprepare: function () {},
+        oneditsave: function() {}
+    });
+</script>
+
+<script type="text/x-red" data-template-name="send-notification">
+    <div class="form-row node-input-slaves-container-row">
+        <ol id="node-input-channel-container"></ol>
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="send-notification">
+    <h3>Usuários</h3>
+
+    <div class="form-row node-input-slaves-container-row">
+        <ol id="node-input-user-notification-container"></ol>
+    </div>
+</script>
