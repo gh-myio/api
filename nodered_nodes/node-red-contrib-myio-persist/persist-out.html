@@ -1,0 +1,24 @@
+<script type="text/javascript">
+    var PersistIn = {
+        category: 'myio',
+        color: '#9371ce',
+        defaults: {},
+        icon: "font-awesome/fa-database",
+        inputs: 1,
+        outputs: 1,
+        label: function() {
+            return 'Obter dados persistidos'
+        },
+        onpaletteadd: function() {},
+        oneditprepare: function () {}
+    }
+
+    RED.nodes.registerType('persist-out', PersistIn);
+</script>
+
+<script type="text/x-red" data-template-name="persist-out">
+</script>
+
+<script type="text/x-red" data-help-name="persist-out">
+    <p>Obtem dados armazenados no banco de dados</p>
+</script>

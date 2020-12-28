@@ -1,0 +1,17 @@
+{
+  "name": "red-contrib-myio-persist",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "Absolutelly Proprietary",
+  "node-red": {
+      "nodes": {
+          "persist-in": "persist-in.js",
+          "persist-out": "persist-out.js"
+      }
+  }
+}
