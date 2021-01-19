@@ -1,4 +1,4 @@
-const { NodeRedPersist } = require('../../lib/models').Models;
+const { NodeRedPersist } = require('../../lib/models').Models
 
 module.exports = function (RED) {
   function PersistIn (config) {

@@ -3,12 +3,12 @@
 module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface.createTable('node_red_persistence', {
-      'key': {
+      key: {
         type: Sequelize.STRING,
         primaryKey: true,
         unique: true
       },
-      'value': Sequelize.JSON
+      value: Sequelize.JSON
     })
   },
 

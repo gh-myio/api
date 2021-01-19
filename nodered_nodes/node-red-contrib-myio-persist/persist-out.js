@@ -1,4 +1,4 @@
-const { NodeRedPersist } = require('../../lib/models').Models;
+const { NodeRedPersist } = require('../../lib/models').Models
 
 module.exports = function (RED) {
   function PersistOut (config) {
@@ -13,7 +13,7 @@ module.exports = function (RED) {
         }
       })
 
-      if (!result) return;
+      if (!result) return
 
       node.send({
         payload: result.value
