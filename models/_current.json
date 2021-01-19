@@ -1,0 +1,943 @@
+{
+    "tables": {
+        "channels": {
+            "tableName": "channels",
+            "schema": {
+                "id": {
+                    "allowNull": false,
+                    "primaryKey": true,
+                    "autoIncrement": true,
+                    "field": "id",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "type": {
+                    "field": "type",
+                    "seqType": "Sequelize.STRING"
+                },
+                "channel": {
+                    "field": "channel",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "name": {
+                    "field": "name",
+                    "seqType": "Sequelize.STRING"
+                },
+                "config": {
+                    "field": "config",
+                    "seqType": "Sequelize.JSON"
+                },
+                "channel_id": {
+                    "allowNull": true,
+                    "references": {
+                        "model": "channels",
+                        "key": "id"
+                    },
+                    "onDelete": "cascade",
+                    "onUpdate": "CASCADE",
+                    "field": "channel_id",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "slaveId": {
+                    "allowNull": true,
+                    "references": {
+                        "model": "slaves",
+                        "key": "id"
+                    },
+                    "onDelete": "SET NULL",
+                    "onUpdate": "CASCADE",
+                    "field": "slave_id",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "scene_up_id": {
+                    "allowNull": true,
+                    "references": {
+                        "model": "scenes",
+                        "key": "id"
+                    },
+                    "onDelete": "SET NULL",
+                    "onUpdate": "CASCADE",
+                    "field": "scene_up_id",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "scene_down_id": {
+                    "allowNull": true,
+                    "references": {
+                        "model": "scenes",
+                        "key": "id"
+                    },
+                    "onDelete": "SET NULL",
+                    "onUpdate": "CASCADE",
+                    "field": "scene_down_id",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "slave_id": {
+                    "allowNull": true,
+                    "references": {
+                        "model": "slaves",
+                        "key": "id"
+                    },
+                    "onDelete": "SET NULL",
+                    "onUpdate": "CASCADE",
+                    "field": "slave_id",
+                    "seqType": "Sequelize.INTEGER"
+                }
+            },
+            "indexes": []
+        },
+        "rfir_devices": {
+            "tableName": "rfir_devices",
+            "schema": {
+                "id": {
+                    "allowNull": false,
+                    "primaryKey": true,
+                    "autoIncrement": true,
+                    "field": "id",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "type": {
+                    "field": "type",
+                    "seqType": "Sequelize.STRING"
+                },
+                "category": {
+                    "field": "category",
+                    "seqType": "Sequelize.STRING"
+                },
+                "name": {
+                    "field": "name",
+                    "seqType": "Sequelize.STRING"
+                },
+                "output": {
+                    "field": "output",
+                    "seqType": "Sequelize.STRING"
+                },
+                "slaveId": {
+                    "allowNull": true,
+                    "references": {
+                        "model": "slaves",
+                        "key": "id"
+                    },
+                    "onDelete": "SET NULL",
+                    "onUpdate": "CASCADE",
+                    "field": "slave_id",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "commandOnId": {
+                    "allowNull": true,
+                    "references": {
+                        "model": "rfir_commands",
+                        "key": "id"
+                    },
+                    "onDelete": "SET NULL",
+                    "onUpdate": "CASCADE",
+                    "field": "command_on_id",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "commandOffId": {
+                    "allowNull": true,
+                    "references": {
+                        "model": "rfir_commands",
+                        "key": "id"
+                    },
+                    "onDelete": "SET NULL",
+                    "onUpdate": "CASCADE",
+                    "field": "command_off_id",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "slave_id": {
+                    "allowNull": true,
+                    "references": {
+                        "model": "slaves",
+                        "key": "id"
+                    },
+                    "onDelete": "SET NULL",
+                    "onUpdate": "CASCADE",
+                    "field": "slave_id",
+                    "seqType": "Sequelize.INTEGER"
+                }
+            },
+            "indexes": []
+        },
+        "rfir_buttons": {
+            "tableName": "rfir_buttons",
+            "schema": {
+                "id": {
+                    "allowNull": false,
+                    "primaryKey": true,
+                    "autoIncrement": true,
+                    "field": "id",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "name": {
+                    "field": "name",
+                    "seqType": "Sequelize.STRING"
+                },
+                "indexes": {
+                    "field": "indexes",
+                    "seqType": "Sequelize.STRING"
+                },
+                "color": {
+                    "field": "color",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "type": {
+                    "field": "type",
+                    "seqType": "Sequelize.STRING"
+                },
+                "order": {
+                    "field": "order",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "single_send": {
+                    "defaultValue": {
+                        "value": false
+                    },
+                    "field": "single_send",
+                    "seqType": "Sequelize.BOOLEAN"
+                },
+                "rfirRemoteId": {
+                    "allowNull": true,
+                    "references": {
+                        "model": "rfir_remotes",
+                        "key": "id"
+                    },
+                    "onDelete": "SET NULL",
+                    "onUpdate": "CASCADE",
+                    "field": "rfir_remote_id",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "rfirCommandId": {
+                    "allowNull": true,
+                    "references": {
+                        "model": "rfir_commands",
+                        "key": "id"
+                    },
+                    "onDelete": "SET NULL",
+                    "onUpdate": "CASCADE",
+                    "field": "rfir_command_id",
+                    "seqType": "Sequelize.INTEGER"
+                }
+            },
+            "indexes": []
+        },
+        "rfir_commands": {
+            "tableName": "rfir_commands",
+            "schema": {
+                "id": {
+                    "allowNull": false,
+                    "primaryKey": true,
+                    "autoIncrement": true,
+                    "field": "id",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "name": {
+                    "field": "name",
+                    "seqType": "Sequelize.STRING"
+                },
+                "page_low": {
+                    "field": "page_low",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "page_high": {
+                    "field": "page_high",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "rfirDeviceId": {
+                    "allowNull": true,
+                    "field": "rfir_device_id",
+                    "seqType": "Sequelize.INTEGER"
+                }
+            },
+            "indexes": []
+        },
+        "rfir_remotes": {
+            "tableName": "rfir_remotes",
+            "schema": {
+                "id": {
+                    "allowNull": false,
+                    "primaryKey": true,
+                    "autoIncrement": true,
+                    "field": "id",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "name": {
+                    "field": "name",
+                    "seqType": "Sequelize.STRING"
+                },
+                "rfirDeviceId": {
+                    "allowNull": true,
+                    "references": {
+                        "model": "rfir_devices",
+                        "key": "id"
+                    },
+                    "onDelete": "SET NULL",
+                    "onUpdate": "CASCADE",
+                    "field": "rfir_device_id",
+                    "seqType": "Sequelize.INTEGER"
+                }
+            },
+            "indexes": []
+        },
+        "scenes": {
+            "tableName": "scenes",
+            "schema": {
+                "id": {
+                    "allowNull": false,
+                    "primaryKey": true,
+                    "autoIncrement": true,
+                    "field": "id",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "json": {
+                    "field": "json",
+                    "seqType": "Sequelize.TEXT"
+                },
+                "description": {
+                    "field": "description",
+                    "seqType": "Sequelize.STRING"
+                },
+                "name": {
+                    "field": "name",
+                    "seqType": "Sequelize.STRING"
+                },
+                "color": {
+                    "field": "color",
+                    "seqType": "Sequelize.STRING"
+                },
+                "config": {
+                    "field": "config",
+                    "seqType": "Sequelize.JSON"
+                },
+                "ambientId": {
+                    "allowNull": true,
+                    "references": {
+                        "model": "ambients",
+                        "key": "id"
+                    },
+                    "onDelete": "SET NULL",
+                    "onUpdate": "CASCADE",
+                    "field": "ambient_id",
+                    "seqType": "Sequelize.INTEGER"
+                }
+            },
+            "indexes": []
+        },
+        "slaves": {
+            "tableName": "slaves",
+            "schema": {
+                "id": {
+                    "allowNull": false,
+                    "primaryKey": true,
+                    "autoIncrement": true,
+                    "field": "id",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "type": {
+                    "field": "type",
+                    "seqType": "Sequelize.STRING"
+                },
+                "addr_low": {
+                    "field": "addr_low",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "addr_high": {
+                    "field": "addr_high",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "channels": {
+                    "field": "channels",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "name": {
+                    "field": "name",
+                    "seqType": "Sequelize.STRING"
+                },
+                "color": {
+                    "field": "color",
+                    "seqType": "Sequelize.STRING"
+                },
+                "code": {
+                    "field": "code",
+                    "seqType": "Sequelize.STRING"
+                },
+                "clamp_type": {
+                    "field": "clamp_type",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "config": {
+                    "field": "config",
+                    "seqType": "Sequelize.JSON"
+                },
+                "temperature_correction": {
+                    "defaultValue": {
+                        "value": 0
+                    },
+                    "field": "temperature_correction",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "aggregate": {
+                    "defaultValue": {
+                        "value": true
+                    },
+                    "field": "aggregate",
+                    "seqType": "Sequelize.BOOLEAN"
+                },
+                "version": {
+                    "defaultValue": {
+                        "value": "2.0.0"
+                    },
+                    "field": "version",
+                    "seqType": "Sequelize.STRING"
+                }
+            },
+            "indexes": []
+        },
+        "schedules": {
+            "tableName": "schedules",
+            "schema": {
+                "id": {
+                    "allowNull": false,
+                    "primaryKey": true,
+                    "autoIncrement": true,
+                    "field": "id",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "action": {
+                    "field": "action",
+                    "seqType": "Sequelize.JSON"
+                },
+                "name": {
+                    "field": "name",
+                    "seqType": "Sequelize.STRING"
+                },
+                "cron": {
+                    "field": "cron",
+                    "seqType": "Sequelize.STRING"
+                },
+                "active": {
+                    "field": "active",
+                    "seqType": "Sequelize.BOOLEAN"
+                }
+            },
+            "indexes": []
+        },
+        "ambients": {
+            "tableName": "ambients",
+            "schema": {
+                "id": {
+                    "allowNull": false,
+                    "primaryKey": true,
+                    "autoIncrement": true,
+                    "field": "id",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "name": {
+                    "field": "name",
+                    "seqType": "Sequelize.STRING"
+                },
+                "image": {
+                    "field": "image",
+                    "seqType": "Sequelize.TEXT"
+                },
+                "order": {
+                    "field": "order",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "config": {
+                    "field": "config",
+                    "seqType": "Sequelize.JSON"
+                }
+            },
+            "indexes": []
+        },
+        "consumption": {
+            "tableName": "consumption",
+            "schema": {
+                "id": {
+                    "allowNull": false,
+                    "primaryKey": true,
+                    "autoIncrement": true,
+                    "field": "id",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "timestamp": {
+                    "field": "timestamp",
+                    "seqType": "Sequelize.DATE"
+                },
+                "slaveId": {
+                    "field": "slave_id",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "ambientId": {
+                    "field": "ambient_id",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "value": {
+                    "field": "value",
+                    "seqType": "Sequelize.REAL"
+                },
+                "type": {
+                    "field": "type",
+                    "seqType": "Sequelize.ENUM('minute', 'hour', 'day', 'month', 'year')"
+                }
+            },
+            "indexes": []
+        },
+        "raw_energy": {
+            "tableName": "raw_energy",
+            "schema": {
+                "id": {
+                    "allowNull": false,
+                    "primaryKey": true,
+                    "autoIncrement": true,
+                    "field": "id",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "value": {
+                    "field": "value",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "datetime": {
+                    "field": "datetime",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "slaveId": {
+                    "allowNull": true,
+                    "references": {
+                        "model": "slaves",
+                        "key": "id"
+                    },
+                    "onDelete": "SET NULL",
+                    "onUpdate": "CASCADE",
+                    "field": "slave_id",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "rfirRemoteId": {
+                    "allowNull": true,
+                    "references": {
+                        "model": "rfir_remotes",
+                        "key": "id"
+                    },
+                    "onDelete": "SET NULL",
+                    "onUpdate": "CASCADE",
+                    "field": "rfir_remote_id",
+                    "seqType": "Sequelize.INTEGER"
+                }
+            },
+            "indexes": []
+        },
+        "metadata": {
+            "tableName": "metadata",
+            "schema": {
+                "type": {
+                    "field": "type",
+                    "seqType": "Sequelize.STRING"
+                },
+                "action": {
+                    "field": "action",
+                    "seqType": "Sequelize.STRING"
+                },
+                "timestamp": {
+                    "field": "timestamp",
+                    "seqType": "Sequelize.DATE"
+                },
+                "data": {
+                    "field": "data",
+                    "seqType": "Sequelize.TEXT"
+                },
+                "user": {
+                    "field": "user",
+                    "seqType": "Sequelize.STRING"
+                }
+            },
+            "indexes": []
+        },
+        "alarms": {
+            "tableName": "alarms",
+            "schema": {
+                "id": {
+                    "allowNull": false,
+                    "primaryKey": true,
+                    "autoIncrement": true,
+                    "field": "id",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "created": {
+                    "defaultValue": {
+                        "internal": true,
+                        "value": "Sequelize.NOW"
+                    },
+                    "field": "created",
+                    "seqType": "Sequelize.DATE"
+                },
+                "value": {
+                    "field": "value",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "last_event": {
+                    "field": "last_event",
+                    "seqType": "Sequelize.BIGINT"
+                },
+                "channel": {
+                    "field": "channel",
+                    "seqType": "Sequelize.BIGINT"
+                },
+                "slaveId": {
+                    "allowNull": true,
+                    "references": {
+                        "model": "slaves",
+                        "key": "id"
+                    },
+                    "onDelete": "SET NULL",
+                    "onUpdate": "CASCADE",
+                    "field": "slave_id",
+                    "seqType": "Sequelize.INTEGER"
+                }
+            },
+            "indexes": []
+        },
+        "logs": {
+            "tableName": "logs",
+            "schema": {
+                "timestamp": {
+                    "field": "timestamp",
+                    "seqType": "Sequelize.DATE"
+                },
+                "type": {
+                    "field": "type",
+                    "seqType": "Sequelize.STRING"
+                },
+                "actionType": {
+                    "field": "action_type",
+                    "seqType": "Sequelize.STRING"
+                },
+                "user": {
+                    "field": "user",
+                    "seqType": "Sequelize.STRING"
+                },
+                "slaveId": {
+                    "field": "slave_id",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "ambientId": {
+                    "field": "ambient_id",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "sceneId": {
+                    "field": "scene_id",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "channel": {
+                    "field": "channel",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "rfirCommandId": {
+                    "field": "rfir_command_id",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "value": {
+                    "field": "value",
+                    "seqType": "Sequelize.INTEGER"
+                }
+            },
+            "indexes": []
+        },
+        "consumption_alerts": {
+            "tableName": "consumption_alerts",
+            "schema": {
+                "id": {
+                    "allowNull": false,
+                    "primaryKey": true,
+                    "autoIncrement": true,
+                    "field": "id",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "name": {
+                    "field": "name",
+                    "seqType": "Sequelize.STRING"
+                },
+                "slave_id": {
+                    "field": "slave_id",
+                    "allowNull": true,
+                    "references": {
+                        "model": "slaves",
+                        "key": "id"
+                    },
+                    "onDelete": "SET NULL",
+                    "onUpdate": "CASCADE",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "type": {
+                    "field": "type",
+                    "seqType": "Sequelize.STRING"
+                },
+                "extra": {
+                    "field": "extra",
+                    "seqType": "Sequelize.TEXT"
+                },
+                "channelId": {
+                    "allowNull": true,
+                    "references": {
+                        "model": "channels",
+                        "key": "id"
+                    },
+                    "onDelete": "CASCADE",
+                    "onUpdate": "CASCADE",
+                    "field": "channel_id",
+                    "seqType": "Sequelize.INTEGER"
+                }
+            },
+            "indexes": []
+        },
+        "ambient_permissions": {
+            "tableName": "ambient_permissions",
+            "schema": {
+                "id": {
+                    "allowNull": false,
+                    "primaryKey": true,
+                    "autoIncrement": true,
+                    "field": "id",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "expires": {
+                    "field": "expires",
+                    "seqType": "Sequelize.DATE"
+                },
+                "user": {
+                    "field": "user",
+                    "seqType": "Sequelize.STRING"
+                },
+                "createdAt": {
+                    "allowNull": false,
+                    "field": "created_at",
+                    "seqType": "Sequelize.DATE"
+                },
+                "updatedAt": {
+                    "allowNull": false,
+                    "field": "updated_at",
+                    "seqType": "Sequelize.DATE"
+                },
+                "ambientId": {
+                    "allowNull": true,
+                    "references": {
+                        "model": "ambients",
+                        "key": "id"
+                    },
+                    "onDelete": "SET NULL",
+                    "onUpdate": "CASCADE",
+                    "field": "ambient_id",
+                    "seqType": "Sequelize.INTEGER"
+                }
+            },
+            "indexes": []
+        },
+        "users": {
+            "tableName": "users",
+            "schema": {
+                "UUID": {
+                    "defaultValue": {
+                        "internal": true,
+                        "value": "Sequelize.UUIDV4"
+                    },
+                    "primaryKey": true,
+                    "field": "UUID",
+                    "seqType": "Sequelize.UUID"
+                },
+                "name": {
+                    "allowNull": false,
+                    "field": "name",
+                    "seqType": "Sequelize.TEXT"
+                },
+                "email": {
+                    "allowNull": false,
+                    "unique": true,
+                    "field": "email",
+                    "seqType": "Sequelize.TEXT"
+                },
+                "password": {
+                    "allowNull": true,
+                    "field": "password",
+                    "seqType": "Sequelize.TEXT"
+                },
+                "createdAt": {
+                    "allowNull": false,
+                    "field": "createdAt",
+                    "seqType": "Sequelize.DATE"
+                },
+                "updatedAt": {
+                    "allowNull": false,
+                    "field": "updatedAt",
+                    "seqType": "Sequelize.DATE"
+                }
+            },
+            "indexes": []
+        },
+        "alert_history": {
+            "tableName": "alert_history",
+            "schema": {
+                "id": {
+                    "allowNull": false,
+                    "primaryKey": true,
+                    "autoIncrement": true,
+                    "field": "id",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "date": {
+                    "defaultValue": {
+                        "internal": true,
+                        "value": "Sequelize.NOW"
+                    },
+                    "field": "date",
+                    "seqType": "Sequelize.DATE"
+                },
+                "viewed": {
+                    "defaultValue": {
+                        "value": false
+                    },
+                    "field": "viewed",
+                    "seqType": "Sequelize.BOOLEAN"
+                },
+                "alertId": {
+                    "field": "alert_id",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "channelChannel": {
+                    "field": "channel_channel",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "slaveId": {
+                    "field": "slave_id",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "duration": {
+                    "field": "duration",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "channelId": {
+                    "allowNull": true,
+                    "references": {
+                        "model": "channels",
+                        "key": "id"
+                    },
+                    "onDelete": "CASCADE",
+                    "onUpdate": "CASCADE",
+                    "field": "channel_id",
+                    "seqType": "Sequelize.INTEGER"
+                }
+            },
+            "indexes": []
+        },
+        "favorites": {
+            "tableName": "favorites",
+            "schema": {
+                "id": {
+                    "allowNull": false,
+                    "primaryKey": true,
+                    "autoIncrement": true,
+                    "field": "id",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "user": {
+                    "field": "user",
+                    "seqType": "Sequelize.UUID"
+                },
+                "ambients": {
+                    "field": "ambients",
+                    "seqType": "Sequelize.JSON"
+                },
+                "consumption": {
+                    "field": "consumption",
+                    "seqType": "Sequelize.JSON"
+                },
+                "devices": {
+                    "field": "devices",
+                    "seqType": "Sequelize.JSON"
+                },
+                "scenes": {
+                    "field": "scenes",
+                    "seqType": "Sequelize.JSON"
+                }
+            },
+            "indexes": []
+        },
+        "ambients_rfir_devices_rel": {
+            "tableName": "ambients_rfir_devices_rel",
+            "schema": {
+                "createdAt": {
+                    "allowNull": false,
+                    "field": "created_at",
+                    "seqType": "Sequelize.DATE"
+                },
+                "updatedAt": {
+                    "allowNull": false,
+                    "field": "updated_at",
+                    "seqType": "Sequelize.DATE"
+                },
+                "rfirDeviceId": {
+                    "primaryKey": true,
+                    "references": {
+                        "model": "rfir_devices",
+                        "key": "id"
+                    },
+                    "onDelete": "CASCADE",
+                    "onUpdate": "CASCADE",
+                    "field": "rfir_device_id",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "ambientId": {
+                    "primaryKey": true,
+                    "references": {
+                        "model": "ambients",
+                        "key": "id"
+                    },
+                    "onDelete": "CASCADE",
+                    "onUpdate": "CASCADE",
+                    "field": "ambient_id",
+                    "seqType": "Sequelize.INTEGER"
+                }
+            },
+            "indexes": []
+        },
+        "ambients_rfir_slaves_rel": {
+            "tableName": "ambients_rfir_slaves_rel",
+            "schema": {
+                "createdAt": {
+                    "allowNull": false,
+                    "field": "created_at",
+                    "seqType": "Sequelize.DATE"
+                },
+                "updatedAt": {
+                    "allowNull": false,
+                    "field": "updated_at",
+                    "seqType": "Sequelize.DATE"
+                },
+                "slaveId": {
+                    "primaryKey": true,
+                    "references": {
+                        "model": "slaves",
+                        "key": "id"
+                    },
+                    "onDelete": "CASCADE",
+                    "onUpdate": "CASCADE",
+                    "field": "slave_id",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "ambientId": {
+                    "primaryKey": true,
+                    "references": {
+                        "model": "ambients",
+                        "key": "id"
+                    },
+                    "onDelete": "CASCADE",
+                    "onUpdate": "CASCADE",
+                    "field": "ambient_id",
+                    "seqType": "Sequelize.INTEGER"
+                }
+            },
+            "indexes": []
+        }
+    },
+    "path": "/Volumes/Local/Repositories/myio/central/services/api/models/_current.json",
+    "backupPath": "/Volumes/Local/Repositories/myio/central/services/api/models/_current_bak.json",
+    "exists": true,
+    "revision": 4
+}

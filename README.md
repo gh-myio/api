@@ -1,3 +1,8 @@
+# Creating migrations automatically
+
+```sh
+npx sequelize-mig migration:make --name=something
+```
 
 # Migrating existing databases:
 
