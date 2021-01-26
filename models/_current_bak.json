@@ -673,6 +673,17 @@
                 "extra": {
                     "field": "extra",
                     "seqType": "Sequelize.TEXT"
+                },
+                "channelId": {
+                    "allowNull": true,
+                    "references": {
+                        "model": "channels",
+                        "key": "id"
+                    },
+                    "onDelete": "CASCADE",
+                    "onUpdate": "CASCADE",
+                    "field": "channel_id",
+                    "seqType": "Sequelize.INTEGER"
                 }
             },
             "indexes": []
@@ -928,5 +939,5 @@
     "path": "/Volumes/Local/Repositories/myio/central/services/api/models/_current.json",
     "backupPath": "/Volumes/Local/Repositories/myio/central/services/api/models/_current_bak.json",
     "exists": true,
-    "revision": 3
+    "revision": 4
 }
