@@ -15,6 +15,9 @@ Scheduler.setSocket(ws)
 Scheduler.prepare()
 
 let app = express()
+
+app.set('etag', false)
+
 app.use(session({
   key: 'users_sid',
   secret: process.env.PRIVATE_KEY,

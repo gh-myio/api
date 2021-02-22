@@ -26,6 +26,16 @@
                     "field": "config",
                     "seqType": "Sequelize.JSON"
                 },
+                "createdAt": {
+                    "allowNull": false,
+                    "field": "created_at",
+                    "seqType": "Sequelize.DATE"
+                },
+                "updatedAt": {
+                    "allowNull": false,
+                    "field": "updated_at",
+                    "seqType": "Sequelize.DATE"
+                },
                 "channel_id": {
                     "allowNull": true,
                     "references": {
@@ -109,6 +119,16 @@
                 "output": {
                     "field": "output",
                     "seqType": "Sequelize.STRING"
+                },
+                "createdAt": {
+                    "allowNull": false,
+                    "field": "created_at",
+                    "seqType": "Sequelize.DATE"
+                },
+                "updatedAt": {
+                    "allowNull": false,
+                    "field": "updated_at",
+                    "seqType": "Sequelize.DATE"
                 },
                 "slaveId": {
                     "allowNull": true,
@@ -194,6 +214,16 @@
                     "field": "single_send",
                     "seqType": "Sequelize.BOOLEAN"
                 },
+                "createdAt": {
+                    "allowNull": false,
+                    "field": "created_at",
+                    "seqType": "Sequelize.DATE"
+                },
+                "updatedAt": {
+                    "allowNull": false,
+                    "field": "updated_at",
+                    "seqType": "Sequelize.DATE"
+                },
                 "rfirRemoteId": {
                     "allowNull": true,
                     "references": {
@@ -241,6 +271,16 @@
                     "field": "page_high",
                     "seqType": "Sequelize.INTEGER"
                 },
+                "createdAt": {
+                    "allowNull": false,
+                    "field": "created_at",
+                    "seqType": "Sequelize.DATE"
+                },
+                "updatedAt": {
+                    "allowNull": false,
+                    "field": "updated_at",
+                    "seqType": "Sequelize.DATE"
+                },
                 "rfirDeviceId": {
                     "allowNull": true,
                     "field": "rfir_device_id",
@@ -262,6 +302,16 @@
                 "name": {
                     "field": "name",
                     "seqType": "Sequelize.STRING"
+                },
+                "createdAt": {
+                    "allowNull": false,
+                    "field": "created_at",
+                    "seqType": "Sequelize.DATE"
+                },
+                "updatedAt": {
+                    "allowNull": false,
+                    "field": "updated_at",
+                    "seqType": "Sequelize.DATE"
                 },
                 "rfirDeviceId": {
                     "allowNull": true,
@@ -306,6 +356,16 @@
                 "config": {
                     "field": "config",
                     "seqType": "Sequelize.JSON"
+                },
+                "createdAt": {
+                    "allowNull": false,
+                    "field": "created_at",
+                    "seqType": "Sequelize.DATE"
+                },
+                "updatedAt": {
+                    "allowNull": false,
+                    "field": "updated_at",
+                    "seqType": "Sequelize.DATE"
                 },
                 "ambientId": {
                     "allowNull": true,
@@ -387,6 +447,16 @@
                     },
                     "field": "version",
                     "seqType": "Sequelize.STRING"
+                },
+                "createdAt": {
+                    "allowNull": false,
+                    "field": "created_at",
+                    "seqType": "Sequelize.DATE"
+                },
+                "updatedAt": {
+                    "allowNull": false,
+                    "field": "updated_at",
+                    "seqType": "Sequelize.DATE"
                 }
             },
             "indexes": []
@@ -416,6 +486,16 @@
                 "active": {
                     "field": "active",
                     "seqType": "Sequelize.BOOLEAN"
+                },
+                "createdAt": {
+                    "allowNull": false,
+                    "field": "created_at",
+                    "seqType": "Sequelize.DATE"
+                },
+                "updatedAt": {
+                    "allowNull": false,
+                    "field": "updated_at",
+                    "seqType": "Sequelize.DATE"
                 }
             },
             "indexes": []
@@ -445,6 +525,16 @@
                 "config": {
                     "field": "config",
                     "seqType": "Sequelize.JSON"
+                },
+                "createdAt": {
+                    "allowNull": false,
+                    "field": "created_at",
+                    "seqType": "Sequelize.DATE"
+                },
+                "updatedAt": {
+                    "allowNull": false,
+                    "field": "updated_at",
+                    "seqType": "Sequelize.DATE"
                 }
             },
             "indexes": []
@@ -581,6 +671,16 @@
                     "field": "channel",
                     "seqType": "Sequelize.BIGINT"
                 },
+                "createdAt": {
+                    "allowNull": false,
+                    "field": "created_at",
+                    "seqType": "Sequelize.DATE"
+                },
+                "updatedAt": {
+                    "allowNull": false,
+                    "field": "updated_at",
+                    "seqType": "Sequelize.DATE"
+                },
                 "slaveId": {
                     "allowNull": true,
                     "references": {
@@ -673,6 +773,16 @@
                 "extra": {
                     "field": "extra",
                     "seqType": "Sequelize.TEXT"
+                },
+                "createdAt": {
+                    "allowNull": false,
+                    "field": "created_at",
+                    "seqType": "Sequelize.DATE"
+                },
+                "updatedAt": {
+                    "allowNull": false,
+                    "field": "updated_at",
+                    "seqType": "Sequelize.DATE"
                 },
                 "channelId": {
                     "allowNull": true,
@@ -855,6 +965,32 @@
                 "scenes": {
                     "field": "scenes",
                     "seqType": "Sequelize.JSON"
+                },
+                "createdAt": {
+                    "allowNull": false,
+                    "field": "created_at",
+                    "seqType": "Sequelize.DATE"
+                },
+                "updatedAt": {
+                    "allowNull": false,
+                    "field": "updated_at",
+                    "seqType": "Sequelize.DATE"
+                }
+            },
+            "indexes": []
+        },
+        "node_red_persistence": {
+            "tableName": "node_red_persistence",
+            "schema": {
+                "key": {
+                    "primaryKey": true,
+                    "unique": true,
+                    "field": "key",
+                    "seqType": "Sequelize.STRING"
+                },
+                "value": {
+                    "field": "value",
+                    "seqType": "Sequelize.JSON"
                 }
             },
             "indexes": []
@@ -939,5 +1075,5 @@
     "path": "/Volumes/Local/Repositories/myio/central/services/api/models/_current.json",
     "backupPath": "/Volumes/Local/Repositories/myio/central/services/api/models/_current_bak.json",
     "exists": true,
-    "revision": 4
+    "revision": 5
 }
