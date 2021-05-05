@@ -995,6 +995,21 @@
             },
             "indexes": []
         },
+        "environment": {
+            "tableName": "environment",
+            "schema": {
+                "key": {
+                    "primaryKey": true,
+                    "field": "key",
+                    "seqType": "Sequelize.STRING"
+                },
+                "value": {
+                    "field": "value",
+                    "seqType": "Sequelize.STRING"
+                }
+            },
+            "indexes": []
+        },
         "ambients_rfir_devices_rel": {
             "tableName": "ambients_rfir_devices_rel",
             "schema": {
@@ -1072,8 +1087,8 @@
             "indexes": []
         }
     },
-    "path": "/Volumes/Local/Repositories/myio/central/services/api/models/_current.json",
-    "backupPath": "/Volumes/Local/Repositories/myio/central/services/api/models/_current_bak.json",
+    "path": "/Volumes/Local/Repositories/myio/central/services/api/migrations/_current.json",
+    "backupPath": "/Volumes/Local/Repositories/myio/central/services/api/migrations/_current_bak.json",
     "exists": true,
-    "revision": 5
+    "revision": 6
 }
