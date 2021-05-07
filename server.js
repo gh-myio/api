@@ -45,8 +45,11 @@ app.use(cors())
 app.options('*', cors())
 
 app.use(cookieParser())
-app.use(bodyParser.json({ limit: '50mb' }))
-// app.use(bodyParser.json())
+
+const parseJSON = bodyParser.json({ limit: '50mb' })
+const parseText = bodyParser.text()
+app.use((req, res, next) => req.headers['content-type'] === 'text/plain' ? parseText(req, res, next) : parseJSON(req, res, next))
+
 app = require('./lib/routes')(app)
 
 // Error handling middleware
