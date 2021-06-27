@@ -1,0 +1,10 @@
+include:
+  - project: '${CI_PROJECT_ROOT_NAMESPACE}/ci'
+    ref: v0.0.0
+    file:
+      - templates/base.gitlab-ci.yml
+      - templates/npm-lint.gitlab-ci.yml
+      - templates/oci-build.gitlab-ci.yml
+
+.npm-job:
+  image: 'node:12.15.0'
