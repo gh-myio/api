@@ -6,5 +6,5 @@ include:
       - templates/npm-lint.gitlab-ci.yml
       - templates/oci-build.gitlab-ci.yml
 
-variables:
-  NODE_VERSION: '12.15.0'
+.npm-job:
+  image: 'node:12.15.0'
