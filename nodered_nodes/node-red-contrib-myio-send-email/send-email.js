@@ -8,6 +8,7 @@ module.exports = function (RED) {
     const node = this
 
     node.on('input', function (msg) {
+      const cloudUrl = global.cloudUrl
       const centralUUID = global.centralUUID
       const token = jwt.sign({
         UUID: global.centralUUID
@@ -18,7 +19,7 @@ module.exports = function (RED) {
         central_id: centralUUID
       }
 
-      request.post('https://server.myio.com.br/central/email', {
+      request.post(`${cloudUrl}/central/email`, {
         json: {
           to: msg.payload.to,
           title: msg.payload.title,

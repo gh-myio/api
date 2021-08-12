@@ -40,6 +40,7 @@ if (process.env.PRIVATE_KEY && process.env.CENTRAL_UUID) {
   console.error('Fatal: Private key or UUID not defined in env.')
   process.exit(1)
 }
+global.cloudUrl = process.env.CLOUD_URL || 'https://server.myio.com.br'
 
 app.use(cors())
 app.options('*', cors())
