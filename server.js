@@ -2,6 +2,7 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser')
 const session = require('express-session')
+const jwt = require('jsonwebtoken')
 
 const cors = require('cors')
 const ws = require('./lib/WebSocketHandler')
@@ -93,7 +94,17 @@ models.User.scope('login').findAll()
       functionGlobalContext: {},
       adminAuth: {
         type: 'credentials',
-        users: _users
+        users: _users,
+        tokens: (token) => new Promise((resolve, reject) => {
+          try {
+            const { role, user_id: username } = jwt.verify(token, global.privKey)
+            const permissions = role === 'admin' ? '*' : 'read'
+            const user = { username, permissions }
+            resolve(user)
+          } catch (err) {
+            resolve(null)
+          }
+        })
       },
       editorTheme: {
         header: {
