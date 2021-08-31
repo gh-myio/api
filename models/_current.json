@@ -572,6 +572,42 @@
             },
             "indexes": []
         },
+        "consumption_realtime": {
+            "tableName": "consumption_realtime",
+            "schema": {
+                "id": {
+                    "allowNull": false,
+                    "primaryKey": true,
+                    "autoIncrement": true,
+                    "field": "id",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "slave_id": {
+                    "field": "slave_id",
+                    "allowNull": false,
+                    "references": {
+                        "model": "slaves",
+                        "key": "id"
+                    },
+                    "onDelete": "CASCADE",
+                    "onUpdate": "CASCADE",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "value": {
+                    "field": "value",
+                    "seqType": "Sequelize.REAL"
+                },
+                "value_reactive": {
+                    "field": "value_reactive",
+                    "seqType": "Sequelize.REAL"
+                },
+                "timestamp": {
+                    "field": "timestamp",
+                    "seqType": "Sequelize.DATE"
+                }
+            },
+            "indexes": []
+        },
         "raw_energy": {
             "tableName": "raw_energy",
             "schema": {
@@ -995,6 +1031,21 @@
             },
             "indexes": []
         },
+        "environment": {
+            "tableName": "environment",
+            "schema": {
+                "key": {
+                    "primaryKey": true,
+                    "field": "key",
+                    "seqType": "Sequelize.STRING"
+                },
+                "value": {
+                    "field": "value",
+                    "seqType": "Sequelize.STRING"
+                }
+            },
+            "indexes": []
+        },
         "ambients_rfir_devices_rel": {
             "tableName": "ambients_rfir_devices_rel",
             "schema": {
@@ -1075,5 +1126,5 @@
     "path": "/Volumes/Local/Repositories/myio/central/services/api/models/_current.json",
     "backupPath": "/Volumes/Local/Repositories/myio/central/services/api/models/_current_bak.json",
     "exists": true,
-    "revision": 5
+    "revision": 7
 }
