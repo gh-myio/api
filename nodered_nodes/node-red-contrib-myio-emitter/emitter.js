@@ -86,6 +86,12 @@ module.exports = function (RED) {
         payload: msg
       }])
     })
+
+    WebSocketHandler.on('consumption_aggregated', (msg) => {
+      node.send([null, null, null, null, null, null, null, null, null, null, null, {
+        payload: msg
+      }])
+    })
   }
 
   RED.nodes.registerType('myio-emitter', MyioEmitter)
