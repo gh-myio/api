@@ -3,6 +3,8 @@ const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser')
 const session = require('express-session')
 const jwt = require('jsonwebtoken')
+const passport = require('passport')
+const JwtStrategy = require('passport-jwt').Strategy
 
 const cors = require('cors')
 const ws = require('./lib/WebSocketHandler')
@@ -71,6 +73,26 @@ app.use((err, req, res, next) => {
     message: message
   })
 })
+
+function ExtractJwt (req) {
+  if (req.query.jwt) {
+    return req.query.jwt
+  }
+  return req.headers['x-access-token']
+}
+const jwtOptions = {
+  jwtFromRequest: ExtractJwt,
+  secretOrKey: global.privKey
+}
+var strategy = new JwtStrategy(jwtOptions, function (jwtPayload, next) {
+  const user = {
+    id: jwtPayload.user_id,
+    role: jwtPayload.role
+  }
+  next(null, user)
+})
+passport.use(strategy)
+app.use(passport.initialize())
 
 const server = http.createServer(app)
 
