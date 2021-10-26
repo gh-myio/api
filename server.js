@@ -9,27 +9,9 @@ const JwtStrategy = require('passport-jwt').Strategy
 const cors = require('cors')
 const ws = require('./lib/WebSocketHandler')
 const Scheduler = require('./scheduler')
-const RED = require('node-red')
 const http = require('http')
 const path = require('path')
 const models = require('./lib/models').Models
-
-Scheduler.setSocket(ws)
-Scheduler.prepare()
-
-let app = express()
-
-app.set('etag', false)
-
-app.use(session({
-  key: 'users_sid',
-  secret: process.env.PRIVATE_KEY,
-  resave: false,
-  saveUninitialized: false,
-  cookie: {
-    expires: 600000
-  }
-}))
 
 if (process.env.PRIVATE_KEY && process.env.CENTRAL_UUID) {
   try {
@@ -44,6 +26,43 @@ if (process.env.PRIVATE_KEY && process.env.CENTRAL_UUID) {
   process.exit(1)
 }
 global.cloudUrl = process.env.CLOUD_URL || 'https://server.myio.com.br'
+
+Scheduler.setSocket(ws)
+Scheduler.prepare()
+
+let app = express()
+
+function ExtractJwt (req) {
+  if (req.query.jwt) {
+    return req.query.jwt
+  }
+  return req.headers['x-access-token']
+}
+const jwtOptions = {
+  jwtFromRequest: ExtractJwt,
+  secretOrKey: global.privKey
+}
+var strategy = new JwtStrategy(jwtOptions, function (jwtPayload, next) {
+  const user = {
+    id: jwtPayload.user_id,
+    role: jwtPayload.role
+  }
+  next(null, user)
+})
+passport.use(strategy)
+app.use(passport.initialize())
+
+app.set('etag', false)
+
+app.use(session({
+  key: 'users_sid',
+  secret: process.env.PRIVATE_KEY,
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    expires: 600000
+  }
+}))
 
 app.use(cors())
 app.options('*', cors())
@@ -74,75 +93,62 @@ app.use((err, req, res, next) => {
   })
 })
 
-function ExtractJwt (req) {
-  if (req.query.jwt) {
-    return req.query.jwt
-  }
-  return req.headers['x-access-token']
-}
-const jwtOptions = {
-  jwtFromRequest: ExtractJwt,
-  secretOrKey: global.privKey
-}
-var strategy = new JwtStrategy(jwtOptions, function (jwtPayload, next) {
-  const user = {
-    id: jwtPayload.user_id,
-    role: jwtPayload.role
-  }
-  next(null, user)
-})
-passport.use(strategy)
-app.use(passport.initialize())
-
 const server = http.createServer(app)
 
 server.listen(8080)
 
-models.User.scope('login').findAll()
-  .then((users) => {
-    const _users = users.map((user) => {
-      return {
-        username: user.email,
-        password: user.password,
-        permissions: '*'
-      }
-    })
+models.Environment.findOne({ where: { key: 'NODERED_ENABLED' } }).then(row => {
+  if (row && row.value && (row.value === 'false' || row.value === '0' || row.value === 'no')) {
+    return
+  }
 
-    const settings = {
-      httpAdminRoot: '/red',
-      httpNodeRoot: '/api',
-      userDir: path.join(__dirname, '/nodered_data/'),
-      nodesDir: path.join(__dirname, '/nodered_nodes/'),
-      functionGlobalContext: {},
-      adminAuth: {
-        type: 'credentials',
-        users: _users,
-        tokens: (token) => new Promise((resolve, reject) => {
-          try {
-            const { role, user_id: username } = jwt.verify(token, global.privKey)
-            const permissions = role === 'admin' ? '*' : 'read'
-            const user = { username, permissions }
-            resolve(user)
-          } catch (err) {
-            resolve(null)
-          }
-        })
-      },
-      editorTheme: {
-        header: {
-          title: 'Myio',
-          image: path.join(__dirname, '/misc/myio-logo-1024.png')
+  const RED = require('node-red')
+  models.User.scope('login').findAll()
+    .then((users) => {
+      const _users = users.map((user) => {
+        return {
+          username: user.email,
+          password: user.password,
+          permissions: '*'
+        }
+      })
+
+      const settings = {
+        httpAdminRoot: '/red',
+        httpNodeRoot: '/api',
+        userDir: path.join(__dirname, '/nodered_data/'),
+        nodesDir: path.join(__dirname, '/nodered_nodes/'),
+        functionGlobalContext: {},
+        adminAuth: {
+          type: 'credentials',
+          users: _users,
+          tokens: (token) => new Promise((resolve, reject) => {
+            try {
+              const { role, user_id: username } = jwt.verify(token, global.privKey)
+              const permissions = role === 'admin' ? '*' : 'read'
+              const user = { username, permissions }
+              resolve(user)
+            } catch (err) {
+              resolve(null)
+            }
+          })
         },
-        page: {
-          css: path.join(__dirname, '/node_modules/@node-red-contrib-themes/midnight-red/theme.css')
+        editorTheme: {
+          header: {
+            title: 'Myio',
+            image: path.join(__dirname, '/misc/myio-logo-1024.png')
+          },
+          page: {
+            css: path.join(__dirname, '/node_modules/@node-red-contrib-themes/midnight-red/theme.css')
+          }
         }
       }
-    }
 
-    RED.init(server, settings)
+      RED.init(server, settings)
 
-    app.use(settings.httpAdminRoot, RED.httpAdmin)
-    app.use(settings.httpNodeRoot, RED.httpNode)
+      app.use(settings.httpAdminRoot, RED.httpAdmin)
+      app.use(settings.httpNodeRoot, RED.httpNode)
 
-    RED.start()
-  })
+      RED.start()
+    })
+})
