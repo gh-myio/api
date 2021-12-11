@@ -24,6 +24,7 @@ if (process.env.PRIVATE_KEY && process.env.CENTRAL_UUID) {
   console.error('Fatal: Private key or UUID not defined in env.')
   process.exit(1)
 }
+global.centralSerial = process.env.CENTRAL_SERIAL
 global.cloudUrl = process.env.CLOUD_URL || 'https://server.myio.com.br'
 
 Scheduler.setSocket(ws)
