@@ -1,7 +1,6 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser')
-const session = require('express-session')
 const jwt = require('jsonwebtoken')
 const passport = require('passport')
 const JwtStrategy = require('passport-jwt').Strategy
@@ -53,16 +52,6 @@ passport.use(strategy)
 app.use(passport.initialize())
 
 app.set('etag', false)
-
-app.use(session({
-  key: 'users_sid',
-  secret: process.env.PRIVATE_KEY,
-  resave: false,
-  saveUninitialized: false,
-  cookie: {
-    expires: 600000
-  }
-}))
 
 app.use(cors())
 app.options('*', cors())
