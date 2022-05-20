@@ -23,7 +23,10 @@ module.exports = {
 
         schedules = _.map(_schedules, (schedule) => {
           console.log(schedule.cron)
-          return scheduler.scheduleJob(schedule.cron, () => {
+          return scheduler.scheduleJob({
+            rule: schedule.cron,
+            tz: 'America/Sao_Paulo'
+           }, () => {
             console.log('Dispatching action', schedule.action)
             ws.send(JSON.stringify(schedule.action))
           })
