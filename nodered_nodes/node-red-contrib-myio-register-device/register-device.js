@@ -9,94 +9,58 @@ module.exports = function (RED) {
 
     node.on('input', function (msg) {
       if (!msg.payload) return
-      let registered = false
 
-      let code = msg.payload.factory_address.replace(/ /g, '') // code (3, 5, 7, 8)
+      const code = msg.payload.factory_address
+        .replace(/ /g, '') // code (3, 5, 7, 8)
+        .split(',').map(number => parseInt(number))
 
-      code = code.split(',').map(number => parseInt(number))
-
-      // WebSocketHandler.once('')
       const payload = {
         type: 'admin',
         command: 'add_slave',
         factory_address: code
       }
 
-      WebSocketHandler.send(JSON.stringify(payload))
-
-      WebSocketHandler.on('admin', (message) => {
-        if (registered) return
-        if (message.command === 'push_button') {
-          let slaveType = 'outlet'
-
-          switch (code[3]) {
-            case 12:
-              slaveType = 'outlet'
-              break
-            case 14:
-              slaveType = 'infrared'
-              break
-            case 15:
-              slaveType = 'three_phase_sensor'
-              break
-          }
-
-          const buttonlessRegisterPayload = {
-            type: 'admin',
-            command: 'buttonless_register',
-            slave_type: slaveType,
-            idl: message.address[1],
-            idh: message.address[0]
-          }
-
-          setTimeout(() => {
-            WebSocketHandler.send(JSON.stringify(buttonlessRegisterPayload))
-          }, 100)
-
-          WebSocketHandler.once('admin', async (message) => {
-            if (registered) return
-            if (message.command === 'success') {
-              registered = true
-
-              const slave = await models.Slave.create({
-                addr_low: message.address[1],
-                addr_high: message.address[0],
-                type: message.slave_type,
-                name: `${message.slave_type}—${message.address[0]}`,
-                channels: message.channels,
-                code: code.join(''),
-                version: '2.0.0'
-              })
-
-              if (slave.type === 'outlet') {
-                for (let i = 0; i < message.channels; i++) {
-                  await models.Channels.create({
-                    type: 'lamp',
-                    channel: i,
-                    name: `Channel ${i}`,
-                    slave_id: slave.id,
-                    scene_id: undefined,
-                    channel_id: undefined
-                  })
-                }
-              }
-
-              WebSocketHandler.send(JSON.stringify({
-                type: 'admin',
-                command: 'start_slave',
-                id: slave.id
-              }))
-
+      const func = (message) => {
+        if (message.command !== 'add_slave') return
+        switch (message.status) {
+          case 'success':
+            models.Slave.scope('timestamps').findOne({
+              where: {
+                id: message.id
+              },
+              include: [{
+                model: models.Channels,
+                as: 'channels_list'
+              }, {
+                model: models.RfirDevices,
+                as: 'devices',
+                include: [{
+                  model: models.RfirCommands
+                }]
+              }]
+            }).then(slave => {
               msg.payload = {
                 ...msg.payload,
                 slave: slave.toJSON()
               }
-
               node.send([msg])
-            }
-          })
+            })
+            break
+          case 'error':
+            node.send([msg.payload = {
+              ...msg.payload,
+              error: message.message
+            }])
+            break
+          case 'started':
+          default:
+            WebSocketHandler.once('admin', func)
+            break
         }
-      })
+      }
+
+      WebSocketHandler.once('admin', func)
+      WebSocketHandler.send(JSON.stringify(payload))
     })
   }
 
