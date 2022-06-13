@@ -26,7 +26,7 @@ module.exports = {
           return scheduler.scheduleJob({
             rule: schedule.cron,
             tz: 'America/Sao_Paulo'
-           }, () => {
+          }, () => {
             console.log('Dispatching action', schedule.action)
             ws.send(JSON.stringify(schedule.action))
           })
