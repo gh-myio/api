@@ -1,0 +1,45 @@
+<script type="text/javascript">
+  RED.nodes.registerType('get-data', {
+    category: 'myio',
+    color: '#9371ce',
+    defaults: {
+      selectedOption: { value: 'scene', required: true },
+    },
+    icon: "font-awesome/fa-thermometer-3",
+    inputs: 1,
+    outputs: 1,
+    label: function() {
+      return `Get ${this.selectedOption} data`
+    },
+    outputLabels: function(index) {
+      return `Outputs ${this.selectedOption} data`
+    },
+    oneditprepare: function () {
+      const select = document.querySelector('#get-data-select');
+      const options = [...select.options];
+
+      options.map((option) => {
+        option.selected = this.selectedOption === option.value;
+      })
+    },
+    oneditsave: function() {
+      const option = document.querySelector('#get-data-select')
+
+      this.selectedOption = option.value;
+    }
+  });
+</script>
+
+<script type="text/x-red" data-template-name="get-data">
+  <div class="form-row node-input-slaves-container-row">
+    <label for="get-data-select">Cena</label>
+    <select id="get-data-select" name="get-data-select" style="width: 100%;">
+      <option value="scenes">Scenes</option>
+      <option value="slaves">Slaves</option>
+    </select>
+  </div>
+</script>
+
+<script type="text/x-red" data-help-name="get-data">
+  <p></p>
+</script>
