@@ -8,6 +8,18 @@ module.exports = function (RED) {
     const node = this
 
     node.on('input', function (msg) {
+      if (msg.payload.generic) {
+        const newPayload = {
+          type: 'scene',
+          id: msg.payload.id,
+          command: 'activate'
+        }
+
+        WebSocketHandler.send(JSON.stringify(newPayload))
+
+        return
+      }
+
       WebSocketHandler.send(JSON.stringify({
         type: 'scene',
         command: 'activate',

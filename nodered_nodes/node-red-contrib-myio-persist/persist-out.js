@@ -16,6 +16,7 @@ module.exports = function (RED) {
       if (!result) return
 
       node.send({
+        ...msg,
         payload: result.value
       })
     })
