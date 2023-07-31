@@ -1,0 +1,155 @@
+<script type="text/javascript">
+    RED.nodes.registerType('transmit-rfir-command', {
+        category: 'myio',
+        color: '#9371ce',
+        defaults: {
+            name: { value: '' },
+            slave: { value: '', required: true },
+            slaveType: { value: 'slave' },
+            device: { value: '' },
+            deviceType: { value: 'device' },
+            command: { value: '', required: true },
+            commandType: { value: 'command' }
+        },
+        icon: "bridge.png",
+        inputs: 1,
+        outputs: 0,
+        label: function () {
+            if (this.name != '') {
+                return 'Transmit "' + this.name + '" RF/IR Command'
+            }
+            return 'Transmit RF/IR Command'
+        },
+        oneditprepare: async function () {
+            try {
+                const node = this
+                const { slave: cs, device: cd, command: cc } = node
+
+                const data = await new Promise((resolve, reject) => {
+                    try {
+                        $.getJSON('v0/rfir_commands', resolve);
+                    } catch (e) {
+                        reject(e);
+                    }
+                })
+
+                const { slaves, devices, commands } = data.reduce((acc, slave) => {
+                    if (slave.devices.length < 1) return acc
+                    const slaveOption = { value: slave.id, label: slave.name }
+                    if (slave.id == cs) {
+                        acc.slaves.unshift(slaveOption)
+                    } else {
+                        acc.slaves.push(slaveOption)
+                    }
+                    slave.devices.forEach(device => {
+                        if (device.rfir_remotes.length < 1) return
+                        const deviceOption = { value: device.id, label: device.name }
+                        if (device.id == cd) {
+                            acc.devices.unshift(deviceOption)
+                        } else {
+                            acc.devices.push(deviceOption)
+                        }
+                        device.rfir_remotes.forEach(remote => {
+                            if (remote.rfir_buttons.length < 1) return
+
+                            remote.rfir_buttons.forEach(button => {
+                                if (button.rfir_command == null || button.rfir_command.id == null) return
+                                const commandOption = { value: button.rfir_command.id, label: button.name }
+                                if (button.rfir_command.id == cc) {
+                                    acc.commands.unshift(commandOption)
+                                } else {
+                                    acc.commands.push(commandOption)
+                                }
+                            })
+                        })
+                    })
+                    return acc;
+                }, { slaves: [], devices: [], commands: [] })
+
+                const defaultSlaveTypes = [{ value: "slave", options: slaves }, "msg", "str"]
+                const defaultDeviceTypes = [{ value: "device", options: devices }, "msg", "str"]
+                const defaultCommandTypes = [{ value: "command", options: commands }, "msg", "str"]
+
+                const slaveSelector = $("#node-input-slave")
+                    .typedInput({ types: defaultSlaveTypes, typeField: "#node-input-slaveType" })
+                const deviceSelector = $("#node-input-device")
+                    .typedInput({ types: defaultDeviceTypes, typeField: "#node-input-deviceType" })
+                const commandSelector = $("#node-input-command")
+                    .typedInput({ types: defaultCommandTypes, typeField: "#node-input-commandType" })
+
+                slaveSelector
+                    .on("change", () => {
+                        if (slaveSelector.typedInput('type') != 'slave') {
+                            deviceSelector.typedInput('types', ["msg", "str"])
+                            return
+                        }
+                        const slaveId = slaveSelector.val()
+                        const slave = data.find(s => s.id == slaveId)
+                        const deviceIds = slave.devices.map(d => d.id)
+                        const filteredDevices = devices.filter(d => deviceIds.includes(d.value))
+                        deviceSelector.typedInput('types', [{ value: "device", options: filteredDevices }])
+                    })
+
+                deviceSelector
+                    .on("change", () => {
+                        if (deviceSelector.typedInput('type') != 'device') {
+                            commandSelector.typedInput('types', ["msg", "str"])
+                            return
+                        }
+                        const deviceId = deviceSelector.val()
+                        const slaveId = slaveSelector.val()
+                        const slave = data.find(s => s.id == slaveId)
+                        const device = slave.devices.find(d => d.id == deviceId)
+                        const commandIds = device.rfir_remotes.reduce((acc, r) => {
+                            r.rfir_buttons.forEach(b => {
+                                if (b.rfir_command == null || b.rfir_command.id == null) return
+                                acc.push(b.rfir_command.id)
+                            })
+                            return acc
+                        }, [])
+                        const filteredCommands = commands.filter(c => commandIds.includes(c.value))
+                        commandSelector.typedInput('types', [{ value: "command", options: filteredCommands }])
+                    })
+                commandSelector
+                    .on('change', () => {
+                        try {
+                            const commandId = commandSelector.val()
+                            const slaveId = slaveSelector.val()
+                            const deviceId = deviceSelector.val()
+                            const slave = data.find(s => s.id == slaveId)
+                            const device = slave.devices.find(d => d.id == deviceId)
+                            const commandName = device.rfir_remotes.reduce((acc, r) => {
+                                const button = r.rfir_buttons.find(b => b.rfir_command.id == commandId)
+                                return button.name
+                            }, '')
+                            $("#node-input-name").val(commandName)
+                        } catch (error) {
+                            $("#node-input-name").val('')
+                        }
+                    })
+                slaveSelector.trigger('change')
+            } catch (error) {
+                console.error(error)
+            }
+        }
+    });
+</script>
+
+<script type="text/html" data-template-name="transmit-rfir-command">
+    <input type="hidden" id="node-input-name" />
+    <div class="form-row">
+        <label for="node-input-slave"><i class="fa fa-tag"></i> Product</label>
+        <input type="text" id="node-input-slave" />
+        <input type="hidden" id="node-input-slaveType" />
+    </div>
+    <div class="form-row">
+        <label for="node-input-device"><i class="fa fa-tag"></i> Remote</label>
+        <input type="text" id="node-input-device" />
+        <input type="hidden" id="node-input-deviceType" />
+    </div>
+    <div class="form-row">
+        <label for="node-input-command"><i class="fa fa-tag"></i> Button</label>
+        <input type="text" id="node-input-command" />
+        <input type="hidden" id="node-input-commandType" />
+    </div>
+</script>
