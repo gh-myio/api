@@ -10,8 +10,14 @@ module.exports = function (RED) {
       if (config.selectedOption === 'slaves') {
         const slaves = await models.Slave.findAll({
           include: [{
-            model: models.Channels,
-            as: 'channels_list'
+              model: models.Channels,
+              as: 'channels_list'
+          }, {
+            model: models.RfirDevices,
+            as: 'devices',
+            include: [{
+              model: models.RfirCommands
+            }],
           }]
         })
 
