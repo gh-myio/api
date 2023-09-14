@@ -17,6 +17,7 @@ module.exports = function (RED) {
      * 9) alarm_update
      * 10) pulse_update
      * 11) humidity_update
+     * 11) status_update
      */
 
     WebSocketHandler.on('channel_update', (msg) => {
@@ -89,6 +90,12 @@ module.exports = function (RED) {
 
     WebSocketHandler.on('consumption_aggregated', (msg) => {
       node.send([null, null, null, null, null, null, null, null, null, null, null, {
+        payload: msg
+      }])
+    })
+
+    WebSocketHandler.on('status_update', (msg) => {
+      node.send([null, null, null, null, null, null, null, null, null, null, null, null, {
         payload: msg
       }])
     })
