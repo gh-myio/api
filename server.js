@@ -139,6 +139,23 @@ models.Environment.findOne({ where: { key: 'NODERED_ENABLED' } }).then(row => {
       app.use(settings.httpAdminRoot, RED.httpAdmin)
       app.use(settings.httpNodeRoot, RED.httpNode)
 
+      const setContentLength = (req, res, next) => {
+        res.on('finish', () => {
+          if (!res.headersSent && res.getHeader('Content-Length') === undefined) {
+            const contentLength = res.get('Content-Length') || 0
+            const bodyLength = Buffer.byteLength(res.body, 'utf8')
+            const totalLength = parseInt(contentLength, 10) + bodyLength
+
+            res.setHeader('Content-Length', totalLength)
+          }
+        })
+
+        next()
+      }
+
+      app.use(settings.httpAdminRoot, setContentLength)
+      app.use(settings.httpNodeRoot, setContentLength)
+
       RED.start()
     })
 })
