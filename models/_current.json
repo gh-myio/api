@@ -224,15 +224,28 @@
                     "field": "updated_at",
                     "seqType": "Sequelize.DATE"
                 },
-                "rfirRemoteId": {
-                    "allowNull": true,
+                "rfir_remote_id": {
+                    "name": "rfir_remote_id",
+                    "allowNull": false,
                     "references": {
                         "model": "rfir_remotes",
                         "key": "id"
                     },
-                    "onDelete": "SET NULL",
+                    "onDelete": "CASCADE",
                     "onUpdate": "CASCADE",
                     "field": "rfir_remote_id",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "rfir_command_id": {
+                    "name": "rfir_command_id",
+                    "allowNull": false,
+                    "references": {
+                        "model": "rfir_commands",
+                        "key": "id"
+                    },
+                    "onDelete": "CASCADE",
+                    "onUpdate": "CASCADE",
+                    "field": "rfir_command_id",
                     "seqType": "Sequelize.INTEGER"
                 },
                 "rfirCommandId": {
@@ -244,6 +257,17 @@
                     "onDelete": "SET NULL",
                     "onUpdate": "CASCADE",
                     "field": "rfir_command_id",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "rfirRemoteId": {
+                    "allowNull": true,
+                    "references": {
+                        "model": "rfir_remotes",
+                        "key": "id"
+                    },
+                    "onDelete": "SET NULL",
+                    "onUpdate": "CASCADE",
+                    "field": "rfir_remote_id",
                     "seqType": "Sequelize.INTEGER"
                 }
             },
@@ -1137,5 +1161,5 @@
     "path": "/Volumes/Projects/myio_central_api/models/_current.json",
     "backupPath": "/Volumes/Projects/myio_central_api/models/_current_bak.json",
     "exists": true,
-    "revision": 10
+    "revision": 13
 }
