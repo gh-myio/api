@@ -10,12 +10,14 @@ module.exports = function (RED) {
     node.on('input', function (msg) {
       const slaveId = RED.util.evaluateNodeProperty(config.slave, config.slaveType, node, msg)
       const rfirCommandId = RED.util.evaluateNodeProperty(config.command, config.commandType, node, msg)
+
       const wsPayload = {
         type: 'slave',
         id: parseInt(slaveId),
         command: 'transmit',
         rfir_command_id: parseInt(rfirCommandId)
       }
+
       WebSocketHandler.send(JSON.stringify(wsPayload))
     })
   }
